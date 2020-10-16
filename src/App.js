@@ -1,6 +1,9 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Floatingtool from './components/Floatingtool' 
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 function App() {
   return (
@@ -19,6 +22,10 @@ function App() {
           Learn React
         </a>
       </header>
+      <Floatingtool />
+      <Tooltip title="Add" placement="top">
+        <Button>right-end</Button>
+      </Tooltip>
     </div>
   );
 }
