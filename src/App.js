@@ -6,9 +6,17 @@ import TabLinks from './components/TabLinks'
 
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+
+const theme2 = createMuiTheme({
+  typography: {
+    fontFamily: 'Asap',
+    }
+});
 
 function App() {
   return (
+    <ThemeProvider theme={theme2}>
     <div className='App'>
       <header className='App-header'>
         <img src={logo} className='App-logo' alt='logo' />
@@ -29,6 +37,7 @@ function App() {
         <Button>right-end</Button>
       </Tooltip>
     </div>
+    </ThemeProvider>
   )
 }
 

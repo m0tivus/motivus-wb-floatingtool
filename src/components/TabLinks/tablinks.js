@@ -14,6 +14,7 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import ProjectsCarousel from '../ProjectsCarousel'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -73,6 +74,9 @@ const theme = createMuiTheme({
       main: '#5512c6',
     },
   },
+  typography: {
+    fontFamily: 'Asap',
+    } 
 })
 
 export default function FullWidthTabs() {
@@ -130,7 +134,7 @@ export default function FullWidthTabs() {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            Project
+            <ProjectsCarousel></ProjectsCarousel>
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
             Options

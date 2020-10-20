@@ -63,7 +63,7 @@ export default function SimpleSlide() {
 
         <Slide direction='left' in={checked} mountOnEnter unmountOnExit>
           <Card className={classes.paper} variant='outlined'>
-            <CardContent>
+            <CardContent style={{padding: '0px'}}>
               <TabLinks />
 
               {/*   <Typography
