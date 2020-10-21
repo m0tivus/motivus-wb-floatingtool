@@ -50,38 +50,18 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: '#762fec',
-  },
-  appBar: {
-    backgroundColor: '#5512c6',
-  },
-  tabsColor: {
-    color: 'white',
-  },
   selected: {
     fontWeight: 'bold',
-    color: '#ff4df6',
+    color: theme.palette.secondary.light,
+  },
+  indicator: {
+    color: theme.palette.secondary.light,
   },
 }))
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#ffffff',
-    },
-    secondary: {
-      main: '#5512c6',
-    },
-  },
-  typography: {
-    fontFamily: 'Asap',
-    } 
-})
-
 export default function FullWidthTabs() {
   const classes = useStyles()
-  //const theme = useTheme()
+  const theme = useTheme()
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event, newValue) => {
@@ -94,56 +74,55 @@ export default function FullWidthTabs() {
 
   return (
     <div className={classes.root}>
-      <ThemeProvider theme={theme}>
-        <AppBar position='static' className={classes.appBar}>
-          <Tabs
-            value={value}
-            indicatorColor='primary'
-            /*  textColor='primary' */
-            onChange={handleChange}
-            variant='fullWidth'
-            aria-label='full width tabs example'
-            className={classes.tabsColor}
-          >
-            <Tab
-              label='Project'
-              classes={{
-                selected: classes.selected,
-              }}
-              {...a11yProps(0)}
-            />
-            <Tab
-              label='Options'
-              classes={{
-                selected: classes.selected,
-              }}
-              {...a11yProps(1)}
-            />
-            <Tab
-              label='About'
-              classes={{
-                selected: classes.selected,
-              }}
-              {...a11yProps(2)}
-            />
-          </Tabs>
-        </AppBar>
-        <SwipeableViews
-          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-          index={value}
-          onChangeIndex={handleChangeIndex}
+      <AppBar position='static' className={classes.appBar}>
+        <Tabs
+          classes={{
+            indicator: classes.indicator,
+          }}
+          value={value}
+          onChange={handleChange}
+          variant='fullWidth'
+          aria-label='full width tabs example'
+          className={classes.tabsColor}
         >
-          <TabPanel value={value} index={0} dir={theme.direction}>
-            <ProjectsCarousel></ProjectsCarousel>
-          </TabPanel>
-          <TabPanel value={value} index={1} dir={theme.direction}>
-            Options
-          </TabPanel>
-          <TabPanel value={value} index={2} dir={theme.direction}>
-            About
-          </TabPanel>
-        </SwipeableViews>
-      </ThemeProvider>
+          <Tab
+            label='Project'
+            classes={{
+              selected: classes.selected,
+            }}
+            {...a11yProps(0)}
+          />
+          <Tab
+            label='Options'
+            classes={{
+              selected: classes.selected,
+            }}
+            {...a11yProps(1)}
+          />
+          <Tab
+            label='About'
+            classes={{
+              selected: classes.selected,
+            }}
+            {...a11yProps(2)}
+          />
+        </Tabs>
+      </AppBar>
+      <SwipeableViews
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={value}
+        onChangeIndex={handleChangeIndex}
+      >
+        <TabPanel value={value} index={0} dir={theme.direction}>
+          <ProjectsCarousel />
+        </TabPanel>
+        <TabPanel value={value} index={1} dir={theme.direction}>
+          Options
+        </TabPanel>
+        <TabPanel value={value} index={2} dir={theme.direction}>
+          About
+        </TabPanel>
+      </SwipeableViews>
     </div>
   )
 }

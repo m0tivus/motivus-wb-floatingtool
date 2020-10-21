@@ -11,32 +11,66 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 const theme2 = createMuiTheme({
   typography: {
     fontFamily: 'Asap',
-    }
-});
+  },
+  palette: {
+    primary: {
+      light: '#9455fe',
+      main: '#5d25ca',
+      dark: '#1a0098',
+      contrastText: '#fff',
+    },
+
+    secondary: {
+      light: '#ff8fff',
+      main: '#cc5de7',
+      dark: '#9828b4',
+      contrastText: '#fff',
+    },
+
+    background: {
+      paper: '#9468e9',
+      default: '#613bb6',
+    },
+
+    text: {
+      primary: '#fff',
+    },
+  },
+  overrides: {
+    // Style sheet name ⚛️
+    MuiTab: {
+      // Name of the rule
+      textColorSecondary: {
+        // Some CSS
+        color: '#aaa',
+      },
+    },
+  },
+})
 
 function App() {
   return (
     <ThemeProvider theme={theme2}>
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-      </header>
-      <Floatingtool />
-      <Tooltip title='Add' placement='top'>
-        <Button>right-end</Button>
-      </Tooltip>
-    </div>
+      <div className='App'>
+        <header className='App-header'>
+          <img src={logo} className='App-logo' alt='logo' />
+          <p>
+            Edit <code>src/App.js</code> and save to reload.
+          </p>
+          <a
+            className='App-link'
+            href='https://reactjs.org'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            Learn React
+          </a>
+        </header>
+        <Floatingtool />
+        <Tooltip title='Add' placement='top'>
+          <Button>right-end</Button>
+        </Tooltip>
+      </div>
     </ThemeProvider>
   )
 }

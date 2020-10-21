@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
     right: '30px',
     width: '250',
     height: 500,
-    background: '#762fec',
   },
   coloredButton: {
     background: 'rgb(72,0,158)',
@@ -63,7 +62,7 @@ export default function SimpleSlide() {
 
         <Slide direction='left' in={checked} mountOnEnter unmountOnExit>
           <Card className={classes.paper} variant='outlined'>
-            <CardContent style={{padding: '0px'}}>
+            <CardContent style={{ padding: '0px' }}>
               <TabLinks />
 
               {/*   <Typography
