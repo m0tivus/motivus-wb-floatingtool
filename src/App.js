@@ -58,30 +58,27 @@ const theme2 = createMuiTheme({
   },
 })
 
+const sources = ['https://en.wikipedia.org/', 'https://ondamedia.cl/#/']
+
 function App() {
+  const [index, setIndex] = React.useState(0)
   return (
     <ThemeProvider theme={theme2}>
       <CssBaseline />
-      <div className='App'>
-        <header className='App-header'>
-          <img src={logo} className='App-logo' alt='logo' />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className='App-link'
-            href='https://reactjs.org'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Learn React
-          </a>
-        </header>
-        <Floatingtool />
-        <Tooltip title='Add' placement='top'>
-          <Button>right-end</Button>
-        </Tooltip>
-      </div>
+      <iframe
+        style={{ height: '100vh', width: '100vw', border: 0 }}
+        title='exampleWiki'
+        src={sources[index]}
+      />
+      <Floatingtool />
+      <Button
+        style={{ position: 'fixed', top: '1%', left: '30%', zIndex: '2000' }}
+        onClick={() => setIndex(index + 1 >= sources.length ? 0 : index + 1)}
+        color='primary'
+        variant='contained'
+      >
+        ChangeWeb
+      </Button>
     </ThemeProvider>
   )
 }

@@ -16,6 +16,7 @@ export default function DiscreteSlider() {
   return (
     <div className={classes.root}>
       <Typography
+        align='center'
         className={classes.heading}
         variant='h2'
         id='discrete-slider-restrict'
@@ -24,7 +25,7 @@ export default function DiscreteSlider() {
         Get started!
       </Typography>
 
-      <Typography>
+      <Typography align='center'>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dapibus
         lobortis interdum. Sed commodo faucibus orci a blandit. Sed interdum
         sapien ante, et porttitor purus blandit non. Phasellus vel rutrum

@@ -12,23 +12,22 @@ import { Box, Grid } from '@material-ui/core'
 
 const tutorialSteps = [
   {
-    projectType: 'tipo',
-    title: 'Titulo del proyecto',
+    projectType: 'Scientific, biology',
+    title: 'RNA folding',
     label:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sagittis quam eget eros auctor bibendum. Aliquam sed rutrum tellus. Praesent libero lectus, elementum ac dui laoreet, porta aliquam metus.',
-    imgPath:
-      'https://images.unsplash.com/photo-1518732714860-b62714ce0c59?auto=format&fit=crop&w=400&h=250&q=60',
+      'The following implementation of the SPQR code runs a Monte Carlo simulation of a single strand of RNA at constant temperature.',
+    imgPath: 'http://www.motivus.cl/spqrgif.gif',
   },
   {
-    projectType: 'tipo',
-    title: 'Titulo del proyecto',
+    projectType: 'Decentralized applications',
+    title: 'Cryptocurrencies mining',
     label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     imgPath:
       'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
   },
   {
-    projectType: 'tipo',
-    title: 'Titulo del proyecto',
+    projectType: 'Scientific, Astronomic',
+    title: 'Astronomical time series',
     label:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sagittis quam eget eros auctor bibendum.',
     imgPath:
@@ -83,7 +82,7 @@ function ProjectsCarousel() {
 
   return (
     <div className={classes.root}>
-      <Typography className={classes.typeLabel}>
+      <Typography className={classes.typeLabel} align='center'>
         Project Type: {tutorialSteps[activeStep].projectType}
       </Typography>
       <Paper elevation={3}>
@@ -141,11 +140,11 @@ function ProjectsCarousel() {
           }
         />
       </Paper>
-      <Grid container flexGrow={1} direction='column'>
-        <Grid item style={{ height: 150 }}>
+      <Grid container flexGrow={1} direction='column' justify='space-between'>
+        <Grid item>
           <Paper square elevation={0} className={classes.header}>
             <Box py={1}>
-              <Typography variant='h2'>
+              <Typography variant='h2' align='center'>
                 {tutorialSteps[activeStep].title}
               </Typography>
             </Box>
@@ -153,7 +152,7 @@ function ProjectsCarousel() {
           </Paper>
         </Grid>
         <Grid item>
-          <Box py={1}>
+          <Box py={1} justifyContent='center' display='flex'>
             <ProcessButton />
           </Box>
         </Grid>

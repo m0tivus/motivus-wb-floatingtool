@@ -15,7 +15,7 @@ import TabLinks from '../TabLinks/tablinks'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: 180,
+    maxHeight: '100vh',
   },
   wrapper: {
     position: 'fixed',

@@ -6,6 +6,7 @@ import { Box } from '@material-ui/core'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
+import { CenterFocusStrong } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,6 +61,7 @@ export default function DiscreteSlider() {
         variant='h2'
         id='discrete-slider-restrict'
         gutterBottom
+        align='center'
       >
         Make my device SWEAT!
       </Typography>
