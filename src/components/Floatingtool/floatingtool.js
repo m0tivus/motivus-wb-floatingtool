@@ -9,6 +9,7 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Fab from '@material-ui/core/Fab'
+import { Box } from '@material-ui/core'
 
 import TabLinks from '../TabLinks/tablinks'
 
@@ -19,19 +20,38 @@ const useStyles = makeStyles((theme) => ({
   wrapper: {
     position: 'fixed',
     /* width: 100 + theme.spacing(2), */
-    bottom: '60px',
+    [theme.breakpoints.down('sm')]: {
+      bottom: '10px',
+      right: '3px',
+    },
+    [theme.breakpoints.up('md')]: {
+      bottom: '60px',
+      right: '5px',
+    },
     right: '5px',
     zIndex: 2,
   },
-  paper: {
+  body: {
     zIndex: -1,
     position: 'fixed',
     margin: theme.spacing(1),
-    bottom: '85px',
-    right: '30px',
-    width: '250',
-    height: 500,
+    [theme.breakpoints.down('sm')]: {
+      bottom: '20px',
+      right: '5px',
+    },
+    [theme.breakpoints.up('md')]: {
+      bottom: '85px',
+      right: '10px',
+    },
+
+    maxWidth: '480px',
+    height: 600,
   },
+  content: {
+    witdh: '100%',
+    height: '100%',
+  },
+
   coloredButton: {
     background: 'rgb(72,0,158)',
     background:
@@ -59,13 +79,13 @@ export default function SimpleSlide() {
         >
           <img src='logomotivuswhite.svg' width='50' height='50' />
         </Fab>
+        <Box className={classes.body}>
+          <Slide direction='left' in={checked} mountOnEnter unmountOnExit>
+            <Card className={classes.content} variant='outlined'>
+              <CardContent style={{ padding: '0px', height: '100%' }}>
+                <TabLinks />
 
-        <Slide direction='left' in={checked} mountOnEnter unmountOnExit>
-          <Card className={classes.paper} variant='outlined'>
-            <CardContent style={{ padding: '0px' }}>
-              <TabLinks />
-
-              {/*   <Typography
+                {/*   <Typography
                 className={classes.title}
                 color='textSecondary'
                 gutterBottom
@@ -85,13 +105,14 @@ export default function SimpleSlide() {
               </Typography>
 
                */}
-            </CardContent>
+              </CardContent>
 
-            {/*  <CardActions>
+              {/*  <CardActions>
               <Button size='small'>Learn More</Button>
             </CardActions> */}
-          </Card>
-        </Slide>
+            </Card>
+          </Slide>
+        </Box>
       </div>
     </div>
   )

@@ -15,6 +15,8 @@ import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import ProjectsCarousel from '../ProjectsCarousel'
+import Options from '../Options'
+import About from '../About'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -50,6 +52,9 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
   selected: {
     fontWeight: 'bold',
     color: theme.palette.secondary.light,
@@ -117,10 +122,10 @@ export default function FullWidthTabs() {
           <ProjectsCarousel />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Options
+          <Options />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          About
+          <About />
         </TabPanel>
       </SwipeableViews>
     </div>

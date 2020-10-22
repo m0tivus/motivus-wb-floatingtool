@@ -7,11 +7,21 @@ import TabLinks from './components/TabLinks'
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
 
 const theme2 = createMuiTheme({
   typography: {
     fontFamily: 'Asap',
+
+    h2: {
+      fontWeight: 'bold',
+      fontStyle: 'italic',
+      fontSize: '1.5rem',
+      lineHeight: 1.334,
+      letterSpacing: '0em',
+    },
   },
+
   palette: {
     primary: {
       light: '#9455fe',
@@ -51,6 +61,7 @@ const theme2 = createMuiTheme({
 function App() {
   return (
     <ThemeProvider theme={theme2}>
+      <CssBaseline />
       <div className='App'>
         <header className='App-header'>
           <img src={logo} className='App-logo' alt='logo' />

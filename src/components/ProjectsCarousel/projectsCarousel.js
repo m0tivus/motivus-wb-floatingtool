@@ -8,6 +8,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import SwipeableViews from 'react-swipeable-views'
 import ProcessButton from '../ProcessButton'
+import { Box, Grid } from '@material-ui/core'
 
 const tutorialSteps = [
   {
@@ -21,8 +22,7 @@ const tutorialSteps = [
   {
     projectType: 'tipo',
     title: 'Titulo del proyecto',
-    label:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sagittis quam eget eros auctor bibendum. Aliquam sed rutrum tellus. Praesent libero lectus, elementum ac dui laoreet, porta aliquam metus.',
+    label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     imgPath:
       'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
   },
@@ -30,7 +30,7 @@ const tutorialSteps = [
     projectType: 'tipo',
     title: 'Titulo del proyecto',
     label:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sagittis quam eget eros auctor bibendum. Aliquam sed rutrum tellus. Praesent libero lectus, elementum ac dui laoreet, porta aliquam metus.',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sagittis quam eget eros auctor bibendum.',
     imgPath:
       'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
   },
@@ -39,26 +39,25 @@ const tutorialSteps = [
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    overflowY: 'scroll',
-    height: '400px',
-    maxWidth: 500,
   },
   header: {
     textAlign: 'center',
     alignItems: 'center',
   },
   img: {
-    height: 200,
+    [theme.breakpoints.down('sm')]: {
+      height: 170,
+    },
+    [theme.breakpoints.up('md')]: {
+      height: 200,
+    },
+
     display: 'block',
     overflow: 'hidden',
     objectFit: 'cover',
     width: '100%',
   },
-  title: {
-    fontWeight: 600,
-    marginTop: '10px',
-    fontSize: '1.2em',
-  },
+
   typeLabel: {
     paddingBottom: '20px',
   },
@@ -106,6 +105,7 @@ function ProjectsCarousel() {
             </div>
           ))}
         </SwipeableViews>
+
         <MobileStepper
           steps={maxSteps}
           position='static'
@@ -141,13 +141,23 @@ function ProjectsCarousel() {
           }
         />
       </Paper>
-      <Paper square elevation={0} className={classes.header}>
-        <Typography className={classes.title}>
-          {tutorialSteps[activeStep].title}
-        </Typography>
-        <Typography>{tutorialSteps[activeStep].label}</Typography>
-      </Paper>
-      <ProcessButton></ProcessButton>
+      <Grid container flexGrow={1} direction='column'>
+        <Grid item style={{ height: 150 }}>
+          <Paper square elevation={0} className={classes.header}>
+            <Box py={1}>
+              <Typography variant='h2'>
+                {tutorialSteps[activeStep].title}
+              </Typography>
+            </Box>
+            <Typography>{tutorialSteps[activeStep].label}</Typography>
+          </Paper>
+        </Grid>
+        <Grid item>
+          <Box py={1}>
+            <ProcessButton />
+          </Box>
+        </Grid>
+      </Grid>
     </div>
   )
 }
