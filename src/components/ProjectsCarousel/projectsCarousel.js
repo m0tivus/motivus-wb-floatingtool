@@ -21,17 +21,17 @@ const tutorialSteps = [
   {
     projectType: 'Decentralized applications',
     title: 'Cryptocurrencies mining',
-    label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    imgPath:
-      'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
+    label:
+      'Kazakhstan is in talks to attract investments worth 300 billion tenge ($714 million) into the cryptocurrency sector, Digital Development Minister Bagdat Mussin said on Wednesday.',
+    imgPath: 'https://i.blogs.es/503793/bitcoin-2007769_1280/450_1000.jpg',
   },
   {
     projectType: 'Scientific, Astronomic',
     title: 'Astronomical time series',
     label:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sagittis quam eget eros auctor bibendum.',
+      'Galaxy simulations are at last matching reality—and producing surprising insights into cosmic evolution.',
     imgPath:
-      'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
+      'https://www.sciencemag.org/sites/default/files/styles/article_main_image_-_1280w__no_aspect_/public/cs_80601N_CosmicWeb_1280x720.jpg?itok=oa3zpYIh',
   },
 ]
 
