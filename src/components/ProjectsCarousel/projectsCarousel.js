@@ -26,8 +26,8 @@ const tutorialSteps = [
     imgPath: 'https://i.blogs.es/503793/bitcoin-2007769_1280/450_1000.jpg',
   },
   {
-    projectType: 'Scientific, Astronomic',
-    title: 'Astronomical time series',
+    projectType: 'Scientific, astrophysics',
+    title: 'cosmological simulation',
     label:
       'Galaxy simulations are at last matching reality—and producing surprising insights into cosmic evolution.',
     imgPath:
