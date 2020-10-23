@@ -27,7 +27,7 @@ const tutorialSteps = [
   },
   {
     projectType: 'Scientific, astrophysics',
-    title: 'cosmological simulation',
+    title: 'Cosmological simulation',
     label:
       'Galaxy simulations are at last matching reality—and producing surprising insights into cosmic evolution.',
     imgPath:
