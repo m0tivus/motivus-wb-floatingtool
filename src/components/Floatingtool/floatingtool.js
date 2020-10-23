@@ -116,7 +116,15 @@ export default function SimpleSlide() {
                   variant='middle'
                 /> */}
                 <p style={{ zIndex: 5 }}>
-                  Powered by <a href='http://motivus.cl/'> Motivus</a>{' '}
+                  Powered by{' '}
+                  <a
+                    href='http://motivus.cl/'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    {' '}
+                    Motivus
+                  </a>{' '}
                 </p>
               </CardActions>
             </Card>
