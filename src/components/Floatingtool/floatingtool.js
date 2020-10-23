@@ -9,7 +9,8 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Fab from '@material-ui/core/Fab'
-import { Box } from '@material-ui/core'
+import { Box, Grid, Divider } from '@material-ui/core'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 import TabLinks from '../TabLinks/tablinks'
 
@@ -59,6 +60,15 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     boxShadow: '0px 0px 7px 1px rgba(0,0,0,0.64);',
   },
+  bottomAction: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  divider: {
+    backgroundColor: 'white',
+    margin: '10px',
+  },
 }))
 
 export default function SimpleSlide() {
@@ -82,34 +92,30 @@ export default function SimpleSlide() {
         <Box className={classes.body}>
           <Slide direction='left' in={checked} mountOnEnter unmountOnExit>
             <Card className={classes.content} variant='outlined'>
-              <CardContent style={{ padding: '0px', height: '100%' }}>
+              <CardContent style={{ padding: '0px', height: '90%' }}>
                 <TabLinks />
-
-                {/*   <Typography
-                className={classes.title}
-                color='textSecondary'
-                gutterBottom
-              >
-                Word of the Day
-              </Typography>
-              <Typography variant='h5' component='h2'>
-                be{bull}nev{bull}o{bull}lent
-              </Typography>
-              <Typography className={classes.pos} color='textSecondary'>
-                adjective
-              </Typography>
-              <Typography variant='body2' component='p'>
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-              </Typography>
-
-               */}
               </CardContent>
 
-              {/*  <CardActions>
-              <Button size='small'>Learn More</Button>
-            </CardActions> */}
+              <CardActions className={classes.bottomAction}>
+                <Button
+                  variant='contained'
+                  color='secondary'
+                  className={classes.button}
+                  startIcon={<AccountCircleIcon />}
+                  size='small'
+                >
+                  Login
+                </Button>
+                {/* <Divider
+                  className={classes.divider}
+                  orientation='vertical'
+                  flexItem
+                  variant='middle'
+                /> */}
+                <p style={{ zIndex: 5 }}>
+                  Powered by <a href='http://motivus.cl/'> Motivus</a>{' '}
+                </p>
+              </CardActions>
             </Card>
           </Slide>
         </Box>

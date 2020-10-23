@@ -22,7 +22,7 @@ const tutorialSteps = [
     projectType: 'Decentralized applications',
     title: 'Cryptocurrencies mining',
     label:
-      'Kazakhstan is in talks to attract investments worth 300 billion tenge ($714 million) into the cryptocurrency sector, Digital Development Minister Bagdat Mussin said on Wednesday.',
+      'Kazakhstan is in talks to attract investments worth 300 billion tenge ($714 million) into the cryptocurrency sector.',
     imgPath: 'https://i.blogs.es/503793/bitcoin-2007769_1280/450_1000.jpg',
   },
   {

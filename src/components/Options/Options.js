@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
   //heading: { color: theme.palette.primary.dark },
 }))
 
+//TODO hook de las opciones
+
 const marks = [
   {
     value: 25,
