@@ -58,7 +58,11 @@ const theme2 = createMuiTheme({
   },
 })
 
-const sources = ['https://en.wikipedia.org/', 'https://ondamedia.cl/#/']
+const sources = [
+  'https://en.wikipedia.org/',
+  'https://ondamedia.cl/#/',
+  'https://www.scirp.org/',
+]
 
 function App() {
   const [index, setIndex] = React.useState(0)
@@ -77,7 +81,7 @@ function App() {
         color='primary'
         variant='contained'
       >
-        ChangeWeb
+        Next page
       </Button>
     </ThemeProvider>
   )

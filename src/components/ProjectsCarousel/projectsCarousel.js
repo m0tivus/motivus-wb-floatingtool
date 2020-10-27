@@ -23,7 +23,8 @@ const tutorialSteps = [
     title: 'Cryptocurrencies mining',
     label:
       'Kazakhstan is in talks to attract investments worth 300 billion tenge ($714 million) into the cryptocurrency sector.',
-    imgPath: 'https://i.blogs.es/503793/bitcoin-2007769_1280/450_1000.jpg',
+    imgPath:
+      'https://ethereumprice.org/wp-content/uploads/2018/01/ethereum-calculator.jpeg',
   },
   {
     projectType: 'Scientific, astrophysics',
