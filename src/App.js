@@ -8,6 +8,22 @@ import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import createSagaMiddleware from 'redux-saga'
+import logger from 'redux-logger'
+
+import reducers from 'reducers'
+import sagas from 'sagas'
+
+const sagaMiddleware = createSagaMiddleware()
+const middlewares = [sagaMiddleware]
+if (process.env.REACT_APP_REDUX_LOGGER === 'true') {
+  middlewares.push(logger)
+}
+const store = createStore(reducers, applyMiddleware(...middlewares))
+
+sagaMiddleware.run(sagas)
 
 const theme2 = createMuiTheme({
   typography: {
@@ -67,23 +83,25 @@ const sources = [
 function App() {
   const [index, setIndex] = React.useState(0)
   return (
-    <ThemeProvider theme={theme2}>
-      <CssBaseline />
-      <iframe
-        style={{ height: '100vh', width: '100vw', border: 0 }}
-        title='exampleWiki'
-        src={sources[index]}
-      />
-      <Floatingtool />
-      <Button
-        style={{ position: 'fixed', top: '1%', left: '30%', zIndex: '2000' }}
-        onClick={() => setIndex(index + 1 >= sources.length ? 0 : index + 1)}
-        color='primary'
-        variant='contained'
-      >
-        Next page
-      </Button>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme2}>
+        <CssBaseline />
+        <iframe
+          style={{ height: '100vh', width: '100vw', border: 0 }}
+          title='exampleWiki'
+          src={sources[index]}
+        />
+        <Floatingtool />
+        <Button
+          style={{ position: 'fixed', top: '1%', left: '30%', zIndex: '2000' }}
+          onClick={() => setIndex(index + 1 >= sources.length ? 0 : index + 1)}
+          color='primary'
+          variant='contained'
+        >
+          Next page
+        </Button>
+      </ThemeProvider>
+    </Provider>
   )
 }
 
