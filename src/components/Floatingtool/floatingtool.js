@@ -14,6 +14,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 import TabLinks from '../TabLinks/tablinks'
 
+import logo from 'logo.svg'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxHeight: '100vh',
@@ -90,7 +92,7 @@ export default function SimpleSlide() {
           className={classes.coloredButton}
           onClick={handleChange}
         >
-          <img src='logomotivuswhite.svg' width='50' height='50' />
+          <img src={logo} width='50' height='50' />
         </Fab>
         <Box className={classes.body}>
           <Slide direction='left' in={checked} mountOnEnter unmountOnExit>

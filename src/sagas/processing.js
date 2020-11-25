@@ -167,8 +167,8 @@ function* handleLostSocketConnection() {
   yield call(endCurrentTask)
   yield take(SOCKET_READY)
 
-  const id = yield select(selectors.currentProcessing)
-  yield call(restartSaga, id)
+  // const id = yield select(selectors.currentProcessing)
+  // yield call(restartSaga, id)
 }
 
 function* startDefault() {
