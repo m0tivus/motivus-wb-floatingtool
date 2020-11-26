@@ -16,6 +16,17 @@ import logger from 'redux-logger'
 import reducers from 'reducers'
 import sagas from 'sagas'
 
+import 'typeface-asap'
+import {
+  StylesProvider,
+  createGenerateClassName,
+} from '@material-ui/core/styles'
+
+const generateClassName = createGenerateClassName({
+  productionPrefix: 'motivus-widget',
+  disableGlobal: true,
+})
+
 const sagaMiddleware = createSagaMiddleware()
 const middlewares = [sagaMiddleware]
 if (process.env.REACT_APP_REDUX_LOGGER === 'true') {
@@ -24,6 +35,9 @@ if (process.env.REACT_APP_REDUX_LOGGER === 'true') {
 const store = createStore(reducers, applyMiddleware(...middlewares))
 
 sagaMiddleware.run(sagas)
+
+var Motivus = window.Motivus || {}
+console.log('client_id', Motivus.client_id)
 
 const theme2 = createMuiTheme({
   typography: {
@@ -74,33 +88,14 @@ const theme2 = createMuiTheme({
   },
 })
 
-const sources = [
-  'https://en.wikipedia.org/',
-  'https://ondamedia.cl/#/',
-  'https://www.scirp.org/',
-]
-
 function App() {
-  const [index, setIndex] = React.useState(0)
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme2}>
-        <CssBaseline />
-        <iframe
-          style={{ height: '100vh', width: '100vw', border: 0 }}
-          title='exampleWiki'
-          src={sources[index]}
-        />
-        <Floatingtool />
-        <Button
-          style={{ position: 'fixed', top: '1%', left: '30%', zIndex: '2000' }}
-          onClick={() => setIndex(index + 1 >= sources.length ? 0 : index + 1)}
-          color='primary'
-          variant='contained'
-        >
-          Next page
-        </Button>
-      </ThemeProvider>
+      <StylesProvider generateClassName={generateClassName}>
+        <ThemeProvider theme={theme2}>
+          <Floatingtool />
+        </ThemeProvider>
+      </StylesProvider>
     </Provider>
   )
 }
