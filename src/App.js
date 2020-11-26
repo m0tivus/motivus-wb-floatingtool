@@ -24,6 +24,7 @@ import {
 
 const generateClassName = createGenerateClassName({
   productionPrefix: 'motivus-widget',
+  disableGlobal: true,
 })
 
 const sagaMiddleware = createSagaMiddleware()
@@ -34,6 +35,9 @@ if (process.env.REACT_APP_REDUX_LOGGER === 'true') {
 const store = createStore(reducers, applyMiddleware(...middlewares))
 
 sagaMiddleware.run(sagas)
+
+var Motivus = window.Motivus || {}
+console.log('client_id', Motivus.client_id)
 
 const theme2 = createMuiTheme({
   typography: {

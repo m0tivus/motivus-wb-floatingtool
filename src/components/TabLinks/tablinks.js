@@ -58,6 +58,9 @@ const useStyles = makeStyles((theme) => ({
   indicator: {
     color: theme.palette.secondary.light,
   },
+  panels: {
+    width: '100%',
+  },
 }))
 
 export default function FullWidthTabs() {
@@ -113,6 +116,7 @@ export default function FullWidthTabs() {
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}
+        className={classes.panels}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
           <ProjectsCarousel />

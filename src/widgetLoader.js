@@ -24,4 +24,34 @@ function loadStylesheet(url) {
   entry.parentNode.insertBefore(link, entry)
 }
 
-loadScript('https://motivus-webpage.s3.amazonaws.com/main.js', () => null)
+function isCssReady(callback) {
+  var testElem = document.createElement('span')
+  testElem.id = 'motivus-css-ready'
+  testElem.style = 'color: #fff'
+  var entry = document.getElementsByTagName('script')[0]
+  entry.parentNode.insertBefore(testElem, entry)
+  ;(function poll() {
+    var node = document.getElementById('motivus-css-ready')
+    var value
+    if (window.getComputedStyle) {
+      value = document.defaultView
+        .getComputedStyle(testElem, null)
+        .getPropertyValue('color')
+    } else if (node.currentStyle) {
+      value = node.currentStyle.color
+    }
+    if (
+      (value && value === 'rgb(186, 218, 85)') ||
+      value.toLowerCase() === '#bada55'
+    ) {
+      callback()
+    } else {
+      setTimeout(poll, 500)
+    }
+  })()
+}
+
+loadStylesheet('https://motivus-webpage.s3.amazonaws.com/main.css')
+isCssReady(() => {
+  loadScript('https://motivus-webpage.s3.amazonaws.com/main.js', () => null)
+})

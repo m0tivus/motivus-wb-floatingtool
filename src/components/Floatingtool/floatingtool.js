@@ -92,7 +92,12 @@ export default function SimpleSlide() {
           className={classes.coloredButton}
           onClick={handleChange}
         >
-          <img src={logo} width='50' height='50' />
+          <img
+            src='https://motivus-webpage.s3.amazonaws.com/static/media/logo.ff9ddeaa.svg'
+            alt='logo'
+            width='50'
+            height='50'
+          />
         </Fab>
         <Box className={classes.body}>
           <Slide direction='left' in={checked} mountOnEnter unmountOnExit>
