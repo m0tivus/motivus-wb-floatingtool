@@ -1,13 +1,8 @@
 import React from 'react'
-import logo from './logo.svg'
 import './App.css'
 import Floatingtool from './components/Floatingtool'
-import TabLinks from './components/TabLinks'
 
-import Button from '@material-ui/core/Button'
-import Tooltip from '@material-ui/core/Tooltip'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
-import CssBaseline from '@material-ui/core/CssBaseline'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
@@ -42,6 +37,7 @@ console.log('client_id', Motivus.client_id)
 const theme2 = createMuiTheme({
   typography: {
     fontFamily: 'Asap',
+    color: 'white !important',
 
     h2: {
       fontWeight: 'bold',
@@ -73,7 +69,7 @@ const theme2 = createMuiTheme({
     },
 
     text: {
-      primary: '#fff',
+      primary: '#fff !important',
     },
   },
   overrides: {
