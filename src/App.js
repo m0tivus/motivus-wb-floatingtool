@@ -11,7 +11,6 @@ import logger from 'redux-logger'
 import reducers from 'reducers'
 import sagas from 'sagas'
 
-import 'typeface-asap'
 import {
   StylesProvider,
   createGenerateClassName,
