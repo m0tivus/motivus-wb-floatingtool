@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
       right: '5px',
     },
     right: '5px',
+    zIndex: 2,
   },
   widgetContainer: {
     zIndex: -1,
@@ -82,7 +83,7 @@ export default function SimpleSlide() {
     <div className={classes.wrapper}>
       <Fab aria-label='add' className={classes.toggler} onClick={toggleOpen}>
         <img
-          src='https://motivus-webpage.s3.amazonaws.com/static/media/logo.ff9ddeaa.svg'
+          src='https://widget.motivus.cl/logo.svg'
           alt='logo'
           width='50'
           height='50'

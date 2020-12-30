@@ -16,23 +16,21 @@ const tutorialSteps = [
     title: 'RNA folding',
     label:
       'The following implementation of the SPQR code runs a Monte Carlo simulation of a single strand of RNA at constant temperature.',
-    imgPath: 'http://www.motivus.cl/spqrgif.gif',
+    imgPath: 'https://widget.motivus.cl/spqrgif.gif',
   },
   {
     projectType: 'Decentralized applications',
     title: 'Cryptocurrencies mining',
     label:
       'Kazakhstan is in talks to attract investments worth 300 billion tenge ($714 million) into the cryptocurrency sector.',
-    imgPath:
-      'https://ethereumprice.org/wp-content/uploads/2018/01/ethereum-calculator.jpeg',
+    imgPath: 'https://widget.motivus.cl/ethereum-calculator.jpg',
   },
   {
     projectType: 'Scientific, astrophysics',
     title: 'Cosmological simulation',
     label:
       'Galaxy simulations are at last matching reality—and producing surprising insights into cosmic evolution.',
-    imgPath:
-      'https://www.sciencemag.org/sites/default/files/styles/article_main_image_-_1280w__no_aspect_/public/cs_80601N_CosmicWeb_1280x720.jpg?itok=oa3zpYIh',
+    imgPath: 'https://widget.motivus.cl/cosmological-simulation.jpg',
   },
 ]
 

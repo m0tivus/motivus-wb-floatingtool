@@ -26,12 +26,10 @@ export default function DiscreteSlider() {
       </Typography>
 
       <Typography align='center'>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dapibus
-        lobortis interdum. Sed commodo faucibus orci a blandit. Sed interdum
-        sapien ante, et porttitor purus blandit non. Phasellus vel rutrum
-        turpis. Donec pellentesque quam nec purus hendrerit lobortis. Etiam
-        eleifend orci nec eros eleifend, ac laoreet leo maximus. Nam et tellus
-        risus.
+        Instead of using a supercomputer or an expensive cloud service, Motivus
+        empowers regular computer users to share their computing resources to
+        create a powerful and collaborative high computing network. Our network
+        is able to tackle the most demanding data science problems.
       </Typography>
     </div>
   )
