@@ -24,7 +24,7 @@ function loadStylesheet(url) {
   entry.parentNode.insertBefore(link, entry)
 }
 
-function isCssReady(callback) {
+function onCssReady(callback) {
   var testElem = document.createElement('span')
   testElem.id = 'motivus-css-ready'
   testElem.style = 'color: #fff'
@@ -51,7 +51,10 @@ function isCssReady(callback) {
   })()
 }
 
-loadStylesheet('https://motivus-webpage.s3.amazonaws.com/main.css')
-isCssReady(() => {
-  loadScript('https://motivus-webpage.s3.amazonaws.com/main.js', () => null)
-})
+// eslint-disable-next-line no-extra-semi
+;(function (_window, _undefined) {
+  loadStylesheet('https://widget.motivus.cl/css/main.css')
+  onCssReady(() => {
+    loadScript('https://widget.motivus.cl/js/main.js', () => null)
+  })
+})(this)

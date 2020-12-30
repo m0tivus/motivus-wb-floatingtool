@@ -1,10 +1,17 @@
 module.exports = {
   webpack: {
-    configure: {
+    configure: ({ entry, output, optimization, ...config }) => ({
+      ...config,
+      entry: {
+        loader: './src/widgetLoader.js',
+        main: entry[0],
+      },
       output: {
+        ...output,
         filename: 'static/js/[name].js',
       },
       optimization: {
+        ...optimization,
         runtimeChunk: false,
         splitChunks: {
           chunks(chunk) {
@@ -12,7 +19,7 @@ module.exports = {
           },
         },
       },
-    },
+    }),
   },
   plugins: [
     {

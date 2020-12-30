@@ -10,7 +10,7 @@
 ## Add to site
 - Append the following script to the `<head>` section of the webpage:
 ```javascript
-<script src="https://motivus-webpage.s3.amazonaws.com/widgetLoader.js" async></script>
+<script src="https://widget.motivus.cl/loader.js" async></script>
 <script>
   var Motivus = window.Motivus || {};
   Motivus.client_id = '1234';
