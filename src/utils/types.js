@@ -1,0 +1,9 @@
+export const WORKER_PROCESS_INPUT = 'WORKER_PROCESS_INPUT'
+export const WORKER_PROCESS_STOP = 'WORKER_PROCESS_STOP'
+export const WORKER_READY = 'WORKER_READY'
+export const SET_FINAL = 'SET_FINAL'
+export const SET_CHECKPOINT = 'SET_CHECKPOINT'
+
+
+export const REAL = 'REAL'
+export const EXAMPLE = 'EXAMPLE'
