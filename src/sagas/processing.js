@@ -1,4 +1,12 @@
-import { takeLatest, select, take, cancel, put, call } from 'redux-saga/effects'
+import {
+  takeLatest,
+  select,
+  take,
+  cancel,
+  put,
+  call,
+  takeEvery,
+} from 'redux-saga/effects'
 import {
   END_PROCESSING,
   SOCKET_READY,
@@ -10,7 +18,10 @@ import {
 import * as selectors from 'sagas/selectors'
 import * as api from 'utils/api'
 
+var Motivus = window.Motivus || {}
+
 export function* main() {
+  yield takeEvery(START_PROCESSING, logStartProcessingEvent)
   yield call(getProcessingPreferences)
   yield takeLatest(SOCKET_CLOSED, handleLostSocketConnection)
   yield takeLatest(SET_INPUT, handleNewInput)
@@ -79,7 +90,7 @@ function* getProcessingPreferences() {
   const { data: preferences } = yield call(api.getProcessingPreferences)
   yield put({ type: SET_PROCESSING_PREFERENCES, preferences })
   if (preferences.processing_allowed) {
-    yield put({ type: START_PROCESSING })
+    yield put({ type: START_PROCESSING, noInteraction: true })
   }
 }
 
@@ -100,6 +111,17 @@ export function* ensureIsProcessing() {
   const isProcessing = yield select(selectors.isProcessing)
   if (!isProcessing) {
     yield take(START_PROCESSING)
+  }
+}
+
+function logStartProcessingEvent({ noInteraction = false }) {
+  if (Motivus.gaTrackEvent) {
+    Motivus.gaTrackEvent({
+      category: 'Processing',
+      action: 'Start',
+      label: 'Processing approved',
+      noInteraction,
+    })
   }
 }
 
