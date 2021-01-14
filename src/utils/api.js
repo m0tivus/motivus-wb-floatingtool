@@ -104,3 +104,8 @@ export const getNodeDashboard = () =>
   axios.get(`${httpBase}/api/metabase/embed/node`)
 export const getClientDashboard = () =>
   axios.get(`${httpBase}/api/metabase/embed/client`)
+
+export const getProcessingPreferences = () =>
+  axios.get(`${httpBase}/api/user/processing_preferences`, {
+    withCredentials: true,
+  })

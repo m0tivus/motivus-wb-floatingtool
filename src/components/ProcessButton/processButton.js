@@ -1,7 +1,9 @@
-import React from 'react';
-import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import { green, purple } from '@material-ui/core/colors';
+import React from 'react'
+import { withStyles, makeStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import { purple } from '@material-ui/core/colors'
+import { startProcessing, stopProcessing } from 'actions'
+import { connect } from 'react-redux'
 
 const ColorButton = withStyles((theme) => ({
   root: {
@@ -11,7 +13,7 @@ const ColorButton = withStyles((theme) => ({
       backgroundColor: purple[700],
     },
   },
-}))(Button);
+}))(Button)
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -20,16 +22,35 @@ const useStyles = makeStyles((theme) => ({
     fontStyle: 'italic',
     textTransform: 'none',
   },
-}));
+}))
 
-export default function ProcessButton() {
-  const classes = useStyles();
+function ProcessButton({ isProcessing, ...props }) {
+  const classes = useStyles()
 
   return (
     <div>
-      <ColorButton size="large"  variant="contained" color="primary" className={classes.margin}>
-        Approve
+      <ColorButton
+        size='large'
+        variant='contained'
+        color='primary'
+        className={classes.margin}
+        onClick={() => {
+          if (!isProcessing) {
+            props.startProcessing()
+          } else {
+            props.stopProcessing()
+          }
+        }}
+      >
+        {isProcessing ? 'Processing...' : 'Allow processing'}
       </ColorButton>
     </div>
-  );
+  )
 }
+export default connect(
+  ({ processing: { isProcessing } }) => ({ isProcessing }),
+  {
+    startProcessing,
+    stopProcessing,
+  },
+)(ProcessButton)

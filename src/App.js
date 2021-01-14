@@ -30,8 +30,8 @@ const store = createStore(reducers, applyMiddleware(...middlewares))
 
 sagaMiddleware.run(sagas)
 
-var Motivus = window.Motivus || {}
-console.log('client_id', Motivus.client_id)
+// var Motivus = window.Motivus || {}
+// console.log('client_id', Motivus.client_id)
 
 const theme2 = createMuiTheme({
   typography: {

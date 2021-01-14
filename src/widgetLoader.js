@@ -52,7 +52,7 @@ function onCssReady(callback) {
 }
 
 // eslint-disable-next-line no-extra-semi
-;(function (_window, _undefined) {
+;(function (window, undefined) {
   loadStylesheet('https://widget.motivus.cl/css/main.css')
   onCssReady(() => {
     loadScript('https://widget.motivus.cl/js/main.js', () => null)
