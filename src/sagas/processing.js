@@ -1,51 +1,30 @@
 import {
   takeLatest,
-  spawn,
   select,
   take,
   cancel,
   put,
   call,
+  takeEvery,
 } from 'redux-saga/effects'
 import {
-  INIT_PROCESSING,
-  INIT_PROCESSING_BY_ID,
   END_PROCESSING,
   SOCKET_READY,
   SOCKET_CLOSED,
-  SET_CURRENT_PROCESSING,
-  SET_USE_CASES,
   START_PROCESSING,
   SET_INPUT,
-  SET_RESULTS,
+  SET_PROCESSING_PREFERENCES,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
-import { DEFAULT_PROCESSING_ID } from 'utils/constants'
-import { ensureSocketReady } from 'sagas/socket'
+import * as api from 'utils/api'
+
+var Motivus = window.Motivus || {}
 
 export function* main() {
-  yield takeLatest(INIT_PROCESSING, handleSaga)
-  yield takeLatest(INIT_PROCESSING_BY_ID, initSagaById)
+  yield takeEvery(START_PROCESSING, logStartProcessingEvent)
+  yield call(getProcessingPreferences)
   yield takeLatest(SOCKET_CLOSED, handleLostSocketConnection)
   yield takeLatest(SET_INPUT, handleNewInput)
-  // yield call(startDefault)
-}
-
-function* returnResult(x, ref) {
-  yield put({
-    type: SET_RESULTS,
-    results: x,
-    ref: {
-      ref: ref,
-      topic: 'new_msg',
-    },
-  })
-}
-
-const appendScript = (scriptToAppend) => {
-  const script = document.createElement('script')
-  script.text = scriptToAppend
-  document.body.appendChild(script)
 }
 
 function* handleNewInput({ payload: msg, client, userRoom }) {
@@ -79,13 +58,6 @@ function* handleNewInput({ payload: msg, client, userRoom }) {
             )
           }
           worker.postMessage(msg.body.params)
-
-          // let buffWasm = Buffer.from(msg.body.wasm, 'base64')
-          // appendScript(loader)
-          // eval(loader)
-          //response = main(buffWasm, msg.body.params);
-          // const loader = require(`data:text/javascript;charset=utf-8;base64,${msg.body.loader}`)
-          // window.handleNewInput((y) => returnResult(y, msg.ref))
           break
         }
         //case 'js': {
@@ -114,45 +86,12 @@ function* handleNewInput({ payload: msg, client, userRoom }) {
   yield
 }
 
-function* handleSaga({ saga, id, force = false }) {
-  yield call(ensureSocketReady)
-
-  const currentProcessingId = yield select(selectors.currentProcessing)
-  const isAnotherSaga = currentProcessingId !== id
-  if ((saga && isAnotherSaga) || force) {
-    yield put({ type: END_PROCESSING })
-    yield call(endCurrentTask)
-
-    const task = yield spawn(saga)
-    yield put({
-      type: SET_CURRENT_PROCESSING,
-      task,
-      saga,
-      id,
-    })
+function* getProcessingPreferences() {
+  const { data: preferences } = yield call(api.getProcessingPreferences)
+  yield put({ type: SET_PROCESSING_PREFERENCES, preferences })
+  if (preferences.processing_allowed) {
+    yield put({ type: START_PROCESSING, noInteraction: true })
   }
-}
-
-function* initSagaById({ id }) {
-  const currentProcessingId = yield select(selectors.currentProcessing)
-  if (currentProcessingId !== id) {
-    const { byId } = yield select(selectors.useCases)
-    if (typeof byId[id] === 'undefined') {
-      yield take(SET_USE_CASES)
-      yield call(initSagaById, { id })
-    } else {
-      const { saga } = byId[id]
-      yield put({ type: INIT_PROCESSING, saga, id })
-    }
-  }
-}
-function* restartSaga(id) {
-  const { byId } = yield select(selectors.useCases)
-  if (typeof byId[id] === 'undefined') {
-    yield take(SET_USE_CASES)
-  }
-  const { saga } = byId[id]
-  yield put({ type: INIT_PROCESSING, saga, id, force: true })
 }
 
 function* endCurrentTask() {
@@ -166,19 +105,23 @@ function* handleLostSocketConnection() {
   yield put({ type: END_PROCESSING })
   yield call(endCurrentTask)
   yield take(SOCKET_READY)
-
-  // const id = yield select(selectors.currentProcessing)
-  // yield call(restartSaga, id)
-}
-
-function* startDefault() {
-  yield call(initSagaById, { id: DEFAULT_PROCESSING_ID })
 }
 
 export function* ensureIsProcessing() {
   const isProcessing = yield select(selectors.isProcessing)
   if (!isProcessing) {
     yield take(START_PROCESSING)
+  }
+}
+
+function logStartProcessingEvent({ noInteraction = false }) {
+  if (Motivus.gaTrackEvent) {
+    Motivus.gaTrackEvent({
+      category: 'Processing',
+      action: 'Start',
+      label: 'Processing approved',
+      noInteraction,
+    })
   }
 }
 
