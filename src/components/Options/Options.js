@@ -1,12 +1,11 @@
 import React from 'react'
-import { makeStyles, createStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/core/Slider'
 import { Box } from '@material-ui/core'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
-import { CenterFocusStrong } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   root: {
