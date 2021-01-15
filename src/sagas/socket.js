@@ -102,7 +102,7 @@ function* handleSocketClosed(socketTask) {
 
 function* heartbeatSaga(client) {
   while (true) {
-    yield delay(1000)
+    yield delay(5000)
     yield call(socketHeartbeat, client)
   }
 }
