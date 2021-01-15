@@ -11,6 +11,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 import TabLinks from '../TabLinks/tablinks'
 
+var Motivus = window.Motivus || {}
+
 const useStyles = makeStyles((theme) => ({
   wrapper: {
     position: 'fixed',
@@ -78,6 +80,17 @@ export default function SimpleSlide() {
   React.useEffect(() => {
     window.Motivus = { ...window.Motivus, openFloatingTool: toggleOpen }
   }, [toggleOpen])
+
+  React.useEffect(() => {
+    if (Motivus.gaTrackEvent) {
+      open &&
+        Motivus.gaTrackEvent({
+          category: 'Click',
+          action: 'Open widget',
+          label: 'Widget opens',
+        })
+    }
+  }, [open])
 
   return (
     <div className={classes.wrapper}>
