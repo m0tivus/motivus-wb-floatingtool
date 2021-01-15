@@ -8,7 +8,9 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import SwipeableViews from 'react-swipeable-views'
 import ProcessButton from '../ProcessButton'
+import Animation from '../Aniamtion'
 import { Box, Grid } from '@material-ui/core'
+import { FormatItalic } from '@material-ui/icons'
 
 const tutorialSteps = [
   {
@@ -58,6 +60,21 @@ const useStyles = makeStyles((theme) => ({
 
   typeLabel: {
     paddingBottom: '20px',
+    fontSize: '1.2rem',
+  },
+  title: {
+    fontFamily: 'Asap',
+    fontWeight: 'Bold',
+    fontStyle: 'Italic',
+    color: theme.palette.secondary.light,
+  },
+  revolution: {
+    color: theme.palette.secondary.light,
+  },
+  revolutionText: {
+    fontFamily: 'Asap',
+    fontWeight: '200',
+    fontStyle: 'normal',
   },
 }))
 
@@ -82,7 +99,8 @@ function ProjectsCarousel() {
   return (
     <div className={classes.root}>
       <Typography className={classes.typeLabel} align='center'>
-        Project Type: {tutorialSteps[activeStep].projectType}
+        Project name:{' '}
+        <span className={classes.title}>{tutorialSteps[activeStep].title}</span>
       </Typography>
       <Paper elevation={3}>
         <SwipeableViews
@@ -119,8 +137,8 @@ function ProjectsCarousel() {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowLeft />
               ) : (
-                <KeyboardArrowRight />
-              )}
+                  <KeyboardArrowRight />
+                )}
             </Button>
           }
           backButton={
@@ -132,8 +150,8 @@ function ProjectsCarousel() {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowRight />
               ) : (
-                <KeyboardArrowLeft />
-              )}
+                  <KeyboardArrowLeft />
+                )}
               Back
             </Button>
           }
@@ -144,15 +162,32 @@ function ProjectsCarousel() {
           <Paper square elevation={0} className={classes.header}>
             <Box py={1}>
               <Typography variant='h2' align='center'>
-                {tutorialSteps[activeStep].title}
+                Join the <span className={classes.revolution}>revolution</span>{' '}
+                in distributed computing!{' '}
+                <span className={classes.revolutionText}>
+                  Help scientific to reach they goals and get extra earning in
+                  the process.
+                </span>
               </Typography>
             </Box>
-            <Typography>{tutorialSteps[activeStep].label}</Typography>
+            <Typography></Typography>
           </Paper>
         </Grid>
         <Grid item>
-          <Box py={1} justifyContent='center' display='flex'>
-            <ProcessButton />
+          <Box
+            my={1}
+            justifyContent='center'
+            display='flex'
+            flexDirection='row'
+            alignItems='center'
+          >
+            <Box display='flex' justifyContent='flex-end' flex='2'>
+              <ProcessButton />
+            </Box>
+
+            <Box display='flex' flex='1' width='100px' height='120px'>
+              <Animation />
+            </Box>
           </Box>
         </Grid>
       </Grid>

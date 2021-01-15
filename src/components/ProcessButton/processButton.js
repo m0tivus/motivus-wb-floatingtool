@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import { purple } from '@material-ui/core/colors'
 import { startProcessing, stopProcessing } from 'actions'
 import { connect } from 'react-redux'
+import { Box, Typography } from '@material-ui/core'
 
 const ColorButton = withStyles((theme) => ({
   root: {
@@ -17,10 +18,18 @@ const ColorButton = withStyles((theme) => ({
 
 const useStyles = makeStyles((theme) => ({
   margin: {
-    margin: theme.spacing(1),
+    marginBottom: '8px',
     fontWeight: 'bold',
     fontStyle: 'italic',
     textTransform: 'none',
+    fontSize: '1rem',
+    zIndex: '20000',
+  },
+
+  text: {
+    fontWeight: 'regular',
+    textTransform: 'none',
+    fontSize: '0.8rem',
   },
 }))
 
@@ -28,7 +37,7 @@ function ProcessButton({ isProcessing, ...props }) {
   const classes = useStyles()
 
   return (
-    <div>
+    <Box display='flex' alignItems='flex-end' flexDirection='column'>
       <ColorButton
         size='large'
         variant='contained'
@@ -42,9 +51,15 @@ function ProcessButton({ isProcessing, ...props }) {
           }
         }}
       >
-        {isProcessing ? 'Processing...' : 'Allow processing'}
+        {isProcessing ? 'Stop processing' : 'Allow processing !'}
       </ColorButton>
-    </div>
+
+      <Typography className={classes.text}>
+        {isProcessing
+          ? "Keep the blender running, don't close this website"
+          : 'Ready to begin?'}
+      </Typography>
+    </Box>
   )
 }
 export default connect(

@@ -90,7 +90,7 @@ export default function FullWidthTabs() {
           className={classes.tabsColor}
         >
           <Tab
-            label='Projects'
+            label='Process'
             classes={{
               selected: classes.selected,
             }}

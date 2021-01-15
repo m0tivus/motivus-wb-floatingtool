@@ -41,7 +41,7 @@ const theme2 = createMuiTheme({
     h2: {
       fontWeight: 'bold',
       fontStyle: 'italic',
-      fontSize: '1.5rem',
+      fontSize: '1.3rem',
       lineHeight: 1.334,
       letterSpacing: '0em',
     },
