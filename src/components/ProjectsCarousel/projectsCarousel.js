@@ -11,6 +11,9 @@ import ProcessButton from '../ProcessButton'
 import Animation from '../Aniamtion'
 import { Box, Grid } from '@material-ui/core'
 import { FormatItalic } from '@material-ui/icons'
+import { autoPlay } from 'react-swipeable-views-utils'
+
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
 const tutorialSteps = [
   {
@@ -19,6 +22,7 @@ const tutorialSteps = [
     label:
       'The following implementation of the SPQR code runs a Monte Carlo simulation of a single strand of RNA at constant temperature.',
     imgPath: 'https://widget.motivus.cl/spqrgif.gif',
+    state: 'Ready to process',
   },
   {
     projectType: 'Decentralized applications',
@@ -26,6 +30,7 @@ const tutorialSteps = [
     label:
       'Kazakhstan is in talks to attract investments worth 300 billion tenge ($714 million) into the cryptocurrency sector.',
     imgPath: 'https://widget.motivus.cl/ethereum-calculator.jpg',
+    state: 'soon',
   },
   {
     projectType: 'Scientific, astrophysics',
@@ -33,6 +38,7 @@ const tutorialSteps = [
     label:
       'Galaxy simulations are at last matching reality—and producing surprising insights into cosmic evolution.',
     imgPath: 'https://widget.motivus.cl/cosmological-simulation.jpg',
+    state: 'soon',
   },
 ]
 
@@ -96,14 +102,19 @@ function ProjectsCarousel() {
     setActiveStep(step)
   }
 
+  const [autoPlay, setAutoPlay] = React.useState(true)
+
   return (
     <div className={classes.root}>
-      <Typography className={classes.typeLabel} align='center'>
-        Project name:{' '}
-        <span className={classes.title}>{tutorialSteps[activeStep].title}</span>
+      <Typography variant='h2' align='center' gutterBottom>
+        <span className={classes.title}>With your help</span>, we will implement
+        this technology in many science-related projects.
       </Typography>
       <Paper elevation={3}>
-        <SwipeableViews
+        <AutoPlaySwipeableViews
+          autoplay={autoPlay}
+          onMouseEnter={() => setAutoPlay(false)}
+          onMouseLeave={() => setAutoPlay(true)}
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
           index={activeStep}
           onChangeIndex={handleStepChange}
@@ -120,7 +131,7 @@ function ProjectsCarousel() {
               ) : null}
             </div>
           ))}
-        </SwipeableViews>
+        </AutoPlaySwipeableViews>
 
         <MobileStepper
           steps={maxSteps}
@@ -161,34 +172,27 @@ function ProjectsCarousel() {
         <Grid item>
           <Paper square elevation={0} className={classes.header}>
             <Box py={1}>
-              <Typography variant='h2' align='center'>
-                Join the <span className={classes.revolution}>revolution</span>{' '}
-                in distributed computing!{' '}
-                <span className={classes.revolutionText}>
-                  Help scientific to reach they goals and get extra earning in
-                  the process.
+              <Typography align='center' variant='h1'>
+                {tutorialSteps[activeStep].title}
+              </Typography>
+              <Typography variant='h3' align='center'>
+                Proyect Tipe:{' '}
+                <span className={classes.title}>
+                  {tutorialSteps[activeStep].projectType}
                 </span>
+              </Typography>
+              <Typography variant='body1' align='center' gutterBottom>
+                {tutorialSteps[activeStep].label}
+              </Typography>
+              <Typography variant='body2' align='right'>
+                Proyect state:
+              </Typography>
+              <Typography variant='h6' align='right' color='Primary'>
+                {tutorialSteps[activeStep].state}
               </Typography>
             </Box>
             <Typography></Typography>
           </Paper>
-        </Grid>
-        <Grid item>
-          <Box
-            my={1}
-            justifyContent='center'
-            display='flex'
-            flexDirection='row'
-            alignItems='center'
-          >
-            <Box display='flex' justifyContent='flex-end' flex='2'>
-              <ProcessButton />
-            </Box>
-
-            <Box display='flex' flex='1' width='100px' height='120px'>
-              <Animation />
-            </Box>
-          </Box>
         </Grid>
       </Grid>
     </div>
