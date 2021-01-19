@@ -105,7 +105,7 @@ export default function FullWidthTabs() {
             {...a11yProps(1)}
           />
           <Tab
-            label='Proyects'
+            label='Projects'
             classes={{
               selected: classes.selected,
             }}
