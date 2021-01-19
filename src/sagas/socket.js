@@ -26,6 +26,7 @@ import {
   SET_SOCKET_MESSAGE,
   SOCKET_CLOSED,
   STOP_PROCESSING,
+  SET_STATS,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import { ensureIsProcessing } from './processing'
@@ -77,6 +78,10 @@ export function* socketSaga() {
           }
           case 'new_msg': {
             yield put({ type: SET_INPUT, payload, client, userRoom })
+            break
+          }
+          case 'new_msg_stats': {
+            yield put({ type: SET_STATS, payload, client, userRoom })
             break
           }
           default:

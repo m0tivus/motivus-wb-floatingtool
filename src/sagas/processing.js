@@ -52,6 +52,7 @@ function* handleNewInput({ payload: msg, client, userRoom }) {
                   type: 'response',
                   ref: msg.ref,
                   client_id: msg.client_id,
+                  task_id: msg.task_id,
                 },
                 ref: msg.ref,
               }),

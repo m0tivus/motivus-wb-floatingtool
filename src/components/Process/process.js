@@ -12,6 +12,7 @@ import Animation from '../Aniamtion'
 import { Box, Grid } from '@material-ui/core'
 import { FormatItalic } from '@material-ui/icons'
 import GuestAvatar from '../../asset/GuestAvatar.svg'
+import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,6 +64,9 @@ const useStyles = makeStyles((theme) => ({
 function ProjectsCarousel() {
   const classes = useStyles()
   const theme = useTheme()
+  const { ranking, quantity, base_time, elapsed_time, flops } = useSelector(
+    (state) => state.stats,
+  )
 
   return (
     <div className={classes.root}>
@@ -99,19 +103,19 @@ function ProjectsCarousel() {
               <Typography variant='body2'>user:</Typography>
               <Typography variant='h3'>Guest</Typography>
               <Typography variant='body2'>ranking:</Typography>
-              <Typography variant='h3'>...</Typography>
+              <Typography variant='h3'>{ranking}</Typography>
               <Typography variant='body2'>Total task</Typography>
-              <Typography variant='h3'>...</Typography>
+              <Typography variant='h3'>{quantity}</Typography>
             </Box>
           </Grid>
           <Grid item xs={4}>
             <Box display='flex' flexDirection='column'>
               <Typography variant='body2'>Total floats:</Typography>
-              <Typography variant='h3'>300 mgs</Typography>
-              <Typography variant='body2'>Time porceses per day:</Typography>
-              <Typography variant='h3'>...</Typography>
-              <Typography variant='body2'>Data process per hour</Typography>
-              <Typography variant='h3'>...</Typography>
+              <Typography variant='h3'>{flops}</Typography>
+              <Typography variant='body2'>Relative time:</Typography>
+              <Typography variant='h3'>{base_time} s</Typography>
+              <Typography variant='body2'>Elapsed Time:</Typography>
+              <Typography variant='h3'>{elapsed_time} s</Typography>
             </Box>
           </Grid>
         </Grid>
