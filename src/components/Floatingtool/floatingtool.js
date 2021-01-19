@@ -8,6 +8,8 @@ import CardContent from '@material-ui/core/CardContent'
 import Fab from '@material-ui/core/Fab'
 import { Box, Link, Typography } from '@material-ui/core'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import style from './floatingTool.module.css'
+import { useSelector } from 'react-redux'
 
 import TabLinks from '../TabLinks/tablinks'
 
@@ -68,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function SimpleSlide() {
+  const isProcessing = useSelector((state) => state.processing.isProcessing)
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
 
@@ -87,6 +90,7 @@ export default function SimpleSlide() {
           alt='logo'
           width='50'
           height='50'
+          className={isProcessing && !open ? style.floatingTool : null}
         />
       </Fab>
       <Slide direction='left' in={open} mountOnEnter unmountOnExit>

@@ -133,12 +133,19 @@ function ProjectsCarousel() {
         flexDirection='row'
         alignItems='center'
       >
-        <Box display='flex' justifyContent='flex-end' flex='2'>
-          <ProcessButton />
-        </Box>
+        <Box
+          display='flex'
+          justifyContent='flex-end'
+          alignItems='flex-start'
+          width='95%'
+        >
+          <Box display='flex' justifyContent='flex-end' mt={2}>
+            <ProcessButton />
+          </Box>
 
-        <Box display='flex' flex='1' width='100px' height='120px'>
-          <Animation />
+          <Box display='flex' width='100px' height='120px'>
+            <Animation />
+          </Box>
         </Box>
       </Box>
     </div>
