@@ -10,6 +10,8 @@ import { Box, Link, Typography } from '@material-ui/core'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import style from './floatingTool.module.css'
 import { useSelector } from 'react-redux'
+import Footer from '../Footer/Footer'
+import Login from '../LogIn/Login'
 
 import TabLinks from '../TabLinks/tablinks'
 
@@ -64,6 +66,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+    position: 'sticky',
+    bottom: '0px',
   },
   divider: {
     backgroundColor: 'white',
@@ -75,6 +79,9 @@ export default function SimpleSlide() {
   const isProcessing = useSelector((state) => state.processing.isProcessing)
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
+  const [isLoggedIn, setIsLoggedIn] = React.useState(true)
+
+  const logOut = () => setIsLoggedIn(false)
 
   const toggleOpen = React.useCallback(() => {
     setOpen((prev) => !prev)
@@ -114,23 +121,7 @@ export default function SimpleSlide() {
             </CardContent>
 
             <CardActions className={classes.bottomAction}>
-              <Button
-                variant='contained'
-                color='secondary'
-                className={classes.button}
-                startIcon={<AccountCircleIcon />}
-                size='small'
-              >
-                Login
-              </Button>
-              <Typography>Powered by</Typography>
-              <Link
-                href='http://motivus.cl/'
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                <Typography>Motivus</Typography>
-              </Link>
+              {isLoggedIn ? <Footer logOut={logOut} /> : <Login />}
             </CardActions>
           </Card>
         </Box>
