@@ -21,19 +21,23 @@ const useStyles = makeStyles((theme) => ({
 const marks = [
   {
     value: 25,
-    label: '25%',
+    label: '1 core',
+    disabled: false,
   },
   {
     value: 50,
-    label: '50%',
+    label: '2 cores',
+    disabled: true,
   },
   {
     value: 75,
-    label: '75%',
+    label: '3 cores',
+    disabled: true,
   },
   {
     value: 100,
-    label: '100%',
+    label: '4 cores',
+    disabled: true,
   },
 ]
 
@@ -69,31 +73,22 @@ export default function DiscreteSlider() {
       </Typography>
       <Box pt={2}>
         <Typography align='left' id='discrete-slider-restrict' gutterBottom>
-          CPU usage:
+          CPU Usage:
         </Typography>
         <Slider
-          defaultValue={50}
+          defaultValue={25}
           valueLabelFormat={valueLabelFormat}
           getAriaValueText={valuetext}
           aria-labelledby='discrete-slider-restrict'
           step={null}
           valueLabelDisplay='off'
           marks={marks}
+          disabled
         />
       </Box>
       <Box pt={2}>
         <FormGroup row>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={state.checkedB}
-                onChange={handleChange}
-                name='checkedB'
-                color='primary'
-              />
-            }
-            label='Enable GPU'
-          />
+          <FormControlLabel disabled control={<Switch />} label='Enable GPU' />
         </FormGroup>
       </Box>
     </div>

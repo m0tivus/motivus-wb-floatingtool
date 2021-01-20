@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     fontStyle: 'Italic',
     fontFamily: 'Asap',
+    cursor: 'pointer',
   },
   iconHover: {
     '&:hover': {
@@ -33,10 +34,10 @@ export default function Login() {
   const classes = useStyles()
 
   return (
-    <Box display='flex' flexDirection='column'>
+    <Box display='flex' flexDirection='column' my={2}>
       <Box display='flex' mb={1}>
         <Typography align='center' gutterBottom>
-          Log in into your{' '}
+          <span className={classes.bold}>Log in </span> into your{' '}
           <span className={classes.bold}>Motivus account,</span> sign with:
         </Typography>
       </Box>
