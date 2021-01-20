@@ -9,7 +9,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import SwipeableViews from 'react-swipeable-views'
 import ProcessButton from '../ProcessButton'
 import Animation from '../Aniamtion'
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid, Link } from '@material-ui/core'
 import { FormatItalic } from '@material-ui/icons'
 import GuestAvatar from '../../asset/GuestAvatar.svg'
 import { useSelector } from 'react-redux'
@@ -72,12 +72,10 @@ function ProjectsCarousel() {
     <div className={classes.root}>
       <Box display='flex' mt={2}>
         <Typography variant='h2' align='center'>
-          Join the <span className={classes.revolution}>revolution</span> in
-          distributed computing!{' '}
-          <span className={classes.revolutionText}>
-            Help scientific to reach they goals and get extra earning in the
-            process.
-          </span>
+          Welcome to the beta version of the{' '}
+          <span className={classes.revolution}>Motivus Floating Tool.</span>{' '}
+          Here you’ll be able to share your computing power with the world.{' '}
+          <span className={classes.revolutionText}></span>
         </Typography>
       </Box>
       <Box display='flex' my={3}>
@@ -122,8 +120,16 @@ function ProjectsCarousel() {
       </Box>
       <Box display='flex' mt={4}>
         <Typography variant='h1' align='center'>
-          <span className={classes.revolution}>Log in now!</span> and transform
-          your help in porfits:
+          <span className={classes.revolution}>Log in </span> to enter our
+          Benchmark Contest!{' '}
+          <Link
+            href='https://motivus.cl/blog/motivus-benchmark'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            {' '}
+            Read more{' '}
+          </Link>
         </Typography>
       </Box>
       <Box
