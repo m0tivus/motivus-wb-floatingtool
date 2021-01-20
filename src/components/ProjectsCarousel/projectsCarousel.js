@@ -17,6 +17,14 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
 const tutorialSteps = [
   {
+    projectType: 'Mathematical',
+    title: 'Benchmark',
+    label:
+      'Resolve matrix multiplication equations through the Motivus Framework',
+    imgPath: 'benchmark-motivus.jpg',
+    state: 'Ready to process',
+  },
+  {
     projectType: 'Scientific, biology',
     title: 'RNA folding',
     label:
@@ -148,8 +156,8 @@ function ProjectsCarousel() {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowLeft />
               ) : (
-                  <KeyboardArrowRight />
-                )}
+                <KeyboardArrowRight />
+              )}
             </Button>
           }
           backButton={
@@ -161,8 +169,8 @@ function ProjectsCarousel() {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowRight />
               ) : (
-                  <KeyboardArrowLeft />
-                )}
+                <KeyboardArrowLeft />
+              )}
               Back
             </Button>
           }
