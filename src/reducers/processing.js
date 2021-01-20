@@ -5,6 +5,7 @@ import {
   SET_RESULTS,
   SET_INPUT,
   SET_PROCESSING_PREFERENCES,
+  WORKER_FINISHED_EXECUTION,
 } from 'actions/types'
 
 const INITIAL_STATE = {
@@ -50,6 +51,7 @@ export default (state = INITIAL_STATE, action) => {
       }
     }
     case SET_RESULTS:
+    case WORKER_FINISHED_EXECUTION:
       return {
         ...state,
         result: action.results,
