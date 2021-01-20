@@ -5,6 +5,8 @@ import { purple } from '@material-ui/core/colors'
 import { startProcessing, stopProcessing } from 'actions'
 import { connect } from 'react-redux'
 import { Box, Typography } from '@material-ui/core'
+import { differenceInSeconds } from 'date-fns'
+import _ from 'lodash'
 import style from './loader.module.css'
 
 const ColorButton = withStyles((theme) => ({
@@ -41,8 +43,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function ProcessButton({ isProcessing, ...props }) {
+function ProcessButton({ isProcessing, task, ...props }) {
   const classes = useStyles()
+  const { ref, started_on } = task
+  const [timeElapsed, setTimeElapsed] = React.useState(0)
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      const secs = differenceInSeconds(new Date(), started_on)
+      !isNaN(secs) && setTimeElapsed(secs)
+    }, 1000)
+    return () => clearInterval(timer)
+  })
 
   return (
     <Box
@@ -72,11 +84,24 @@ function ProcessButton({ isProcessing, ...props }) {
             <Typography className={classes.text}>
               Keep the blender running, don't close this website
             </Typography>
-            <Box display='flex' flexDirection='row' justifyContent='flex-end'>
+            <Box
+              display='flex'
+              flexDirection='column'
+              justifyContent='flex-end'
+              alignItems='flex-end'
+            >
               <Box display='flex'>
                 <Typography className={classes.text}>
-                  <span className={classes.textTime}>N° s</span> Time
-                  processing: Package name
+                  <span className={classes.textTime}>{timeElapsed} s</span> Time
+                  processing
+                </Typography>
+              </Box>
+              <Box display='flex'>
+                <Typography className={classes.text}>
+                  <span className={classes.textTime}>
+                    {ref ? _(ref).split('-').value()[0] : ''}{' '}
+                  </span>
+                  Package name
                 </Typography>
               </Box>
             </Box>
@@ -89,7 +114,7 @@ function ProcessButton({ isProcessing, ...props }) {
   )
 }
 export default connect(
-  ({ processing: { isProcessing } }) => ({ isProcessing }),
+  ({ processing: { isProcessing, task } }) => ({ isProcessing, task }),
   {
     startProcessing,
     stopProcessing,
