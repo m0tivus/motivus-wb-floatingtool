@@ -64,7 +64,7 @@ function ProcessButton({ isProcessing, ...props }) {
           }
         }}
       >
-        {isProcessing ? 'Stop processing' : 'Allow processing !'}
+        {isProcessing ? 'Stop processing' : 'Start processing'}
       </ColorButton>
       <Box display='flex'>
         {isProcessing ? (
@@ -82,8 +82,8 @@ function ProcessButton({ isProcessing, ...props }) {
             </Box>
           </Box>
         ) : (
-            <Typography className={classes.text}>Ready to begin?</Typography>
-          )}
+          <Typography className={classes.text}>Ready to begin?</Typography>
+        )}
       </Box>
     </Box>
   )

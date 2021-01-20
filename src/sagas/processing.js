@@ -22,7 +22,7 @@ var Motivus = window.Motivus || {}
 
 export function* main() {
   yield takeEvery(START_PROCESSING, logStartProcessingEvent)
-  yield call(getProcessingPreferences)
+  // yield call(getProcessingPreferences)
   yield takeLatest(SOCKET_CLOSED, handleLostSocketConnection)
   yield takeLatest(SET_INPUT, handleNewInput)
 }
