@@ -41,7 +41,30 @@ const theme2 = createMuiTheme({
     h2: {
       fontWeight: 'bold',
       fontStyle: 'italic',
-      fontSize: '1.5rem',
+      fontSize: '1.3rem',
+      lineHeight: 1.334,
+      letterSpacing: '0em',
+    },
+    h3: {
+      fontWeight: '600',
+      fontStyle: 'italic',
+      fontSize: '1.15rem',
+      lineHeight: 1.2,
+      letterSpacing: '0em',
+    },
+
+    h1: {
+      fontWeight: 'bold',
+      fontStyle: 'italic',
+      fontSize: '1.7rem',
+      lineHeight: 1.334,
+      letterSpacing: '0em',
+    },
+
+    h6: {
+      fontWeight: 'bold',
+      fontStyle: 'italic',
+      fontSize: '1rem',
       lineHeight: 1.334,
       letterSpacing: '0em',
     },

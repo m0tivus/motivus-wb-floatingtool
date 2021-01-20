@@ -8,15 +8,29 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import SwipeableViews from 'react-swipeable-views'
 import ProcessButton from '../ProcessButton'
+import Animation from '../Aniamtion'
 import { Box, Grid } from '@material-ui/core'
+import { FormatItalic } from '@material-ui/icons'
+import { autoPlay } from 'react-swipeable-views-utils'
+
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
 const tutorialSteps = [
+  {
+    projectType: 'Mathematical',
+    title: 'Benchmark',
+    label:
+      'Resolve matrix multiplication equations through the Motivus Framework',
+    imgPath: 'benchmark-motivus.jpg',
+    state: 'Ready to process',
+  },
   {
     projectType: 'Scientific, biology',
     title: 'RNA folding',
     label:
       'The following implementation of the SPQR code runs a Monte Carlo simulation of a single strand of RNA at constant temperature.',
     imgPath: 'https://widget.motivus.cl/spqrgif.gif',
+    state: 'Ready to process',
   },
   {
     projectType: 'Decentralized applications',
@@ -24,6 +38,7 @@ const tutorialSteps = [
     label:
       'Kazakhstan is in talks to attract investments worth 300 billion tenge ($714 million) into the cryptocurrency sector.',
     imgPath: 'https://widget.motivus.cl/ethereum-calculator.jpg',
+    state: 'soon',
   },
   {
     projectType: 'Scientific, astrophysics',
@@ -31,6 +46,7 @@ const tutorialSteps = [
     label:
       'Galaxy simulations are at last matching reality—and producing surprising insights into cosmic evolution.',
     imgPath: 'https://widget.motivus.cl/cosmological-simulation.jpg',
+    state: 'soon',
   },
 ]
 
@@ -58,6 +74,21 @@ const useStyles = makeStyles((theme) => ({
 
   typeLabel: {
     paddingBottom: '20px',
+    fontSize: '1.2rem',
+  },
+  title: {
+    fontFamily: 'Asap',
+    fontWeight: 'Bold',
+    fontStyle: 'Italic',
+    color: theme.palette.secondary.light,
+  },
+  revolution: {
+    color: theme.palette.secondary.light,
+  },
+  revolutionText: {
+    fontFamily: 'Asap',
+    fontWeight: '200',
+    fontStyle: 'normal',
   },
 }))
 
@@ -79,13 +110,19 @@ function ProjectsCarousel() {
     setActiveStep(step)
   }
 
+  const [autoPlay, setAutoPlay] = React.useState(true)
+
   return (
     <div className={classes.root}>
-      <Typography className={classes.typeLabel} align='center'>
-        Project Type: {tutorialSteps[activeStep].projectType}
+      <Typography variant='h2' align='center' gutterBottom>
+        <span className={classes.title}>With your help</span>, we will implement
+        this technology in many science-related projects.
       </Typography>
       <Paper elevation={3}>
-        <SwipeableViews
+        <AutoPlaySwipeableViews
+          autoplay={autoPlay}
+          onMouseEnter={() => setAutoPlay(false)}
+          onMouseLeave={() => setAutoPlay(true)}
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
           index={activeStep}
           onChangeIndex={handleStepChange}
@@ -102,7 +139,7 @@ function ProjectsCarousel() {
               ) : null}
             </div>
           ))}
-        </SwipeableViews>
+        </AutoPlaySwipeableViews>
 
         <MobileStepper
           steps={maxSteps}
@@ -143,17 +180,27 @@ function ProjectsCarousel() {
         <Grid item>
           <Paper square elevation={0} className={classes.header}>
             <Box py={1}>
-              <Typography variant='h2' align='center'>
+              <Typography align='center' variant='h1'>
                 {tutorialSteps[activeStep].title}
               </Typography>
+              <Typography variant='h3' align='center'>
+                Proyect Tipe:{' '}
+                <span className={classes.title}>
+                  {tutorialSteps[activeStep].projectType}
+                </span>
+              </Typography>
+              <Typography variant='body1' align='center' gutterBottom>
+                {tutorialSteps[activeStep].label}
+              </Typography>
+              <Typography variant='body2' align='right'>
+                Proyect state:
+              </Typography>
+              <Typography variant='h6' align='right' color='Primary'>
+                {tutorialSteps[activeStep].state}
+              </Typography>
             </Box>
-            <Typography>{tutorialSteps[activeStep].label}</Typography>
+            <Typography></Typography>
           </Paper>
-        </Grid>
-        <Grid item>
-          <Box py={1} justifyContent='center' display='flex'>
-            <ProcessButton />
-          </Box>
         </Grid>
       </Grid>
     </div>

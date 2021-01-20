@@ -9,6 +9,7 @@ import {
   takeLatest,
   delay,
   cancelled,
+  race,
 } from 'redux-saga/effects'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -26,6 +27,7 @@ import {
   SET_SOCKET_MESSAGE,
   SOCKET_CLOSED,
   STOP_PROCESSING,
+  SET_STATS,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import { ensureIsProcessing } from './processing'
@@ -35,9 +37,16 @@ const uuid = uuidv4()
 export function* main() {
   while (true) {
     let socketTask = yield fork(socketSaga)
-    yield takeLatest(SOCKET_CLOSED, handleSocketClosed, socketTask)
-    yield take(STOP_PROCESSING)
+
+    const termination = yield race({
+      stoppedProcessing: take(STOP_PROCESSING),
+      socketClosed: take(SOCKET_CLOSED),
+    })
     yield cancel([socketTask])
+
+    if (termination.socketClosed) {
+      yield delay(4000)
+    }
   }
 }
 
@@ -79,6 +88,10 @@ export function* socketSaga() {
             yield put({ type: SET_INPUT, payload, client, userRoom })
             break
           }
+          case 'new_msg_stats': {
+            yield put({ type: SET_STATS, payload, client, userRoom })
+            break
+          }
           default:
             yield put({ type: SET_SOCKET_MESSAGE, message })
         }
@@ -88,17 +101,16 @@ export function* socketSaga() {
       yield cancel([heartbeatTask])
     }
   } finally {
-    if (!cancelled()) {
+    if (!(yield cancelled())) {
       yield put({ type: SOCKET_CLOSED })
     }
   }
 }
 
-function* handleSocketClosed(socketTask) {
-  yield cancel([socketTask])
-  yield delay(4000)
-  socketTask = yield fork(socketSaga)
-}
+// function* handleSocketClosed(socketTask) {
+//   yield delay(4000)
+//   socketTask = yield fork(socketSaga)
+// }
 
 function* heartbeatSaga(client) {
   while (true) {

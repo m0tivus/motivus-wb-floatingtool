@@ -11,6 +11,7 @@ import Box from '@material-ui/core/Box'
 import ProjectsCarousel from '../ProjectsCarousel'
 import Options from '../Options'
 import About from '../About'
+import Process from '../Process'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -84,7 +85,7 @@ export default function FullWidthTabs() {
           className={classes.tabsColor}
         >
           <Tab
-            label='Projects'
+            label='Process'
             classes={{
               selected: classes.selected,
             }}
@@ -98,7 +99,7 @@ export default function FullWidthTabs() {
             {...a11yProps(1)}
           />
           <Tab
-            label='About'
+            label='Projects'
             classes={{
               selected: classes.selected,
             }}
@@ -113,13 +114,13 @@ export default function FullWidthTabs() {
         className={classes.panels}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <ProjectsCarousel />
+          <Process />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           <Options />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <About />
+          <ProjectsCarousel />
         </TabPanel>
       </SwipeableViews>
     </div>

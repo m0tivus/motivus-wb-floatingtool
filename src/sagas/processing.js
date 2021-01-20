@@ -6,31 +6,33 @@ import {
   put,
   call,
   takeEvery,
+  race,
 } from 'redux-saga/effects'
 import {
-  END_PROCESSING,
   SOCKET_READY,
   SOCKET_CLOSED,
   START_PROCESSING,
   SET_INPUT,
   SET_PROCESSING_PREFERENCES,
+  STOP_PROCESSING,
+  WORKER_FINISHED_EXECUTION,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import * as api from 'utils/api'
+import { setupWorker } from 'utils/common'
 
 var Motivus = window.Motivus || {}
 
 export function* main() {
   yield takeEvery(START_PROCESSING, logStartProcessingEvent)
-  yield call(getProcessingPreferences)
-  yield takeLatest(SOCKET_CLOSED, handleLostSocketConnection)
+  // yield call(getProcessingPreferences)
+  yield takeLatest(SOCKET_CLOSED, endCurrentTask)
   yield takeLatest(SET_INPUT, handleNewInput)
 }
 
 function* handleNewInput({ payload: msg, client, userRoom }) {
   switch (msg.type) {
     case 'work': {
-      console.log('work')
       let buffLoader = Buffer.from(msg.body.loader, 'base64')
       let loader = buffLoader.toString('ascii')
       switch (msg.body.run_type) {
@@ -40,24 +42,43 @@ function* handleNewInput({ payload: msg, client, userRoom }) {
 
           var blob
           blob = new Blob([loader], { type: 'application/javascript' })
-          var worker = new Worker(URL.createObjectURL(blob))
+          var worker = new Worker(URL.createObjectURL(blob), {
+            name: msg.ref,
+          })
 
-          worker.onmessage = function (e) {
-            client.send(
-              JSON.stringify({
-                topic: userRoom,
-                event: 'new_msg',
-                payload: {
-                  body: e.data,
-                  type: 'response',
-                  ref: msg.ref,
-                  client_id: msg.client_id,
-                },
+          const workerMessages = yield call(setupWorker, worker)
+          yield takeLatest(workerMessages, function* (result) {
+            yield put({
+              type: WORKER_FINISHED_EXECUTION,
+              result,
+              ref: msg.ref,
+            })
+
+            yield call(
+              api.sendThroughSocket,
+              client,
+              userRoom,
+              'new_msg',
+              {
+                body: result,
+                type: 'response',
                 ref: msg.ref,
-              }),
+                client_id: msg.client_id,
+                task_id: msg.task_id,
+              },
+              msg.ref,
             )
-          }
+          })
+
           worker.postMessage(msg.body.params)
+
+          yield race([
+            take(STOP_PROCESSING),
+            take(SOCKET_CLOSED),
+            take(WORKER_FINISHED_EXECUTION),
+          ])
+          worker.terminate()
+
           break
         }
         //case 'js': {
@@ -99,12 +120,6 @@ function* endCurrentTask() {
   if (processingTask) {
     yield cancel([processingTask])
   }
-}
-
-function* handleLostSocketConnection() {
-  yield put({ type: END_PROCESSING })
-  yield call(endCurrentTask)
-  yield take(SOCKET_READY)
 }
 
 export function* ensureIsProcessing() {
