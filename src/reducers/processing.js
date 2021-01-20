@@ -12,6 +12,7 @@ const INITIAL_STATE = {
   result: {},
   input: {},
   preferences: {},
+  task: {},
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -20,18 +21,25 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         input: action.payload,
+        task: {
+          ...state.task,
+          ref: action.payload.ref,
+          started_on: new Date(),
+        },
       }
     }
     case START_PROCESSING: {
       return {
         ...state,
         isProcessing: true,
+        task: INITIAL_STATE.task,
       }
     }
     case STOP_PROCESSING: {
       return {
         ...state,
         isProcessing: false,
+        task: INITIAL_STATE.task,
       }
     }
     case END_PROCESSING: {
@@ -45,6 +53,8 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         result: action.results,
+        input: INITIAL_STATE.input,
+        task: INITIAL_STATE.task,
       }
     case SET_PROCESSING_PREFERENCES:
       return {
