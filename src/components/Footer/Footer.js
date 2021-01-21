@@ -24,7 +24,7 @@ export default function Footer({ logOut, ...props }) {
         onClick={logOut}
         size='small'
       >
-        logOut
+        Login
       </Button>
 
       <Typography>Powered by </Typography>

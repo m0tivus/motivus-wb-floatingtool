@@ -19,13 +19,21 @@ import {
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import * as api from 'utils/api'
-import { setupWorker } from 'utils/common'
+import {
+  getProcessingPreferencesFromCookie,
+  setupWorker,
+  updateProcessingPreferenceCookie,
+} from 'utils/common'
 
 var Motivus = window.Motivus || {}
 
 export function* main() {
-  yield takeEvery(START_PROCESSING, logStartProcessingEvent)
-  // yield call(getProcessingPreferences)
+  yield takeEvery([STOP_PROCESSING, START_PROCESSING], logProcessingEvent)
+  yield takeEvery(
+    [STOP_PROCESSING, START_PROCESSING],
+    updateProcessingPreference,
+  )
+  yield call(getProcessingPreferences)
   yield takeLatest(SOCKET_CLOSED, endCurrentTask)
   yield takeLatest(SET_INPUT, handleNewInput)
 }
@@ -110,9 +118,8 @@ function* handleNewInput({ payload: msg, client, userRoom }) {
 }
 
 function* getProcessingPreferences() {
-  const { data: preferences } = yield call(api.getProcessingPreferences)
-  yield put({ type: SET_PROCESSING_PREFERENCES, preferences })
-  if (preferences.processing_allowed) {
+  const startProcessing = yield call(getProcessingPreferencesFromCookie)
+  if (startProcessing) {
     yield put({ type: START_PROCESSING, noInteraction: true })
   }
 }
@@ -131,14 +138,41 @@ export function* ensureIsProcessing() {
   }
 }
 
-function logStartProcessingEvent({ noInteraction = false }) {
+function logProcessingEvent({ type, noInteraction = false }) {
   if (Motivus.gaTrackEvent) {
-    Motivus.gaTrackEvent({
-      category: 'Processing',
-      action: 'Start',
-      label: 'Processing approved',
-      noInteraction,
-    })
+    switch (type) {
+      case START_PROCESSING:
+        Motivus.gaTrackEvent({
+          category: 'Processing',
+          action: 'Start',
+          label: 'Processing approved',
+          noInteraction,
+        })
+        break
+      case STOP_PROCESSING:
+        Motivus.gaTrackEvent({
+          category: 'Processing',
+          action: 'Stop',
+          label: 'Processing stopped',
+          noInteraction,
+        })
+        break
+      default:
+    }
+  }
+}
+
+function* updateProcessingPreference(action) {
+  if (!action.noInteraction) {
+    switch (action.type) {
+      case START_PROCESSING:
+        yield call(updateProcessingPreferenceCookie, true)
+        break
+      case STOP_PROCESSING:
+        yield call(updateProcessingPreferenceCookie, false)
+        break
+      default:
+    }
   }
 }
 

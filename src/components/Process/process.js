@@ -1,17 +1,9 @@
 import React from 'react'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
-import MobileStepper from '@material-ui/core/MobileStepper'
-import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
-import SwipeableViews from 'react-swipeable-views'
 import ProcessButton from '../ProcessButton'
 import Animation from '../Aniamtion'
 import { Box, Grid, Link } from '@material-ui/core'
-import { FormatItalic } from '@material-ui/icons'
-import GuestAvatar from '../../asset/GuestAvatar.svg'
 import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
@@ -63,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
 
 function ProjectsCarousel() {
   const classes = useStyles()
-  const theme = useTheme()
   const { ranking, quantity, base_time, elapsed_time, flops } = useSelector(
     (state) => state.stats,
   )
@@ -89,7 +80,7 @@ function ProjectsCarousel() {
               alignItems='center'
             >
               <img
-                src={GuestAvatar}
+                src='https://widget.motivus.cl/GuestAvatar.svg'
                 width={110}
                 alt='guestAvatar'
                 className={classes.avatar}

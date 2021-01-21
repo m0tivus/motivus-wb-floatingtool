@@ -29,7 +29,8 @@ import {
   SET_STATS,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
-import { ensureIsProcessing } from './processing'
+import { ensureIsProcessing } from 'sagas/processing'
+import { ensureUserLoaded } from 'sagas/user'
 
 export function* main() {
   while (true) {
@@ -49,6 +50,7 @@ export function* main() {
 
 export function* socketSaga() {
   yield call(ensureIsProcessing)
+  yield call(ensureUserLoaded)
 
   try {
     const uuid = yield select(selectors.uuid)
