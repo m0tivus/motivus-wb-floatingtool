@@ -8,58 +8,58 @@ import {
   takeEvery,
   takeLatest,
   delay,
+  cancelled,
+  race,
 } from 'redux-saga/effects'
-import { v4 as uuidv4 } from 'uuid'
 
 import {
   startWS,
   setupSagaSocket,
   joinUserRoom,
   socketHeartbeat,
-  subscribeToTopic,
-  unsubscribeOfTopics,
   postResults,
 } from 'utils/api'
 import {
-  USER_LOADED,
   SOCKET_READY,
   SET_INPUT,
-  SUBSCRIBE_TO_TOPIC,
-  UNSUBSCRIBE_TOPICS,
   SET_RESULTS,
   SET_SOCKET_MESSAGE,
   SOCKET_CLOSED,
+  STOP_PROCESSING,
+  SET_STATS,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
-import { ensureUserLoaded } from 'sagas/user'
+import { ensureIsProcessing } from './processing'
 
 export function* main() {
-  let socketTask = yield fork(socketSaga)
-  yield takeLatest(SOCKET_CLOSED, handleSocketClosed, socketTask)
+  while (true) {
+    let socketTask = yield fork(socketSaga)
+
+    const termination = yield race({
+      stoppedProcessing: take(STOP_PROCESSING),
+      socketClosed: take(SOCKET_CLOSED),
+    })
+    yield cancel([socketTask])
+
+    if (termination.socketClosed) {
+      yield delay(4000)
+    }
+  }
 }
 
 export function* socketSaga() {
-  // yield call(ensureUserLoaded)
+  yield call(ensureIsProcessing)
 
   try {
-    const token = yield select(selectors.token)
-    // const userRoom = yield select(selectors.userRoom)
-    let uuid = uuidv4()
-    const userRoom = `room:worker:${uuid}`
+    const uuid = yield select(selectors.uuid)
+    const userRoom = yield select(selectors.userRoom)
 
-    const client = yield call(startWS, token)
+    const client = yield call(startWS, uuid)
     const feed = yield call(setupSagaSocket, client)
-
-    yield takeLatest(USER_LOADED, () => {
-      client.close()
-      feed.close()
-    })
 
     const heartbeatTask = yield fork(heartbeatSaga, client)
 
     yield call(joinUserRoom, client, userRoom)
-
-    yield fork(handleSubscriptions, client, userRoom)
 
     yield put({ type: SOCKET_READY })
     yield takeEvery(SET_RESULTS, resultsSaga, client)
@@ -85,6 +85,10 @@ export function* socketSaga() {
             yield put({ type: SET_INPUT, payload, client, userRoom })
             break
           }
+          case 'new_msg_stats': {
+            yield put({ type: SET_STATS, payload, client, userRoom })
+            break
+          }
           default:
             yield put({ type: SET_SOCKET_MESSAGE, message })
         }
@@ -94,28 +98,20 @@ export function* socketSaga() {
       yield cancel([heartbeatTask])
     }
   } finally {
-    yield put({ type: SOCKET_CLOSED })
+    if (!(yield cancelled())) {
+      yield put({ type: SOCKET_CLOSED })
+    }
   }
 }
 
-function* handleSubscriptions(client, userRoom) {
-  yield takeEvery(SUBSCRIBE_TO_TOPIC, function* ({ topic }) {
-    yield call(subscribeToTopic, client, userRoom, topic)
-  })
-  yield takeEvery(UNSUBSCRIBE_TOPICS, function* () {
-    yield call(unsubscribeOfTopics, client, userRoom)
-  })
-}
-
-function* handleSocketClosed(socketTask) {
-  yield cancel([socketTask])
-  yield delay(4000)
-  socketTask = yield fork(socketSaga)
-}
+// function* handleSocketClosed(socketTask) {
+//   yield delay(4000)
+//   socketTask = yield fork(socketSaga)
+// }
 
 function* heartbeatSaga(client) {
   while (true) {
-    yield delay(1000)
+    yield delay(5000)
     yield call(socketHeartbeat, client)
   }
 }

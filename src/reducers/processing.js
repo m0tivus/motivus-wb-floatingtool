@@ -1,100 +1,69 @@
 import {
-    START_LOADING_MODEL,
-    DONE_LOADING_MODEL,
-    START_PROCESSING,
-    STOP_PROCESSING,
-    END_PROCESSING,
-    SET_INPUT_SOURCE,
-    SET_RESULTS,
-    INIT_PROCESSING,
-    SET_CURRENT_PROCESSING,
-    SET_INPUT,
-    CREATE_DEFAULT_BATCH,
+  START_PROCESSING,
+  STOP_PROCESSING,
+  END_PROCESSING,
+  SET_RESULTS,
+  SET_INPUT,
+  SET_PROCESSING_PREFERENCES,
+  WORKER_FINISHED_EXECUTION,
 } from 'actions/types'
 
 const INITIAL_STATE = {
-    isLoadingModel: false,
-    isProcessing: false,
-    isWaitingDefaultInput: false,
-    inputSource: null,
-    result: {},
-    currentSaga: null,
-    currentTask: null,
-    currentProcessing: null,
-    input: {},
+  isProcessing: false,
+  result: {},
+  input: {},
+  preferences: {},
+  task: {},
 }
 
 export default (state = INITIAL_STATE, action) => {
-    switch(action.type) {
-    case INIT_PROCESSING: {
-        return {
-            ...state,
-            isLoadingModel: false,
-        }
-    }
-    case SET_CURRENT_PROCESSING: {
-        return {
-            ...state,
-            currentTask: action.task,
-            currentSaga: action.saga,
-            currentProcessing: action.id,
-        }
-    }
+  switch (action.type) {
     case SET_INPUT: {
-        return {
-            ...state,
-            input: action.payload,
-            isWaitingDefaultInput: false,
-        }
+      return {
+        ...state,
+        input: action.payload,
+        task: {
+          ...state.task,
+          ref: action.payload.ref,
+          started_on: new Date(),
+        },
+      }
     }
-    case START_LOADING_MODEL: {
-        return {
-            ...state,
-            isLoadingModel: true,
-        }
-    }
-    case DONE_LOADING_MODEL: {
-        return {
-            ...state,
-            isLoadingModel: false,
-        }
-    }    
     case START_PROCESSING: {
-        return {
-            ...state,
-            isProcessing: true,
-        }
+      return {
+        ...state,
+        isProcessing: true,
+        task: INITIAL_STATE.task,
+      }
     }
     case STOP_PROCESSING: {
-        return {
-            ...state,
-            isProcessing: false,
-        }
+      return {
+        ...state,
+        isProcessing: false,
+        task: INITIAL_STATE.task,
+      }
     }
     case END_PROCESSING: {
-        return {
-            ...state,
-            input: INITIAL_STATE.input,
-            result: INITIAL_STATE.result,
-            currentSaga: INITIAL_STATE.currentSaga,
-            currentTask: INITIAL_STATE.currentTask,
-        }
+      return {
+        ...state,
+        input: INITIAL_STATE.input,
+        result: INITIAL_STATE.result,
+      }
     }
-    case SET_INPUT_SOURCE:
-        return {
-            ...state,
-            inputSource: action.source,
-        }
     case SET_RESULTS:
-        return {
-            ...state,
-            result: action.results,
-        }
-    case CREATE_DEFAULT_BATCH:
-        return {
-            ...state,
-            isWaitingDefaultInput: true,
-        }
-    default: return state 
-    }
+    case WORKER_FINISHED_EXECUTION:
+      return {
+        ...state,
+        result: action.results,
+        input: INITIAL_STATE.input,
+        task: INITIAL_STATE.task,
+      }
+    case SET_PROCESSING_PREFERENCES:
+      return {
+        ...state,
+        preferences: action.preferences,
+      }
+    default:
+      return state
+  }
 }

@@ -8,8 +8,14 @@ import CardContent from '@material-ui/core/CardContent'
 import Fab from '@material-ui/core/Fab'
 import { Box, Link, Typography } from '@material-ui/core'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import style from './floatingTool.module.css'
+import { useSelector } from 'react-redux'
+import Footer from '../Footer/Footer'
+import Login from '../LogIn/Login'
 
 import TabLinks from '../TabLinks/tablinks'
+
+var Motivus = window.Motivus || {}
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -60,6 +66,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+    position: 'sticky',
+    bottom: '0px',
   },
   divider: {
     backgroundColor: 'white',
@@ -68,8 +76,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function SimpleSlide() {
+  const isProcessing = useSelector((state) => state.processing.isProcessing)
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
+  const [isLoggedIn, setIsLoggedIn] = React.useState(true)
+
+  const logOut = () => setIsLoggedIn(false)
 
   const toggleOpen = React.useCallback(() => {
     setOpen((prev) => !prev)
@@ -79,6 +91,17 @@ export default function SimpleSlide() {
     window.Motivus = { ...window.Motivus, openFloatingTool: toggleOpen }
   }, [toggleOpen])
 
+  React.useEffect(() => {
+    if (Motivus.gaTrackEvent) {
+      open &&
+        Motivus.gaTrackEvent({
+          category: 'Click',
+          action: 'Open widget',
+          label: 'Widget opens',
+        })
+    }
+  }, [open])
+
   return (
     <div className={classes.wrapper}>
       <Fab aria-label='add' className={classes.toggler} onClick={toggleOpen}>
@@ -87,6 +110,7 @@ export default function SimpleSlide() {
           alt='logo'
           width='50'
           height='50'
+          className={isProcessing && !open ? style.floatingTool : null}
         />
       </Fab>
       <Slide direction='left' in={open} mountOnEnter unmountOnExit>
@@ -97,23 +121,7 @@ export default function SimpleSlide() {
             </CardContent>
 
             <CardActions className={classes.bottomAction}>
-              <Button
-                variant='contained'
-                color='secondary'
-                className={classes.button}
-                startIcon={<AccountCircleIcon />}
-                size='small'
-              >
-                Login
-              </Button>
-              <Typography>Powered by</Typography>
-              <Link
-                href='http://motivus.cl/'
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                <Typography>Motivus</Typography>
-              </Link>
+              {isLoggedIn ? <Footer logOut={logOut} /> : <Login />}
             </CardActions>
           </Card>
         </Box>
