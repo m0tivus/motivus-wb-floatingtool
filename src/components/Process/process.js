@@ -108,7 +108,7 @@ function ProjectsCarousel() {
           </Grid>
           <Grid item xs={4}>
             <Box display='flex' flexDirection='column'>
-              <Typography variant='body2'>Total flops:</Typography>
+              <Typography variant='body2'>Total GFLOPS:</Typography>
               <Typography variant='h3'>{Math.round(flops)}</Typography>
               <Typography variant='body2'>Relative time:</Typography>
               <Typography variant='h3'>{base_time} s</Typography>

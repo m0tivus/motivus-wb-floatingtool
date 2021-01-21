@@ -50,8 +50,12 @@ function ProcessButton({ isProcessing, task, ...props }) {
 
   React.useEffect(() => {
     const timer = setInterval(() => {
-      const secs = differenceInSeconds(new Date(), started_on)
-      !isNaN(secs) && setTimeElapsed(secs)
+      if (started_on){
+        const secs = differenceInSeconds(new Date(), started_on)
+        !isNaN(secs) && setTimeElapsed(secs)
+      } else {
+        setTimeElapsed(0)
+      }
     }, 1000)
     return () => clearInterval(timer)
   })
