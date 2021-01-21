@@ -70,7 +70,7 @@ function ProjectsCarousel() {
 
   return (
     <div className={classes.root}>
-      <Box display='flex' mt={2}>
+      <Box display='flex' mt={1}>
         <Typography variant='h2' align='center'>
           Welcome to the beta version of the{' '}
           <span className={classes.revolution}>Motivus Floating Tool.</span>{' '}
@@ -78,7 +78,7 @@ function ProjectsCarousel() {
           <span className={classes.revolutionText}></span>
         </Typography>
       </Box>
-      <Box display='flex' my={3}>
+      <Box display='flex' my={2}>
         <Grid container>
           <Grid item xs={4}>
             <Box
@@ -101,7 +101,7 @@ function ProjectsCarousel() {
               <Typography variant='body2'>user:</Typography>
               <Typography variant='h3'>Guest</Typography>
               <Typography variant='body2'>ranking:</Typography>
-              <Typography variant='h3'>{ranking}</Typography>
+              <Typography variant='h3'>{ranking ? ranking : 'n/a'}</Typography>
               <Typography variant='body2'>Total task</Typography>
               <Typography variant='h3'>{quantity}</Typography>
             </Box>
@@ -109,7 +109,9 @@ function ProjectsCarousel() {
           <Grid item xs={4}>
             <Box display='flex' flexDirection='column'>
               <Typography variant='body2'>Total GFLOPS:</Typography>
-              <Typography variant='h3'>{Math.round(flops)}</Typography>
+              <Typography variant='h3'>
+                {Number.parseFloat(flops).toFixed(2)}
+              </Typography>
               <Typography variant='body2'>Relative time:</Typography>
               <Typography variant='h3'>{base_time} s</Typography>
               <Typography variant='body2'>Elapsed Time:</Typography>

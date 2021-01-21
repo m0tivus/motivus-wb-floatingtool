@@ -20,14 +20,17 @@ export const postContactForm = (data) =>
 export const getUser = () =>
   axios.get(`${httpBase}/api/user`).then(({ data }) => data.data)
 
+export const createGuestUser = () =>
+  axios.post(`${httpBase}/api/users/guest`).then(({ data }) => data.user)
+
 export const startWS = (
-  token = null,
+  uuid = null,
   url = process.env.REACT_APP_WS_URL || `${wsBase}/socket/websocket`,
 ) =>
   new Promise((resolve, reject) => {
     let urlWithParams = url
-    if (token) {
-      urlWithParams += `?token=${token}`
+    if (uuid) {
+      urlWithParams += `?uuid=${uuid}`
     }
     const socket = new W3CWebSocket(urlWithParams)
     socket.onopen = () => resolve(socket)
