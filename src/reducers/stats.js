@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   base_time: 0,
   flops: 0,
   elapsed_time: 0,
-  ranking: 'n/a',
+  ranking: 0,
 }
 
 export default (state = INITIAL_STATE, action) => {

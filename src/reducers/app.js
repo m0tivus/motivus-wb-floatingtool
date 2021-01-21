@@ -67,14 +67,14 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isSocketReady: false,
-        userRoom: `users:guest:${Date.now()}`,
+        userRoom: '',
         nodeDashboardUrl: '',
         clientDashboardUrl: '',
       }
     case SET_USER:
       return {
         ...state,
-        userRoom: `users:${action.user.id}:${Date.now()}`,
+        userRoom: `room:worker:${action.user.uuid}`,
         isUserLoaded: true,
       }
     case SET_REFERRAL:

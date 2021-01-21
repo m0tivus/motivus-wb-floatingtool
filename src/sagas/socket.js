@@ -11,7 +11,6 @@ import {
   cancelled,
   race,
 } from 'redux-saga/effects'
-import { v4 as uuidv4 } from 'uuid'
 
 import {
   startWS,
@@ -31,8 +30,6 @@ import {
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import { ensureIsProcessing } from './processing'
-
-const uuid = uuidv4()
 
 export function* main() {
   while (true) {
@@ -54,10 +51,10 @@ export function* socketSaga() {
   yield call(ensureIsProcessing)
 
   try {
-    const token = yield select(selectors.token)
-    const userRoom = `room:worker:${uuid}`
+    const uuid = yield select(selectors.uuid)
+    const userRoom = yield select(selectors.userRoom)
 
-    const client = yield call(startWS, token)
+    const client = yield call(startWS, uuid)
     const feed = yield call(setupSagaSocket, client)
 
     const heartbeatTask = yield fork(heartbeatSaga, client)
