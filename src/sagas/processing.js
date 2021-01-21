@@ -34,6 +34,8 @@ function* handleNewInput({ payload: msg, client, userRoom }) {
   switch (msg.type) {
     case 'work': {
       let buffLoader = Buffer.from(msg.body.loader, 'base64')
+      let buffWasm = Buffer.from(msg.body.wasm, 'base64')
+      msg.body.buffWasm = buffWasm
       let loader = buffLoader.toString('ascii')
       switch (msg.body.run_type) {
         case 'wasm': {
@@ -70,7 +72,7 @@ function* handleNewInput({ payload: msg, client, userRoom }) {
             )
           })
 
-          worker.postMessage(msg.body.params)
+          worker.postMessage(msg.body)
 
           yield race([
             take(STOP_PROCESSING),
