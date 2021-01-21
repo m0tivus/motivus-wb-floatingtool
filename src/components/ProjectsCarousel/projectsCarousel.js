@@ -21,7 +21,7 @@ const tutorialSteps = [
     title: 'Benchmark',
     label:
       'Resolve matrix multiplication equations through the Motivus Framework',
-    imgPath: 'benchmark-motivus.jpg',
+    imgPath: 'https://widget.motivus.cl/benchmark-motivus.jpg',
     state: 'Ready to process',
   },
   {
