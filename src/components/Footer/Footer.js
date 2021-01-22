@@ -1,15 +1,12 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import { Box, Link } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import { connect } from 'react-redux'
+import { logOutUser } from 'actions'
 
-const useStyles = makeStyles((theme) => ({}))
-
-export default function Footer({ logOut, ...props }) {
-  const classes = useStyles()
-
+function Footer(props) {
   return (
     <Box
       display='flex'
@@ -21,10 +18,10 @@ export default function Footer({ logOut, ...props }) {
         variant='contained'
         color='secondary'
         startIcon={<AccountCircleIcon />}
-        onClick={logOut}
+        onClick={props.logOutUser}
         size='small'
       >
-        Login
+        Logout
       </Button>
 
       <Typography>Powered by </Typography>
@@ -34,3 +31,4 @@ export default function Footer({ logOut, ...props }) {
     </Box>
   )
 }
+export default connect(null, { logOutUser })(Footer)

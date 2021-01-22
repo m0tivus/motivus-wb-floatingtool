@@ -1,11 +1,14 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import { Box, SvgIcon } from '@material-ui/core'
-import IconButton from '@material-ui/core/IconButton'
 import FacebookIcon from '@material-ui/icons/Facebook'
 import GitHubIcon from '@material-ui/icons/GitHub'
-import Icon from '@material-ui/core/Icon'
 import { makeStyles } from '@material-ui/core/styles'
+import { httpBase } from 'utils/api'
+import { connect } from 'react-redux'
+import { setToken } from 'actions'
+
+const AUTH_BASE_URL = `${httpBase}/auth`
 
 const useStyles = makeStyles((theme) => ({
   bold: {
@@ -30,8 +33,38 @@ function GoogleIcon(props) {
   )
 }
 
-export default function Login() {
+function Login(props) {
   const classes = useStyles()
+  const popup = React.useRef(null)
+
+  const openLoginWindow = (e, url) => {
+    e.preventDefault()
+    popup.current = window.open(url, '_blank', 'width=601,height=700')
+  }
+
+  const onMessageReceived = React.useCallback(
+    (e) => {
+      if (e.origin === httpBase) {
+        const response = e.data
+        if (response.success && popup.current) {
+          popup.current.close()
+          const { token } = response
+          props.setToken(token)
+        }
+      }
+    },
+    [props],
+  )
+
+  React.useEffect(() => {
+    if (window.addEventListener) {
+      window.addEventListener('message', onMessageReceived, false)
+    } else if (window.attachEvent) {
+      window.attachEvent('onmessage', onMessageReceived)
+    }
+
+    return () => window.removeEventListener('message', onMessageReceived)
+  }, [onMessageReceived])
 
   return (
     <Box display='flex' flexDirection='column' my={2}>
@@ -48,15 +81,27 @@ export default function Login() {
         justifyContent='space-evenly'
       >
         <Box display='flex'>
-          <GoogleIcon className={classes.iconHover} />
+          <GoogleIcon
+            className={classes.iconHover}
+            onClick={(e) => openLoginWindow(e, `${AUTH_BASE_URL}/google`)}
+          />
         </Box>
         <Box display='flex'>
-          <FacebookIcon className={classes.iconHover} fontSize='large' />
+          <FacebookIcon
+            className={classes.iconHover}
+            fontSize='large'
+            onClick={(e) => openLoginWindow(e, `${AUTH_BASE_URL}/facebook`)}
+          />
         </Box>
         <Box display='flex'>
-          <GitHubIcon className={classes.iconHover} fontSize='large' />
+          <GitHubIcon
+            className={classes.iconHover}
+            fontSize='large'
+            onClick={(e) => openLoginWindow(e, `${AUTH_BASE_URL}/github`)}
+          />
         </Box>
       </Box>
     </Box>
   )
 }
+export default connect(null, { setToken })(Login)

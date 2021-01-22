@@ -27,6 +27,7 @@ import {
   SOCKET_CLOSED,
   STOP_PROCESSING,
   SET_STATS,
+  SET_USER,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import { ensureIsProcessing } from 'sagas/processing'
@@ -39,6 +40,7 @@ export function* main() {
     const termination = yield race({
       stoppedProcessing: take(STOP_PROCESSING),
       socketClosed: take(SOCKET_CLOSED),
+      userUpdated: take(SET_USER),
     })
     yield cancel([socketTask])
 
