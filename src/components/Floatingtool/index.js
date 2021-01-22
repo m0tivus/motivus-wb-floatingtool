@@ -1,2 +1,2 @@
-import Floatingtool from './floatingtool'
+import Floatingtool from './Floatingtool'
 export default Floatingtool

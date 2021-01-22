@@ -59,6 +59,8 @@ function ProjectsCarousel() {
     (state) => state.stats,
   )
 
+  const user = useSelector(({ user }) => user)
+
   return (
     <div className={classes.root}>
       <Box display='flex' mt={1}>
@@ -80,9 +82,13 @@ function ProjectsCarousel() {
               alignItems='center'
             >
               <img
-                src='https://widget.motivus.cl/GuestAvatar.svg'
+                src={
+                  user.avatar
+                    ? user.avatar
+                    : 'https://widget.motivus.cl/GuestAvatar.svg'
+                }
                 width={110}
-                alt='guestAvatar'
+                alt={user.name ? user.name : 'guestAvatar'}
                 className={classes.avatar}
               ></img>
             </Box>
@@ -90,7 +96,7 @@ function ProjectsCarousel() {
           <Grid item xs={4}>
             <Box display='flex' flexDirection='column' pl={2}>
               <Typography variant='body2'>user:</Typography>
-              <Typography variant='h3'>Guest</Typography>
+              <Typography variant='h3'>{user.name}</Typography>
               <Typography variant='body2'>ranking:</Typography>
               <Typography variant='h3'>{ranking ? ranking : 'n/a'}</Typography>
               <Typography variant='body2'>Total task</Typography>
