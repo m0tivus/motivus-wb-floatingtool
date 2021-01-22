@@ -75,13 +75,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function SimpleSlide() {
+export default function FloatingTool() {
   const isProcessing = useSelector((state) => state.processing.isProcessing)
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
-  const [isLoggedIn, setIsLoggedIn] = React.useState(true)
-
-  const logOut = () => setIsLoggedIn(false)
+  const isUserGuest = useSelector(({ app }) => app.isUserGuest)
 
   const toggleOpen = React.useCallback(() => {
     setOpen((prev) => !prev)
@@ -121,7 +119,7 @@ export default function SimpleSlide() {
             </CardContent>
 
             <CardActions className={classes.bottomAction}>
-              {isLoggedIn ? <Footer logOut={logOut} /> : <Login />}
+              {isUserGuest ? <Login /> : <Footer />}
             </CardActions>
           </Card>
         </Box>

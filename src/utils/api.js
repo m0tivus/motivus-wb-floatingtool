@@ -2,13 +2,13 @@ import { w3cwebsocket as W3CWebSocket } from 'websocket'
 import { eventChannel, END } from 'redux-saga'
 import axios from 'axios'
 
-const apiHost = process.env.REACT_APP_API_HOST || 'api.motivus.cl'
+const apiHost = process.env.REACT_APP_API_HOST || 'waterbear.api.motivus.cl'
 const host = process.env.REACT_APP_HOST || 'motivus.cl'
 const httpScheme = process.env.REACT_APP_TLS === 'true' ? 'https' : 'http'
 const wsScheme = process.env.REACT_APP_TLS === 'true' ? 'wss' : 'ws'
 
 const wsBase = `${wsScheme}://${apiHost}`
-const httpBase = `${httpScheme}://${apiHost}`
+export const httpBase = `${httpScheme}://${apiHost}`
 
 export const getInviteLink = (uid) => `${httpScheme}://${host}?referral=${uid}`
 
@@ -21,7 +21,7 @@ export const getUser = () =>
   axios.get(`${httpBase}/api/user`).then(({ data }) => data.data)
 
 export const createGuestUser = () =>
-  axios.post(`${httpBase}/api/users/guest`).then(({ data }) => data.user)
+  axios.post(`${httpBase}/auth/guest`).then(({ data }) => data.token)
 
 export const startWS = (
   uuid = null,
@@ -112,3 +112,8 @@ export const getProcessingPreferences = () =>
   axios.get(`${httpBase}/api/user/processing_preferences`, {
     withCredentials: true,
   })
+
+export const setAxiosToken = (token) =>
+  (axios.defaults.headers.common['Authorization'] = token
+    ? `Bearer ${token}`
+    : '')

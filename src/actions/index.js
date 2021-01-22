@@ -18,6 +18,7 @@ import {
   TRIGGER_DASHBOARD_UPDATE,
   SUBSCRIBE_TO_TOPIC,
   UNSUBSCRIBE_TOPICS,
+  SET_TOKEN,
 } from './types'
 
 export const setDate = (date) => ({ type: SET_DATE, date })
@@ -47,7 +48,12 @@ export const logInUser = (token, router) => ({
   token,
   router,
 })
-export const logOutUser = (router) => ({ type: LOG_OUT_USER, router })
+
+export const setToken = (token) => ({
+  type: SET_TOKEN,
+  token,
+})
+export const logOutUser = () => ({ type: LOG_OUT_USER })
 
 export const submitNewBatch = (data, router, appId) => ({
   type: QUEUE_JOB,

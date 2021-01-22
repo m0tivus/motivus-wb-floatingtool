@@ -1,5 +1,5 @@
 import { eventChannel } from 'redux-saga'
-const PROCESSING_PREFERENCE_COOKIE_ID = 'motivus-wb-pp'
+const PROCESSING_PREFERENCE_COOKIE_ID = 'motivus_wb_pp'
 
 export const setupWorker = (worker: Worker) =>
   eventChannel((emit) => {
@@ -25,7 +25,7 @@ export const getProcessingPreferencesFromCookie = () => {
   return false
 }
 
-function setCookie(name, value, daysToLive) {
+export function setCookie(name, value, daysToLive) {
   // Encode value in order to escape semicolons, commas, and whitespace
   var cookie = name + '=' + encodeURIComponent(value)
 
@@ -37,7 +37,7 @@ function setCookie(name, value, daysToLive) {
   document.cookie = cookie
 }
 
-function getCookie(name) {
+export function getCookie(name) {
   // Split cookie string and get all individual name=value pairs in an array
   var cookieArr = document.cookie.split(';')
 
