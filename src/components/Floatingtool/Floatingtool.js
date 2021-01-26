@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
 export default function FloatingTool() {
   const isProcessing = useSelector((state) => state.processing.isProcessing)
   const classes = useStyles()
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(Motivus.startOpen || false)
   const isUserGuest = useSelector(({ app }) => app.isUserGuest)
 
   const toggleOpen = React.useCallback(() => {
