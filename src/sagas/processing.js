@@ -9,11 +9,9 @@ import {
   race,
 } from 'redux-saga/effects'
 import {
-  SOCKET_READY,
   SOCKET_CLOSED,
   START_PROCESSING,
   SET_INPUT,
-  SET_PROCESSING_PREFERENCES,
   STOP_PROCESSING,
   WORKER_FINISHED_EXECUTION,
 } from 'actions/types'

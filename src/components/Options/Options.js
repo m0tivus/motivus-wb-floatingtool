@@ -50,14 +50,6 @@ function valueLabelFormat(value) {
 
 export default function DiscreteSlider() {
   const classes = useStyles()
-  const [state, setState] = React.useState({
-    checkedA: true,
-    checkedB: true,
-  })
-
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked })
-  }
 
   return (
     <div className={classes.root}>

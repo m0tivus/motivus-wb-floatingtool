@@ -6,7 +6,6 @@ import {
   select,
   cancel,
   takeEvery,
-  takeLatest,
   delay,
   cancelled,
   race,

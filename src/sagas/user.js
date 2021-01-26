@@ -49,6 +49,10 @@ function* refreshUser(user = null) {
   if (!user) {
     user = yield call(api.getUser)
   }
+  if (!user) {
+    yield call(handleLogout)
+    return
+  }
   yield put({ type: SET_USER, user })
   yield put({ type: USER_LOADED })
 }

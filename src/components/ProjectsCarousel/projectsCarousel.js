@@ -7,10 +7,7 @@ import Button from '@material-ui/core/Button'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import SwipeableViews from 'react-swipeable-views'
-import ProcessButton from '../ProcessButton'
-import Animation from '../Aniamtion'
 import { Box, Grid } from '@material-ui/core'
-import { FormatItalic } from '@material-ui/icons'
 import { autoPlay } from 'react-swipeable-views-utils'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
