@@ -7,9 +7,10 @@ import CardContent from '@material-ui/core/CardContent'
 import Fab from '@material-ui/core/Fab'
 import { Box } from '@material-ui/core'
 import style from './floatingTool.module.css'
-import { useSelector } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import Footer from '../Footer/Footer'
 import Login from '../LogIn/Login'
+import { startProcessing, stopProcessing} from 'actions'
 
 import TabLinks from '../TabLinks/tablinks'
 
@@ -73,10 +74,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function FloatingTool() {
+function FloatingTool(props) {
   const isProcessing = useSelector((state) => state.processing.isProcessing)
   const classes = useStyles()
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(Motivus.startOpen || false)
   const isUserGuest = useSelector(({ app }) => app.isUserGuest)
 
   const toggleOpen = React.useCallback(() => {
@@ -84,8 +85,13 @@ export default function FloatingTool() {
   }, [setOpen])
 
   React.useEffect(() => {
-    window.Motivus = { ...window.Motivus, openFloatingTool: toggleOpen }
-  }, [toggleOpen])
+    window.Motivus = {
+      ...window.Motivus,
+      openFloatingTool: toggleOpen,
+      startProcessing: props.startProcessing,
+      stopProcessing: props.stopProcessing,
+    }
+  }, [props.startProcessing, props.stopProcessing, toggleOpen])
 
   React.useEffect(() => {
     if (Motivus.gaTrackEvent) {
@@ -125,3 +131,5 @@ export default function FloatingTool() {
     </div>
   )
 }
+
+export default connect(null, { startProcessing, stopProcessing })(FloatingTool)
