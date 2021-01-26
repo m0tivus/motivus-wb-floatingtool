@@ -1,5 +1,4 @@
-import { Box } from '@material-ui/core'
-import React, { useState } from 'react'
+import React from 'react'
 import ReactLottie from 'react-lottie'
 import { useSelector } from 'react-redux'
 

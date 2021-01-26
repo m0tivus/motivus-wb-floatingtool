@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import { Box, Typography } from '@material-ui/core'
 import { differenceInSeconds } from 'date-fns'
 import _ from 'lodash'
-import style from './loader.module.css'
 
 const ColorButton = withStyles((theme) => ({
   root: {
@@ -50,7 +49,7 @@ function ProcessButton({ isProcessing, task, ...props }) {
 
   React.useEffect(() => {
     const timer = setInterval(() => {
-      if (started_on){
+      if (started_on) {
         const secs = differenceInSeconds(new Date(), started_on)
         !isNaN(secs) && setTimeElapsed(secs)
       } else {

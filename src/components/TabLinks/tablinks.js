@@ -10,7 +10,6 @@ import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
 import ProjectsCarousel from '../ProjectsCarousel'
 import Options from '../Options'
-import About from '../About'
 import Process from '../Process'
 
 function TabPanel(props) {
