@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { Box, Typography } from '@material-ui/core'
 import { differenceInSeconds } from 'date-fns'
 import _ from 'lodash'
+import { Helmet } from 'react-helmet'
 
 const ColorButton = withStyles((theme) => ({
   root: {
@@ -41,11 +42,15 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.light,
   },
 }))
+function renderTitle(title, indicator) {
+  return `${title} | ${indicator ? '"' : '\''}`
+}
 
 function ProcessButton({ isProcessing, task, ...props }) {
   const classes = useStyles()
   const { ref, started_on } = task
   const [timeElapsed, setTimeElapsed] = React.useState(0)
+  const [windowTitle] = React.useState(document.title)
 
   React.useEffect(() => {
     const timer = setInterval(() => {
@@ -66,6 +71,9 @@ function ProcessButton({ isProcessing, task, ...props }) {
       justifyContent='flex-start'
       flexDirection='column'
     >
+      <Helmet>
+        <title>{renderTitle(windowTitle, timeElapsed % 2)}</title>
+      </Helmet>
       <ColorButton
         size='large'
         variant='contained'
