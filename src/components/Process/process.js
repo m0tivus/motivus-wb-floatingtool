@@ -60,6 +60,7 @@ function ProjectsCarousel() {
   )
 
   const user = useSelector(({ user }) => user)
+  const formatHours = (number) => Number.parseFloat(number).toFixed(2)
 
   return (
     <div className={classes.root}>
@@ -110,9 +111,13 @@ function ProjectsCarousel() {
                 {Number.parseFloat(flops).toFixed(2)}
               </Typography>*/}
               <Typography variant='body2'>Motivus credits:</Typography>
-              <Typography variant='h3'>{base_time / 60 / 60} </Typography>
+              <Typography variant='h3'>
+                {formatHours(base_time / 60 / 60)}{' '}
+              </Typography>
               <Typography variant='body2'>Elapsed Time:</Typography>
-              <Typography variant='h3'>{elapsed_time / 60 / 60} s</Typography>
+              <Typography variant='h3'>
+                {formatHours(elapsed_time / 60 / 60)} h
+              </Typography>
             </Box>
           </Grid>
         </Grid>
