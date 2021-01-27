@@ -105,14 +105,14 @@ function ProjectsCarousel() {
           </Grid>
           <Grid item xs={4}>
             <Box display='flex' flexDirection='column'>
-              <Typography variant='body2'>Total GFLOPS:</Typography>
+              {/*<Typography variant='body2'>Total GFLOPS:</Typography>
               <Typography variant='h3'>
                 {Number.parseFloat(flops).toFixed(2)}
-              </Typography>
-              <Typography variant='body2'>Relative time:</Typography>
-              <Typography variant='h3'>{base_time} s</Typography>
+              </Typography>*/}
+              <Typography variant='body2'>Motivus credits:</Typography>
+              <Typography variant='h3'>{base_time / 60 / 60} </Typography>
               <Typography variant='body2'>Elapsed Time:</Typography>
-              <Typography variant='h3'>{elapsed_time} s</Typography>
+              <Typography variant='h3'>{elapsed_time / 60 / 60} s</Typography>
             </Box>
           </Grid>
         </Grid>
