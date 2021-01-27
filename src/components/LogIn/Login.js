@@ -87,13 +87,6 @@ function Login(props) {
           />
         </Box>
         <Box display='flex'>
-          <FacebookIcon
-            className={classes.iconHover}
-            fontSize='large'
-            onClick={(e) => openLoginWindow(e, `${AUTH_BASE_URL}/facebook`)}
-          />
-        </Box>
-        <Box display='flex'>
           <GitHubIcon
             className={classes.iconHover}
             fontSize='large'
