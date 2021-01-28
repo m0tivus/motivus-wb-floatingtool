@@ -96,11 +96,11 @@ function ProjectsCarousel() {
           </Grid>
           <Grid item xs={4}>
             <Box display='flex' flexDirection='column' pl={2}>
-              <Typography variant='body2'>user:</Typography>
+              <Typography variant='body2'>User:</Typography>
               <Typography variant='h3'>{user.name}</Typography>
-              <Typography variant='body2'>ranking:</Typography>
+              <Typography variant='body2'>Ranking:</Typography>
               <Typography variant='h3'>{ranking ? ranking : 'n/a'}</Typography>
-              <Typography variant='body2'>Total task</Typography>
+              <Typography variant='body2'>Total tasks</Typography>
               <Typography variant='h3'>{quantity}</Typography>
             </Box>
           </Grid>

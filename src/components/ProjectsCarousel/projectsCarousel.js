@@ -35,7 +35,7 @@ const tutorialSteps = [
     label:
       'Kazakhstan is in talks to attract investments worth 300 billion tenge ($714 million) into the cryptocurrency sector.',
     imgPath: 'https://widget.motivus.cl/ethereum-calculator.jpg',
-    state: 'soon',
+    state: 'Coming soon',
   },
   {
     projectType: 'Scientific, astrophysics',
@@ -43,7 +43,7 @@ const tutorialSteps = [
     label:
       'Galaxy simulations are at last matching reality—and producing surprising insights into cosmic evolution.',
     imgPath: 'https://widget.motivus.cl/cosmological-simulation.jpg',
-    state: 'soon',
+    state: 'Coming soon',
   },
 ]
 
@@ -153,8 +153,8 @@ function ProjectsCarousel() {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowLeft />
               ) : (
-                <KeyboardArrowRight />
-              )}
+                  <KeyboardArrowRight />
+                )}
             </Button>
           }
           backButton={
@@ -166,8 +166,8 @@ function ProjectsCarousel() {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowRight />
               ) : (
-                <KeyboardArrowLeft />
-              )}
+                  <KeyboardArrowLeft />
+                )}
               Back
             </Button>
           }
