@@ -20,22 +20,22 @@ const useStyles = makeStyles((theme) => ({
 const marks = [
   {
     value: 25,
-    label: '1 core',
+    label: '1 thread',
     disabled: false,
   },
   {
     value: 50,
-    label: '2 cores',
+    label: '2 threads',
     disabled: true,
   },
   {
     value: 75,
-    label: '3 cores',
+    label: '3 threads',
     disabled: true,
   },
   {
     value: 100,
-    label: '4 cores',
+    label: '4 threads',
     disabled: true,
   },
 ]
@@ -79,7 +79,11 @@ export default function DiscreteSlider() {
       </Box>
       <Box pt={2}>
         <FormGroup row>
-          <FormControlLabel disabled control={<Switch />} label='Enable GPU' />
+          <FormControlLabel
+            disabled
+            control={<Switch />}
+            label='Allow processing on GPU'
+          />
         </FormGroup>
       </Box>
     </div>
