@@ -60,6 +60,7 @@ function ProjectsCarousel() {
   )
 
   const user = useSelector(({ user }) => user)
+  const formatHours = (number) => Number.parseFloat(number).toFixed(2)
 
   return (
     <div className={classes.root}>
@@ -95,24 +96,28 @@ function ProjectsCarousel() {
           </Grid>
           <Grid item xs={4}>
             <Box display='flex' flexDirection='column' pl={2}>
-              <Typography variant='body2'>user:</Typography>
+              <Typography variant='body2'>User:</Typography>
               <Typography variant='h3'>{user.name}</Typography>
-              <Typography variant='body2'>ranking:</Typography>
+              <Typography variant='body2'>Ranking:</Typography>
               <Typography variant='h3'>{ranking ? ranking : 'n/a'}</Typography>
-              <Typography variant='body2'>Total task</Typography>
+              <Typography variant='body2'>Total tasks</Typography>
               <Typography variant='h3'>{quantity}</Typography>
             </Box>
           </Grid>
           <Grid item xs={4}>
             <Box display='flex' flexDirection='column'>
-              <Typography variant='body2'>Total GFLOPS:</Typography>
+              {/*<Typography variant='body2'>Total GFLOPS:</Typography>
               <Typography variant='h3'>
                 {Number.parseFloat(flops).toFixed(2)}
+              </Typography>*/}
+              <Typography variant='body2'>Motivus credits:</Typography>
+              <Typography variant='h3'>
+                {formatHours(base_time / 60 / 60)}{' '}
               </Typography>
-              <Typography variant='body2'>Relative time:</Typography>
-              <Typography variant='h3'>{base_time} s</Typography>
               <Typography variant='body2'>Elapsed Time:</Typography>
-              <Typography variant='h3'>{elapsed_time} s</Typography>
+              <Typography variant='h3'>
+                {formatHours(elapsed_time / 60 / 60)} h
+              </Typography>
             </Box>
           </Grid>
         </Grid>
