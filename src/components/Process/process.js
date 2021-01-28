@@ -118,18 +118,32 @@ function ProjectsCarousel() {
         </Grid>
       </Box>
       <Box display='flex' mt={4}>
-        <Typography variant='h1' align='center'>
-          <span className={classes.revolution}>Log in </span> to enter our
-          Benchmark Contest!{' '}
-          <Link
-            href='https://motivus.cl/blog/motivus-benchmark'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            {' '}
-            Read more{' '}
-          </Link>
-        </Typography>
+        {!user || (user && user.is_guest) ? (
+          <Typography variant='h1' align='center'>
+            <span className={classes.revolution}>Log in </span> to enter our
+            Benchmark Contest!{' '}
+            <Link
+              href='https://motivus.cl/blog/motivus-benchmark'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              {' '}
+              Read more{' '}
+            </Link>
+          </Typography>
+        ) : (
+          <Typography variant='h1' align='center'>
+            Check for updates on our
+            <Link
+              href='https://twitter.com/MotivusHPCN'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              {' '}
+              Twitter Feed!{' '}
+            </Link>
+          </Typography>
+        )}
       </Box>
       <Box
         my={1}
