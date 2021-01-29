@@ -134,10 +134,11 @@ function ProjectsCarousel() {
           </Grid>
         </Grid>
       </Box>
-      <Box display='flex' mt={4}>
-        {isMobile ? (
-          <Typography variant='h1' align='center'>
-            Log in to enter our Benchmark Contest!{' '}
+      <Box display='flex' mt={2} width='100%' justifyContent='center'>
+        {!user || (user && user.is_guest) ? (
+          <Typography variant='h2' align='center'>
+            <span className={classes.revolution}>Log in </span> to enter our
+            Benchmark Contest!{' '}
             <Link
               href='https://motivus.cl/blog/motivus-benchmark'
               target='_blank'
@@ -149,14 +150,14 @@ function ProjectsCarousel() {
           </Typography>
         ) : (
             <Typography variant='h2' align='center'>
-              Log in to enter our Benchmark Contest!{' '}
+              Check for updates on our
               <Link
-                href='https://motivus.cl/blog/motivus-benchmark'
+                href='https://twitter.com/MotivusHPCN'
                 target='_blank'
                 rel='noopener noreferrer'
               >
                 {' '}
-              Read more{' '}
+              Twitter Feed!{' '}
               </Link>
             </Typography>
           )}
