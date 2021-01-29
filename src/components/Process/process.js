@@ -5,6 +5,8 @@ import ProcessButton from '../ProcessButton'
 import Animation from '../Aniamtion'
 import { Box, Grid, Link } from '@material-ui/core'
 import { useSelector } from 'react-redux'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { useTheme } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,15 +64,25 @@ function ProjectsCarousel() {
   const user = useSelector(({ user }) => user)
   const formatHours = (number) => Number.parseFloat(number).toFixed(2)
 
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.up('sm'))
+
   return (
     <div className={classes.root}>
       <Box display='flex' mt={1}>
-        <Typography variant='h2' align='center'>
-          Welcome to the beta version of the{' '}
-          <span className={classes.revolution}>Motivus Floating Tool.</span>{' '}
-          Here you’ll be able to share your computing power with the world.{' '}
-          <span className={classes.revolutionText}></span>
-        </Typography>
+        {isMobile ? (
+          <Typography variant='h2' align='center'>
+            Welcome to the beta version of the{' '}
+            <span className={classes.revolution}>Motivus Floating Tool.</span>{' '}
+            Here you’ll be able to share your computing power with the world.{' '}
+            <span className={classes.revolutionText}></span>
+          </Typography>
+        ) : (
+            <Typography variant='h2' align='center'>
+              Welcome to the beta version of the{' '}
+              <span className={classes.revolution}>Motivus Floating Tool.</span>{' '}
+            </Typography>
+          )}
       </Box>
       <Box display='flex' my={2}>
         <Grid container>
@@ -98,10 +110,8 @@ function ProjectsCarousel() {
             <Box display='flex' flexDirection='column' pl={2}>
               <Typography variant='body2'>User:</Typography>
               <Typography variant='h3'>{user.name}</Typography>
-              <Typography variant='body2'>Ranking:</Typography>
-              <Typography variant='h3'>{ranking ? ranking : 'n/a'}</Typography>
-              <Typography variant='body2'>Total tasks</Typography>
-              <Typography variant='h3'>{quantity}</Typography>
+              {/*<Typography variant='body2'>Ranking:</Typography>
+              <Typography variant='h3'>{ranking ? ranking : 'n/a'}</Typography>*/}
             </Box>
           </Grid>
           <Grid item xs={4}>
@@ -110,10 +120,12 @@ function ProjectsCarousel() {
               <Typography variant='h3'>
                 {Number.parseFloat(flops).toFixed(2)}
               </Typography>*/}
-              <Typography variant='body2'>Motivus credits:</Typography>
+              {/*<Typography variant='body2'>Motivus credits:</Typography>
               <Typography variant='h3'>
                 {formatHours(base_time / 60 / 60)}{' '}
-              </Typography>
+            </Typography>*/}
+              <Typography variant='body2'>Total tasks</Typography>
+              <Typography variant='h3'>{quantity}</Typography>
               <Typography variant='body2'>Elapsed Time:</Typography>
               <Typography variant='h3'>
                 {formatHours(elapsed_time / 60 / 60)} h
@@ -122,11 +134,10 @@ function ProjectsCarousel() {
           </Grid>
         </Grid>
       </Box>
-      <Box display='flex' mt={4}>
+      <Box display='flex' mt={2} width='100%' justifyContent='center'>
         {!user || (user && user.is_guest) ? (
-          <Typography variant='h1' align='center'>
-            <span className={classes.revolution}>Log in </span> to enter our
-            Benchmark Contest!{' '}
+          <Typography variant='h2' align='center'>
+            Log in to enter our Benchmark Contest!{' '}
             <Link
               href='https://motivus.cl/blog/motivus-benchmark'
               target='_blank'
@@ -137,18 +148,18 @@ function ProjectsCarousel() {
             </Link>
           </Typography>
         ) : (
-          <Typography variant='h1' align='center'>
-            Check for updates on our
-            <Link
-              href='https://twitter.com/MotivusHPCN'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              {' '}
+            <Typography variant='h2' align='center'>
+              Check for updates on our
+              <Link
+                href='https://twitter.com/MotivusHPCN'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                {' '}
               Twitter Feed!{' '}
-            </Link>
-          </Typography>
-        )}
+              </Link>
+            </Typography>
+          )}
       </Box>
       <Box
         my={1}
@@ -164,7 +175,7 @@ function ProjectsCarousel() {
           width='95%'
         >
           <Box display='flex' justifyContent='flex-end' mt={2}>
-            <ProcessButton />
+            <ProcessButton isMobile={isMobile} />
           </Box>
 
           <Box display='flex' width='100px' height='120px'>
