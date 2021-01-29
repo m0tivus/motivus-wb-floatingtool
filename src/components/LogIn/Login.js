@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       color: theme.palette.secondary.light,
     },
+    cursor: 'pointer',
   },
 }))
 
@@ -70,8 +71,21 @@ function Login(props) {
     <Box display='flex' flexDirection='column' my={2}>
       <Box display='flex' mb={1}>
         <Typography align='center' gutterBottom>
-          <span className={classes.bold}>Log in </span> into your{' '}
-          <span className={classes.bold}>Motivus account,</span> sign with:
+          Log in with your{' '}
+          <span
+            className={classes.bold}
+            onClick={(e) => openLoginWindow(e, `${AUTH_BASE_URL}/google`)}
+          >
+            Google
+          </span>{' '}
+          or{' '}
+          <span
+            className={classes.bold}
+            onClick={(e) => openLoginWindow(e, `${AUTH_BASE_URL}/github`)}
+          >
+            Github
+          </span>{' '}
+          account:
         </Typography>
       </Box>
       <Box

@@ -87,6 +87,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: '200',
     fontStyle: 'normal',
   },
+  bold: {
+    color: theme.palette.primary.main,
+    fontWeight: 'bold',
+  },
 }))
 
 function ProjectsCarousel() {
@@ -191,9 +195,10 @@ function ProjectsCarousel() {
               </Typography>
               <Typography variant='body2' align='right'>
                 Proyect state:
-              </Typography>
-              <Typography variant='h6' align='right' color='Primary'>
-                {tutorialSteps[activeStep].state}
+                <span className={classes.bold}>
+                  {' '}
+                  {tutorialSteps[activeStep].state}
+                </span>
               </Typography>
             </Box>
             <Typography></Typography>
