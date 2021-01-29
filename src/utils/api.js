@@ -78,8 +78,8 @@ export const subscribeToTopic = (client, userRoom, topic) =>
 export const unsubscribeOfTopics = (client, userRoom) =>
   sendThroughSocket(client, userRoom, 'unsubscribe')
 
-export const postResults = (client, results, room = 'room:lobby', ref = null) =>
-  sendThroughSocket(client, room, 'output', { results }, ref)
+export const sendResult = (client, result, room = 'room:lobby', ref = null) =>
+  sendThroughSocket(client, room, 'result', result, ref)
 
 export const getBatches = (appId) =>
   axios.get(`${httpBase}/applications/${appId}/batch`)

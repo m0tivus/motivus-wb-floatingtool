@@ -102,9 +102,9 @@ function ProcessButton({ isProcessing, task, ...props }) {
               <Box display='flex'>
                 <Typography className={classes.text}>
                   <span className={classes.textTime}>
-                    {ref ? _(ref).split('-').value()[0] : ''}{' '}
+                    {ref ? _(ref).split('-').value()[0] : 'Waiting input...'}{' '}
                   </span>
-                  Package name
+                  {ref && 'Package name'}
                 </Typography>
               </Box>
             </Box>

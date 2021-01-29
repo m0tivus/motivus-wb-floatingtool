@@ -2,10 +2,9 @@ import {
   START_PROCESSING,
   STOP_PROCESSING,
   END_PROCESSING,
-  SET_RESULTS,
+  SET_RESULT,
   SET_INPUT,
   SET_PROCESSING_PREFERENCES,
-  WORKER_FINISHED_EXECUTION,
 } from 'actions/types'
 
 const INITIAL_STATE = {
@@ -50,11 +49,10 @@ export default (state = INITIAL_STATE, action) => {
         result: INITIAL_STATE.result,
       }
     }
-    case SET_RESULTS:
-    case WORKER_FINISHED_EXECUTION:
+    case SET_RESULT:
       return {
         ...state,
-        result: action.results,
+        result: action.result,
         input: INITIAL_STATE.input,
         task: INITIAL_STATE.task,
       }

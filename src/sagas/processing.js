@@ -13,10 +13,9 @@ import {
   START_PROCESSING,
   SET_INPUT,
   STOP_PROCESSING,
-  WORKER_FINISHED_EXECUTION,
+  SET_RESULT,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
-import * as api from 'utils/api'
 import {
   getProcessingPreferencesFromCookie,
   setupWorker,
@@ -36,54 +35,46 @@ export function* main() {
   yield takeLatest(SET_INPUT, handleNewInput)
 }
 
-function* handleNewInput({ payload: msg, client, userRoom }) {
-  switch (msg.type) {
+function* handleNewInput({ payload }) {
+  switch (payload.type) {
     case 'work': {
-      let buffLoader = Buffer.from(msg.body.loader, 'base64')
-      let buffWasm = Buffer.from(msg.body.wasm, 'base64')
-      msg.body.buffWasm = buffWasm
+      let buffLoader = Buffer.from(payload.body.loader, 'base64')
+      let buffWasm = Buffer.from(payload.body.wasm, 'base64')
+      payload.body.buffWasm = buffWasm
       let loader = buffLoader.toString('ascii')
-      switch (msg.body.run_type) {
+      switch (payload.body.run_type) {
         case 'wasm': {
+          const { ref, client_id, task_id, body } = payload
           // URL.createObjectURL
           window.URL = window.URL || window.webkitURL
 
           var blob
           blob = new Blob([loader], { type: 'application/javascript' })
           var worker = new Worker(URL.createObjectURL(blob), {
-            name: msg.ref,
+            name: ref,
           })
 
           const workerMessages = yield call(setupWorker, worker)
           yield takeLatest(workerMessages, function* (result) {
             yield put({
-              type: WORKER_FINISHED_EXECUTION,
-              result,
-              ref: msg.ref,
-            })
-
-            yield call(
-              api.sendThroughSocket,
-              client,
-              userRoom,
-              'new_msg',
-              {
+              type: SET_RESULT,
+              result: {
                 body: result,
                 type: 'response',
-                ref: msg.ref,
-                client_id: msg.client_id,
-                task_id: msg.task_id,
+                ref,
+                client_id,
+                task_id,
               },
-              msg.ref,
-            )
+              ref,
+            })
           })
 
-          worker.postMessage(msg.body)
+          worker.postMessage(body)
 
           yield race([
             take(STOP_PROCESSING),
             take(SOCKET_CLOSED),
-            take(WORKER_FINISHED_EXECUTION),
+            take(SET_RESULT),
           ])
           worker.terminate()
 
@@ -91,7 +82,7 @@ function* handleNewInput({ payload: msg, client, userRoom }) {
         }
         //case 'js': {
         //  eval(loader)
-        //  const response = main(msg.body.params).then((x) => {
+        //  const response = main(payload.body.params).then((x) => {
         //    console.log('terminó la promesa', x)
         //    channel.push(
         //      'new_msg',

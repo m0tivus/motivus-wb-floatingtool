@@ -16,12 +16,12 @@ import {
   setupSagaSocket,
   joinUserRoom,
   socketHeartbeat,
-  postResults,
+  sendResult,
 } from 'utils/api'
 import {
   SOCKET_READY,
   SET_INPUT,
-  SET_RESULTS,
+  SET_RESULT,
   SET_SOCKET_MESSAGE,
   SOCKET_CLOSED,
   STOP_PROCESSING,
@@ -65,7 +65,7 @@ export function* socketSaga() {
     yield call(joinUserRoom, client, userRoom)
 
     yield put({ type: SOCKET_READY })
-    yield takeEvery(SET_RESULTS, resultsSaga, client)
+    yield takeEvery(SET_RESULT, resultSaga, client)
 
     try {
       while (true) {
@@ -73,8 +73,12 @@ export function* socketSaga() {
         const { event, payload } = message
 
         switch (event) {
-          case SET_INPUT: {
+          case 'input': {
             yield put({ type: SET_INPUT, payload })
+            break
+          }
+          case 'stats': {
+            yield put({ type: SET_STATS, stats: payload.body })
             break
           }
           case 'phx_reply':
@@ -82,14 +86,6 @@ export function* socketSaga() {
             break
           case 'phx_error': {
             console.error('backend error: ', message)
-            break
-          }
-          case 'new_msg': {
-            yield put({ type: SET_INPUT, payload, client, userRoom })
-            break
-          }
-          case 'new_msg_stats': {
-            yield put({ type: SET_STATS, payload, client, userRoom })
             break
           }
           default:
@@ -119,9 +115,9 @@ function* heartbeatSaga(client) {
   }
 }
 
-function* resultsSaga(client, { results, ref }) {
+function* resultSaga(client, { result, ref }) {
   const userRoom = yield select(selectors.userRoom)
-  yield call(postResults, client, results, userRoom, ref)
+  yield call(sendResult, client, result, userRoom, ref)
 }
 
 export function* ensureSocketReady() {
