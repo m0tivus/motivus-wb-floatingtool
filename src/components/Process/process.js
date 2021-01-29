@@ -84,7 +84,7 @@ function ProjectsCarousel() {
             </Typography>
           )}
       </Box>
-      <Box display='flex' my={2}>
+      <Box display='flex' my={1}>
         <Grid container>
           <Grid item xs={4}>
             <Box
@@ -174,7 +174,7 @@ function ProjectsCarousel() {
           alignItems='flex-start'
           width='95%'
         >
-          <Box display='flex' justifyContent='flex-end' mt={2}>
+          <Box display='flex' justifyContent='flex-end' mt={1}>
             <ProcessButton isMobile={isMobile} />
           </Box>
 

@@ -25,7 +25,7 @@ const tutorialSteps = [
     projectType: 'Scientific, biology',
     title: 'RNA folding',
     label:
-      'The following implementation of the SPQR code runs a Monte Carlo simulation of a single strand of RNA at constant temperature.',
+      'The following implementation of the SPQR code runs a Monte Carlo simulation of a single strand of RNA.',
     imgPath: 'https://widget.motivus.cl/spqrgif.gif',
     state: 'Ready to process',
   },
@@ -33,7 +33,7 @@ const tutorialSteps = [
     projectType: 'Decentralized applications',
     title: 'Cryptocurrencies mining',
     label:
-      'Kazakhstan is in talks to attract investments worth 300 billion tenge ($714 million) into the cryptocurrency sector.',
+      'Kazakhstan is in talks to attract investments worth 300 billion tenge.',
     imgPath: 'https://widget.motivus.cl/ethereum-calculator.jpg',
     state: 'Coming soon',
   },
@@ -41,7 +41,7 @@ const tutorialSteps = [
     projectType: 'Scientific, astrophysics',
     title: 'Cosmological simulation',
     label:
-      'Galaxy simulations are at last matching reality—and producing surprising insights into cosmic evolution.',
+      'Galaxy simulations produce surprising insights into cosmic evolution.',
     imgPath: 'https://widget.motivus.cl/cosmological-simulation.jpg',
     state: 'Coming soon',
   },
@@ -115,10 +115,10 @@ function ProjectsCarousel() {
 
   return (
     <div className={classes.root}>
-      <Typography variant='h2' align='center' gutterBottom>
+      {/*<Typography variant='h2' align='center' gutterBottom>
         <span className={classes.title}>With your help</span>, we will implement
-        this technology in many science-related projects.
-      </Typography>
+  this technology in many science-related projects.
+      </Typography>*/}
       <Paper elevation={3}>
         <AutoPlaySwipeableViews
           autoplay={autoPlay}

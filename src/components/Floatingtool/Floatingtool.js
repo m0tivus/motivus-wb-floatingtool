@@ -10,7 +10,7 @@ import style from './floatingTool.module.css'
 import { connect, useSelector } from 'react-redux'
 import Footer from '../Footer/Footer'
 import Login from '../LogIn/Login'
-import { startProcessing, stopProcessing} from 'actions'
+import { startProcessing, stopProcessing } from 'actions'
 
 import TabLinks from '../TabLinks/tablinks'
 
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
     maxWidth: '480px',
     // width: '100%',
-    height: 650,
+    height: 550,
   },
   content: {
     witdh: '100%',

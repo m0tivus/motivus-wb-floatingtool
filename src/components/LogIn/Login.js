@@ -68,8 +68,8 @@ function Login(props) {
   }, [onMessageReceived])
 
   return (
-    <Box display='flex' flexDirection='column' my={2}>
-      <Box display='flex' mb={1}>
+    <Box display='flex' flexDirection='column' my={1}>
+      <Box display='flex'>
         <Typography align='center' gutterBottom>
           Log in with your{' '}
           <span
