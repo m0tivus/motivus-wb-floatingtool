@@ -57,7 +57,7 @@ function Options(props) {
       </Typography>
       <Box pt={2}>
         <Typography align='left' id='discrete-slider-restrict' gutterBottom>
-          CPU Usage (threads):
+          CPU threads:
         </Typography>
         <Slider
           value={threadCount}
