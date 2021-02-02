@@ -73,6 +73,8 @@ export const socketHeartbeat = (client) =>
 export const joinUserRoom = (client, userRoom) =>
   sendThroughSocket(client, userRoom, 'phx_join')
 
+export const requestNewInput = (client, userRoom, tid) =>
+  sendThroughSocket(client, userRoom, 'input_request', { tid })
 export const subscribeToTopic = (client, userRoom, topic) =>
   sendThroughSocket(client, userRoom, 'subscribe', { topic })
 export const unsubscribeOfTopics = (client, userRoom) =>

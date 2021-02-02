@@ -16,9 +16,8 @@ import {
   REMOVE_DATATABLE_ITEM,
   CREATE_DEFAULT_BATCH,
   TRIGGER_DASHBOARD_UPDATE,
-  SUBSCRIBE_TO_TOPIC,
-  UNSUBSCRIBE_TOPICS,
   SET_TOKEN,
+  SET_THREAD_COUNT,
 } from './types'
 
 export const setDate = (date) => ({ type: SET_DATE, date })
@@ -34,10 +33,9 @@ export const setProcessingInput = (source) => ({
 export const endProcessing = () => ({ type: END_PROCESSING })
 export const startProcessing = () => ({ type: START_PROCESSING })
 export const stopProcessing = () => ({ type: STOP_PROCESSING })
-export const unsubscribeOfTopics = () => ({ type: UNSUBSCRIBE_TOPICS })
-export const subscribeToTopic = () => ({
-  type: SUBSCRIBE_TO_TOPIC,
-  topic: '*',
+export const setThreadCount = (threadCount) => ({
+  type: SET_THREAD_COUNT,
+  threadCount,
 })
 
 export const submitContactForm = (data) => ({ type: SEND_CONTACT_FORM, data })

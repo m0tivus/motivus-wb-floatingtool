@@ -7,6 +7,8 @@ import {
   call,
   takeEvery,
   race,
+  fork,
+  takeLeading,
 } from 'redux-saga/effects'
 import {
   SOCKET_CLOSED,
@@ -14,25 +16,37 @@ import {
   SET_INPUT,
   STOP_PROCESSING,
   SET_RESULT,
+  REQUEST_NEW_INPUT,
+  SOCKET_READY,
+  SET_PROCESSING_PREFERENCES,
+  SET_THREAD_COUNT,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import {
-  getProcessingPreferencesFromCookie,
+  getProcessingPreferencesFromCookies,
   setupWorker,
   updateProcessingPreferenceCookie,
+  updateThreadCountPreference,
 } from 'utils/common'
+import { ensureSocketReady } from './socket'
+import _ from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 
 var Motivus = window.Motivus || {}
 
 export function* main() {
   yield takeEvery([STOP_PROCESSING, START_PROCESSING], logProcessingEvent)
   yield takeEvery(
-    [STOP_PROCESSING, START_PROCESSING],
+    [STOP_PROCESSING, START_PROCESSING, SET_THREAD_COUNT],
     updateProcessingPreference,
   )
-  yield call(getProcessingPreferences)
   yield takeLatest(SOCKET_CLOSED, endCurrentTask)
-  yield takeLatest(SET_INPUT, handleNewInput)
+  yield takeEvery(SET_INPUT, handleNewInput)
+  yield fork(getProcessingPreferences)
+  yield takeLeading(
+    [START_PROCESSING, SET_RESULT, SOCKET_READY, SET_THREAD_COUNT],
+    askForInputs,
+  )
 }
 
 function* handleNewInput({ payload }) {
@@ -44,7 +58,7 @@ function* handleNewInput({ payload }) {
       let loader = buffLoader.toString('ascii')
       switch (payload.body.run_type) {
         case 'wasm': {
-          const { ref, client_id, task_id, body } = payload
+          const { ref, client_id, task_id, body, tid } = payload
           // URL.createObjectURL
           window.URL = window.URL || window.webkitURL
 
@@ -64,20 +78,31 @@ function* handleNewInput({ payload }) {
                 ref,
                 client_id,
                 task_id,
+                tid,
               },
               ref,
+              tid,
             })
           })
 
           worker.postMessage(body)
 
-          yield race([
-            take(STOP_PROCESSING),
-            take(SOCKET_CLOSED),
-            take(SET_RESULT),
-          ])
-          worker.terminate()
-
+          while (true) {
+            const winner = yield race({
+              stoppedProcessing: take(STOP_PROCESSING),
+              socketClosed: take(SOCKET_CLOSED),
+              result: take(SET_RESULT),
+            })
+            if (winner.result) {
+              if (winner.result.tid === tid) {
+                worker.terminate()
+                break
+              }
+            } else {
+              worker.terminate()
+              break
+            }
+          }
           break
         }
         //case 'js': {
@@ -107,9 +132,29 @@ function* handleNewInput({ payload }) {
 }
 
 function* getProcessingPreferences() {
-  const startProcessing = yield call(getProcessingPreferencesFromCookie)
+  const { startProcessing, threadCount } = yield call(
+    getProcessingPreferencesFromCookies,
+  )
+  yield put({
+    type: SET_PROCESSING_PREFERENCES,
+    preferences: { startProcessing, threadCount },
+  })
+
   if (startProcessing) {
     yield put({ type: START_PROCESSING, noInteraction: true })
+  }
+}
+
+function* askForInputs() {
+  yield call(ensureSocketReady)
+  yield call(ensureIsProcessing)
+
+  const threadCount = yield select(selectors.threadCount)
+  const slots = yield select(selectors.slots)
+
+  for (let t = slots.length; t < threadCount; t++) {
+    const uuid = uuidv4()
+    yield put({ type: REQUEST_NEW_INPUT, tid: uuid })
   }
 }
 
@@ -159,6 +204,9 @@ function* updateProcessingPreference(action) {
         break
       case STOP_PROCESSING:
         yield call(updateProcessingPreferenceCookie, false)
+        break
+      case SET_THREAD_COUNT:
+        yield call(updateThreadCountPreference, action.threadCount)
         break
       default:
     }

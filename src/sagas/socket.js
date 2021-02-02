@@ -7,7 +7,6 @@ import {
   cancel,
   takeEvery,
   delay,
-  cancelled,
   race,
 } from 'redux-saga/effects'
 
@@ -17,6 +16,7 @@ import {
   joinUserRoom,
   socketHeartbeat,
   sendResult,
+  requestNewInput,
 } from 'utils/api'
 import {
   SOCKET_READY,
@@ -27,6 +27,7 @@ import {
   STOP_PROCESSING,
   SET_STATS,
   SET_USER,
+  REQUEST_NEW_INPUT,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import { ensureIsProcessing } from 'sagas/processing'
@@ -61,6 +62,7 @@ export function* socketSaga() {
     const feed = yield call(setupSagaSocket, client)
 
     const heartbeatTask = yield fork(heartbeatSaga, client)
+    const inputRequestsTask = yield fork(handleInputRequests, client)
 
     yield call(joinUserRoom, client, userRoom)
 
@@ -94,12 +96,10 @@ export function* socketSaga() {
       }
     } finally {
       client.close()
-      yield cancel([heartbeatTask])
+      yield cancel([heartbeatTask, inputRequestsTask])
     }
   } finally {
-    if (!(yield cancelled())) {
-      yield put({ type: SOCKET_CLOSED })
-    }
+    yield put({ type: SOCKET_CLOSED })
   }
 }
 
@@ -113,6 +113,13 @@ function* heartbeatSaga(client) {
     yield delay(5000)
     yield call(socketHeartbeat, client)
   }
+}
+
+function* handleInputRequests(client) {
+  const userRoom = yield select(selectors.userRoom)
+  yield takeEvery(REQUEST_NEW_INPUT, function* ({ tid }) {
+    yield call(requestNewInput, client, userRoom, tid)
+  })
 }
 
 function* resultSaga(client, { result, ref }) {
