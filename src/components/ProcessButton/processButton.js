@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function ProcessButton({ isProcessing, task, isMobile, ...props }) {
+function ProcessButton({ isProcessing, task, isMobile, slots, ...props }) {
   const classes = useStyles()
   const { ref, started_on } = task
   const [timeElapsed, setTimeElapsed] = React.useState(0)
@@ -86,7 +86,23 @@ function ProcessButton({ isProcessing, task, isMobile, ...props }) {
           <Box display='flex' flexDirection='column'>
             {!isMobile ? (
               <React.Fragment>
-                <Box display='flex'>
+                <Box
+                  display='flex'
+                  justifyContent='flex-end'
+                  alignItems='flex-end'
+                >
+                  <Typography className={classes.text}>
+                    Using{' '}
+                    <span className={classes.textTime}>
+                      {slots.length} threads
+                    </span>
+                  </Typography>
+                </Box>
+                <Box
+                  display='flex'
+                  justifyContent='flex-end'
+                  alignItems='flex-end'
+                >
                   <Typography className={classes.text}>
                     <span className={classes.textTime}>{timeElapsed} s</span>{' '}
                     Time processing
@@ -112,6 +128,18 @@ function ProcessButton({ isProcessing, task, isMobile, ...props }) {
                   justifyContent='flex-end'
                   alignItems='flex-end'
                 >
+                  <Box
+                    display='flex'
+                    justifyContent='flex-end'
+                    alignItems='flex-end'
+                  >
+                    <Typography className={classes.text}>
+                      Using{' '}
+                      <span className={classes.textTime}>
+                        {slots.length} threads
+                      </span>
+                    </Typography>
+                  </Box>
                   <Box display='flex'>
                     <Typography className={classes.text}>
                       <span className={classes.textTime}>{timeElapsed} s</span>{' '}
@@ -140,7 +168,11 @@ function ProcessButton({ isProcessing, task, isMobile, ...props }) {
   )
 }
 export default connect(
-  ({ processing: { isProcessing, task } }) => ({ isProcessing, task }),
+  ({ processing: { isProcessing, task, slots } }) => ({
+    isProcessing,
+    task,
+    slots,
+  }),
   {
     startProcessing,
     stopProcessing,
