@@ -30,8 +30,8 @@ export const getProcessingPreferencesFromCookies = () => {
   if (threadCount > 0) {
     preferences.threadCount = Number(threadCount)
   } else {
-    preferences.threadCount = 10
-    setCookie(THREADS_PREFERENCE_COOKIE_ID, 10, 365)
+    preferences.threadCount = 1
+    setCookie(THREADS_PREFERENCE_COOKIE_ID, 1, 365)
   }
   return preferences
 }
