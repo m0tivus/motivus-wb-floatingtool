@@ -1,4 +1,4 @@
-import { UPDATE_STATS } from 'actions/types'
+import { SET_STATS } from 'actions/types'
 
 const INITIAL_STATE = {
   quantity: 0,
@@ -10,7 +10,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case UPDATE_STATS:
+    case SET_STATS:
       return action.stats
     default:
       return state

@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function ProcessButton({ isProcessing, task, isMobile, ...props }) {
+function ProcessButton({ isProcessing, task, isMobile, slots, ...props }) {
   const classes = useStyles()
   const { ref, started_on } = task
   const [timeElapsed, setTimeElapsed] = React.useState(0)
@@ -86,7 +86,23 @@ function ProcessButton({ isProcessing, task, isMobile, ...props }) {
           <Box display='flex' flexDirection='column'>
             {!isMobile ? (
               <React.Fragment>
-                <Box display='flex'>
+                <Box
+                  display='flex'
+                  justifyContent='flex-end'
+                  alignItems='flex-end'
+                >
+                  <Typography className={classes.text}>
+                    Using{' '}
+                    <span className={classes.textTime}>
+                      {slots.length} threads
+                    </span>
+                  </Typography>
+                </Box>
+                <Box
+                  display='flex'
+                  justifyContent='flex-end'
+                  alignItems='flex-end'
+                >
                   <Typography className={classes.text}>
                     <span className={classes.textTime}>{timeElapsed} s</span>{' '}
                     Time processing
@@ -95,50 +111,68 @@ function ProcessButton({ isProcessing, task, isMobile, ...props }) {
                 <Box display='flex'>
                   <Typography className={classes.text}>
                     <span className={classes.textTime}>
-                      {ref ? _(ref).split('-').value()[0] : ''}{' '}
+                      {ref ? _(ref).split('-').value()[0] : 'Waiting input...'}{' '}
                     </span>
-                    Package name
+                    {ref && 'Package name'}
                   </Typography>
                 </Box>
               </React.Fragment>
             ) : (
-                <React.Fragment>
-                  <Typography className={classes.text}>
-                    Keep the blender running, don't close this website
+              <React.Fragment>
+                <Typography className={classes.text}>
+                  Keep the blender running, don't close this website
                 </Typography>
+                <Box
+                  display='flex'
+                  flexDirection='column'
+                  justifyContent='flex-end'
+                  alignItems='flex-end'
+                >
                   <Box
                     display='flex'
-                    flexDirection='column'
                     justifyContent='flex-end'
                     alignItems='flex-end'
                   >
-                    <Box display='flex'>
-                      <Typography className={classes.text}>
-                        <span className={classes.textTime}>{timeElapsed} s</span>{' '}
+                    <Typography className={classes.text}>
+                      Using{' '}
+                      <span className={classes.textTime}>
+                        {slots.length} threads
+                      </span>
+                    </Typography>
+                  </Box>
+                  <Box display='flex'>
+                    <Typography className={classes.text}>
+                      <span className={classes.textTime}>{timeElapsed} s</span>{' '}
                       Time processing
                     </Typography>
-                    </Box>
-                    <Box display='flex'>
-                      <Typography className={classes.text}>
-                        <span className={classes.textTime}>
-                          {ref ? _(ref).split('-').value()[0] : ''}{' '}
-                        </span>
-                      Package name
-                    </Typography>
-                    </Box>
                   </Box>
-                </React.Fragment>
-              )}
+                  <Box display='flex'>
+                    <Typography className={classes.text}>
+                      <span className={classes.textTime}>
+                        {ref
+                          ? _(ref).split('-').value()[0]
+                          : 'Waiting input...'}{' '}
+                      </span>
+                      {ref && 'Package name'}
+                    </Typography>
+                  </Box>
+                </Box>
+              </React.Fragment>
+            )}
           </Box>
         ) : (
-            <Typography className={classes.text}>Ready to begin?</Typography>
-          )}
+          <Typography className={classes.text}>Ready to begin?</Typography>
+        )}
       </Box>
     </Box>
   )
 }
 export default connect(
-  ({ processing: { isProcessing, task } }) => ({ isProcessing, task }),
+  ({ processing: { isProcessing, task, slots } }) => ({
+    isProcessing,
+    task,
+    slots,
+  }),
   {
     startProcessing,
     stopProcessing,

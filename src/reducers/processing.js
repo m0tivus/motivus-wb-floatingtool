@@ -1,11 +1,14 @@
+import _ from 'lodash'
 import {
   START_PROCESSING,
   STOP_PROCESSING,
   END_PROCESSING,
-  SET_RESULTS,
+  SET_RESULT,
   SET_INPUT,
   SET_PROCESSING_PREFERENCES,
-  WORKER_FINISHED_EXECUTION,
+  REQUEST_NEW_INPUT,
+  SOCKET_READY,
+  SET_THREAD_COUNT,
 } from 'actions/types'
 
 const INITIAL_STATE = {
@@ -14,6 +17,7 @@ const INITIAL_STATE = {
   input: {},
   preferences: {},
   task: {},
+  slots: [],
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -41,6 +45,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isProcessing: false,
         task: INITIAL_STATE.task,
+        slots: INITIAL_STATE.slots,
       }
     }
     case END_PROCESSING: {
@@ -50,18 +55,37 @@ export default (state = INITIAL_STATE, action) => {
         result: INITIAL_STATE.result,
       }
     }
-    case SET_RESULTS:
-    case WORKER_FINISHED_EXECUTION:
+    case SET_RESULT:
       return {
         ...state,
-        result: action.results,
+        result: action.result,
         input: INITIAL_STATE.input,
         task: INITIAL_STATE.task,
+        slots: _(state.slots).without(action.tid).value(),
       }
     case SET_PROCESSING_PREFERENCES:
       return {
         ...state,
         preferences: action.preferences,
+      }
+    case SET_THREAD_COUNT:
+      return {
+        ...state,
+        preferences: {
+          ...state.preferences,
+          threadCount: action.threadCount,
+        },
+      }
+
+    case REQUEST_NEW_INPUT:
+      return {
+        ...state,
+        slots: [...state.slots, action.tid],
+      }
+    case SOCKET_READY:
+      return {
+        ...state,
+        slots: INITIAL_STATE.slots,
       }
     default:
       return state

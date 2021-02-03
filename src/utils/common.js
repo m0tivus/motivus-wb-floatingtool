@@ -1,5 +1,6 @@
 import { eventChannel } from 'redux-saga'
 const PROCESSING_PREFERENCE_COOKIE_ID = 'motivus_wb_pp'
+const THREADS_PREFERENCE_COOKIE_ID = 'motivus_wb_pt'
 
 export const setupWorker = (worker: Worker) =>
   eventChannel((emit) => {
@@ -16,13 +17,23 @@ export const setupWorker = (worker: Worker) =>
     return unsubscribe
   })
 
-export const getProcessingPreferencesFromCookie = () => {
+export const getProcessingPreferencesFromCookies = () => {
+  const preferences = {}
   const startProcessing = getCookie(PROCESSING_PREFERENCE_COOKIE_ID)
   if (startProcessing === 'true') {
-    return startProcessing
+    preferences.startProcessing = true
+  } else {
+    setCookie(PROCESSING_PREFERENCE_COOKIE_ID, false, 365)
+    preferences.startProcessing = false
   }
-  setCookie(PROCESSING_PREFERENCE_COOKIE_ID, false, 365)
-  return false
+  const threadCount = getCookie(THREADS_PREFERENCE_COOKIE_ID)
+  if (threadCount > 0) {
+    preferences.threadCount = Number(threadCount)
+  } else {
+    preferences.threadCount = 10
+    setCookie(THREADS_PREFERENCE_COOKIE_ID, 10, 365)
+  }
+  return preferences
 }
 
 export function setCookie(name, value, daysToLive) {
@@ -56,6 +67,9 @@ export function getCookie(name) {
   // Return null if not found
   return null
 }
+
+export const updateThreadCountPreference = (value) =>
+  setCookie(THREADS_PREFERENCE_COOKIE_ID, value, 365)
 
 export const updateProcessingPreferenceCookie = (value) =>
   setCookie(PROCESSING_PREFERENCE_COOKIE_ID, value, 365)

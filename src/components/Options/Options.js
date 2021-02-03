@@ -6,6 +6,10 @@ import { Box } from '@material-ui/core'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
+import _ from 'lodash'
+import { connect, useSelector } from 'react-redux'
+import * as selectors from 'sagas/selectors'
+import { setThreadCount } from 'actions'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,28 +21,16 @@ const useStyles = makeStyles((theme) => ({
 
 //TODO hook de las opciones
 
-const marks = [
-  {
-    value: 25,
-    label: '1 thread',
-    disabled: false,
-  },
-  {
-    value: 50,
-    label: '2 threads',
-    disabled: true,
-  },
-  {
-    value: 75,
-    label: '3 threads',
-    disabled: true,
-  },
-  {
-    value: 100,
-    label: '4 threads',
-    disabled: true,
-  },
-]
+const getSuffix = (i, maxThreads) =>
+  maxThreads > 8 ? '' : `thread${i > 0 ? 's' : ''}`
+const maxThreads = navigator.hardwareConcurrency - 1
+const marks = _(new Array(maxThreads))
+  .map((_t, i) => ({
+    value: i + 1,
+    label: `${i + 1} ${getSuffix(i, maxThreads)}`,
+    disabled: i === 0,
+  }))
+  .value()
 
 function valuetext(value) {
   return `${value}%`
@@ -48,8 +40,9 @@ function valueLabelFormat(value) {
   return ''
 }
 
-export default function DiscreteSlider() {
+function Options(props) {
   const classes = useStyles()
+  const threadCount = useSelector(selectors.threadCount)
 
   return (
     <div className={classes.root}>
@@ -64,17 +57,19 @@ export default function DiscreteSlider() {
       </Typography>
       <Box pt={2}>
         <Typography align='left' id='discrete-slider-restrict' gutterBottom>
-          CPU Usage:
+          CPU threads:
         </Typography>
         <Slider
-          defaultValue={25}
+          value={threadCount}
           valueLabelFormat={valueLabelFormat}
           getAriaValueText={valuetext}
           aria-labelledby='discrete-slider-restrict'
           step={null}
           valueLabelDisplay='off'
           marks={marks}
-          disabled
+          min={1}
+          max={maxThreads}
+          onChangeCommitted={(_e, value) => props.setThreadCount(value)}
         />
       </Box>
       <Box pt={2}>
@@ -89,3 +84,4 @@ export default function DiscreteSlider() {
     </div>
   )
 }
+export default connect(null, { setThreadCount })(Options)
