@@ -50,6 +50,7 @@ const tutorialSteps = [
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    height: '390px',
   },
   header: {
     textAlign: 'center',

@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     padding: theme.spacing(1, 2),
+    height: '380px',
   },
   //heading: { color: theme.palette.primary.dark },
 }))
