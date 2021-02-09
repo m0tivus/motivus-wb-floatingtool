@@ -42,22 +42,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function ProcessButton({ isProcessing, task, isMobile, slots, ...props }) {
+function ProcessButton({ isProcessing, tasks, isMobile, slots, ...props }) {
   const classes = useStyles()
-  const { ref, started_on } = task
-  const [timeElapsed, setTimeElapsed] = React.useState(0)
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      if (started_on) {
-        const secs = differenceInSeconds(new Date(), started_on)
-        !isNaN(secs) && setTimeElapsed(secs)
-      } else {
-        setTimeElapsed(0)
-      }
-    }, 1000)
-    return () => clearInterval(timer)
-  })
+  const tasksRunningCount = _(tasks).values().value().length
+  const isWorking = tasksRunningCount > 0
 
   return (
     <Box
@@ -94,26 +82,15 @@ function ProcessButton({ isProcessing, task, isMobile, slots, ...props }) {
                   <Typography className={classes.text}>
                     Using{' '}
                     <span className={classes.textTime}>
-                      {slots.length} threads
+                      {tasksRunningCount} threads
                     </span>
-                  </Typography>
-                </Box>
-                <Box
-                  display='flex'
-                  justifyContent='flex-end'
-                  alignItems='flex-end'
-                >
-                  <Typography className={classes.text}>
-                    <span className={classes.textTime}>{timeElapsed} s</span>{' '}
-                    Time processing
                   </Typography>
                 </Box>
                 <Box display='flex'>
                   <Typography className={classes.text}>
                     <span className={classes.textTime}>
-                      {ref ? _(ref).split('-').value()[0] : 'Waiting input...'}{' '}
+                      {isWorking ? 'Working...' : 'Waiting input...'}
                     </span>
-                    {ref && 'Package name'}
                   </Typography>
                 </Box>
               </React.Fragment>
@@ -136,24 +113,15 @@ function ProcessButton({ isProcessing, task, isMobile, slots, ...props }) {
                     <Typography className={classes.text}>
                       Using{' '}
                       <span className={classes.textTime}>
-                        {slots.length} threads
+                        {tasksRunningCount} threads
                       </span>
-                    </Typography>
-                  </Box>
-                  <Box display='flex'>
-                    <Typography className={classes.text}>
-                      <span className={classes.textTime}>{timeElapsed} s</span>{' '}
-                      Time processing
                     </Typography>
                   </Box>
                   <Box display='flex'>
                     <Typography className={classes.text}>
                       <span className={classes.textTime}>
-                        {ref
-                          ? _(ref).split('-').value()[0]
-                          : 'Waiting input...'}{' '}
+                        {isWorking ? 'Working...' : 'Waiting input...'}
                       </span>
-                      {ref && 'Package name'}
                     </Typography>
                   </Box>
                 </Box>
@@ -168,9 +136,9 @@ function ProcessButton({ isProcessing, task, isMobile, slots, ...props }) {
   )
 }
 export default connect(
-  ({ processing: { isProcessing, task, slots } }) => ({
+  ({ processing: { isProcessing, tasks, slots } }) => ({
     isProcessing,
-    task,
+    tasks,
     slots,
   }),
   {
