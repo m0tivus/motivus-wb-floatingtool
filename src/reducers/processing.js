@@ -9,6 +9,7 @@ import {
   REQUEST_NEW_INPUT,
   SOCKET_READY,
   SET_THREAD_COUNT,
+  SOCKET_CLOSED,
 } from 'actions/types'
 
 const INITIAL_STATE = {
@@ -17,6 +18,7 @@ const INITIAL_STATE = {
   input: {},
   preferences: {},
   task: {},
+  tasks: {},
   slots: [],
 }
 
@@ -30,6 +32,10 @@ export default (state = INITIAL_STATE, action) => {
           ...state.task,
           ref: action.payload.ref,
           started_on: new Date(),
+        },
+        tasks: {
+          ...state.tasks,
+          [action.payload.tid]: true,
         },
       }
     }
@@ -45,6 +51,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isProcessing: false,
         task: INITIAL_STATE.task,
+        tasks: INITIAL_STATE.tasks,
         slots: INITIAL_STATE.slots,
       }
     }
@@ -62,6 +69,7 @@ export default (state = INITIAL_STATE, action) => {
         input: INITIAL_STATE.input,
         task: INITIAL_STATE.task,
         slots: _(state.slots).without(action.tid).value(),
+        tasks: _(state.tasks).omit(action.tid).value(),
       }
     case SET_PROCESSING_PREFERENCES:
       return {
@@ -86,6 +94,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         slots: INITIAL_STATE.slots,
+      }
+    case SOCKET_CLOSED:
+      return {
+        ...state,
+        tasks: INITIAL_STATE.tasks,
       }
     default:
       return state
