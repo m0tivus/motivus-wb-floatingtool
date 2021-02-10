@@ -57,9 +57,12 @@ const useStyles = makeStyles((theme) => ({
 
 function ProjectsCarousel() {
   const classes = useStyles()
-  const { task_quantity, elapsed_time, season, processing_ranking } = useSelector(
-    (state) => state.stats,
-  )
+  const {
+    task_quantity,
+    elapsed_time,
+    season,
+    processing_ranking,
+  } = useSelector((state) => state.stats)
 
   const user = useSelector(({ user }) => user)
   const formatHours = (number) => Number.parseFloat(number).toFixed(2)
@@ -110,11 +113,9 @@ function ProjectsCarousel() {
             <Box display='flex' flexDirection='column' pl={2}>
               <Typography variant='body2'>User:</Typography>
               <Typography variant='h3'>{user.name}</Typography>
-              {/*<Typography variant='body2'>Ranking:</Typography>
-              <Typography variant='h3'>{ranking ? ranking : 'n/a'}</Typography>*/}
               <Typography variant='body2'>Season:</Typography>
               <Typography variant='h3'>
-                {season ? season.name : 'n/a'}
+                {season && season.name ? season.name : 'n/a'}
               </Typography>
               <Typography variant='body2'>Ranking:</Typography>
               <Typography variant='h3'>
@@ -124,19 +125,11 @@ function ProjectsCarousel() {
           </Grid>
           <Grid item xs={4}>
             <Box display='flex' flexDirection='column'>
-              {/*<Typography variant='body2'>Total GFLOPS:</Typography>
-              <Typography variant='h3'>
-                {Number.parseFloat(flops).toFixed(2)}
-              </Typography>*/}
-              {/*<Typography variant='body2'>Motivus credits:</Typography>
-              <Typography variant='h3'>
-                {formatHours(base_time / 60 / 60)}{' '}
-            </Typography>*/}
               <Typography variant='body2'>Total tasks:</Typography>
-              <Typography variant='h3'>{task_quantity}</Typography>
+              <Typography variant='h3'>{task_quantity || 'n/a'}</Typography>
               <Typography variant='body2'>Elapsed Time:</Typography>
               <Typography variant='h3'>
-                {formatHours(elapsed_time / 60 / 60)} h
+                {elapsed_time ? formatHours(elapsed_time / 60 / 60) : 0} h
               </Typography>
             </Box>
           </Grid>
