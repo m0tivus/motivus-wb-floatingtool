@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ProjectsCarousel() {
   const classes = useStyles()
-  const { ranking, quantity, base_time, elapsed_time, flops } = useSelector(
+  const { task_quantity, elapsed_time, season, processing_ranking } = useSelector(
     (state) => state.stats,
   )
 
@@ -78,11 +78,11 @@ function ProjectsCarousel() {
             <span className={classes.revolutionText}></span>
           </Typography>
         ) : (
-            <Typography variant='h2' align='center'>
-              Welcome to the beta version of the{' '}
-              <span className={classes.revolution}>Motivus Floating Tool.</span>{' '}
-            </Typography>
-          )}
+          <Typography variant='h2' align='center'>
+            Welcome to the beta version of the{' '}
+            <span className={classes.revolution}>Motivus Floating Tool.</span>{' '}
+          </Typography>
+        )}
       </Box>
       <Box display='flex' my={1}>
         <Grid container>
@@ -112,6 +112,14 @@ function ProjectsCarousel() {
               <Typography variant='h3'>{user.name}</Typography>
               {/*<Typography variant='body2'>Ranking:</Typography>
               <Typography variant='h3'>{ranking ? ranking : 'n/a'}</Typography>*/}
+              <Typography variant='body2'>Season:</Typography>
+              <Typography variant='h3'>
+                {season ? season.name : 'n/a'}
+              </Typography>
+              <Typography variant='body2'>Ranking:</Typography>
+              <Typography variant='h3'>
+                {processing_ranking || 'n/a'}
+              </Typography>
             </Box>
           </Grid>
           <Grid item xs={4}>
@@ -124,8 +132,8 @@ function ProjectsCarousel() {
               <Typography variant='h3'>
                 {formatHours(base_time / 60 / 60)}{' '}
             </Typography>*/}
-              <Typography variant='body2'>Total tasks</Typography>
-              <Typography variant='h3'>{quantity}</Typography>
+              <Typography variant='body2'>Total tasks:</Typography>
+              <Typography variant='h3'>{task_quantity}</Typography>
               <Typography variant='body2'>Elapsed Time:</Typography>
               <Typography variant='h3'>
                 {formatHours(elapsed_time / 60 / 60)} h
@@ -148,18 +156,18 @@ function ProjectsCarousel() {
             </Link>
           </Typography>
         ) : (
-            <Typography variant='h2' align='center'>
-              Check for updates on our
-              <Link
-                href='https://twitter.com/MotivusHPCN'
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                {' '}
+          <Typography variant='h2' align='center'>
+            Check for updates on our
+            <Link
+              href='https://twitter.com/MotivusHPCN'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              {' '}
               Twitter Feed!{' '}
-              </Link>
-            </Typography>
-          )}
+            </Link>
+          </Typography>
+        )}
       </Box>
       <Box
         my={1}
