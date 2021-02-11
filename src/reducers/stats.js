@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   task_quantity: 0,
   elapsed_time: 0,
   processing_ranking: 0,
+  flop: 0,
   season: {},
 }
 

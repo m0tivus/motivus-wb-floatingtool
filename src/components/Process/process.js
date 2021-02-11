@@ -63,6 +63,7 @@ function ProjectsCarousel() {
     elapsed_time,
     season,
     processing_ranking,
+    flop,
   } = useSelector((state) => state.stats)
 
   const user = useSelector(({ user }) => user)
@@ -126,6 +127,10 @@ function ProjectsCarousel() {
           </Grid>
           <Grid item xs={4}>
             <Box display='flex' flexDirection='column'>
+              <Typography variant='body2'>TFLOP:</Typography>
+              <Typography variant='h3'>
+                {Number.parseFloat(flop / 1024).toFixed(2) || 'n/a'}
+              </Typography>
               <Typography variant='body2'>Total tasks:</Typography>
               <Typography variant='h3'>{task_quantity || 'n/a'}</Typography>
               <Typography variant='body2'>Elapsed Time:</Typography>
