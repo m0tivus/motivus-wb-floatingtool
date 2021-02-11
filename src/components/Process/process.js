@@ -120,7 +120,7 @@ function ProjectsCarousel() {
                 {season && season.name ? season.name : 'n/a'}
               </Typography>
               <Typography variant='body2'>Ranking:</Typography>
-              <Typography variant='h3'>
+              <Typography variant='h2'>
                 {processing_ranking || 'n/a'}
               </Typography>
             </Box>
