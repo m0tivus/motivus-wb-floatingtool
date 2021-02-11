@@ -7,7 +7,6 @@ import {
   cancel,
   takeEvery,
   delay,
-  cancelled,
   race,
 } from 'redux-saga/effects'
 
@@ -16,17 +15,19 @@ import {
   setupSagaSocket,
   joinUserRoom,
   socketHeartbeat,
-  postResults,
+  sendResult,
+  requestNewInput,
 } from 'utils/api'
 import {
   SOCKET_READY,
   SET_INPUT,
-  SET_RESULTS,
+  SET_RESULT,
   SET_SOCKET_MESSAGE,
   SOCKET_CLOSED,
   STOP_PROCESSING,
   SET_STATS,
   SET_USER,
+  REQUEST_NEW_INPUT,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import { ensureIsProcessing } from 'sagas/processing'
@@ -61,11 +62,12 @@ export function* socketSaga() {
     const feed = yield call(setupSagaSocket, client)
 
     const heartbeatTask = yield fork(heartbeatSaga, client)
+    const inputRequestsTask = yield fork(handleInputRequests, client)
 
     yield call(joinUserRoom, client, userRoom)
 
     yield put({ type: SOCKET_READY })
-    yield takeEvery(SET_RESULTS, resultsSaga, client)
+    yield takeEvery(SET_RESULT, resultSaga, client)
 
     try {
       while (true) {
@@ -73,8 +75,12 @@ export function* socketSaga() {
         const { event, payload } = message
 
         switch (event) {
-          case SET_INPUT: {
+          case 'input': {
             yield put({ type: SET_INPUT, payload })
+            break
+          }
+          case 'stats': {
+            yield put({ type: SET_STATS, stats: payload.body })
             break
           }
           case 'phx_reply':
@@ -84,26 +90,16 @@ export function* socketSaga() {
             console.error('backend error: ', message)
             break
           }
-          case 'new_msg': {
-            yield put({ type: SET_INPUT, payload, client, userRoom })
-            break
-          }
-          case 'new_msg_stats': {
-            yield put({ type: SET_STATS, payload, client, userRoom })
-            break
-          }
           default:
             yield put({ type: SET_SOCKET_MESSAGE, message })
         }
       }
     } finally {
       client.close()
-      yield cancel([heartbeatTask])
+      yield cancel([heartbeatTask, inputRequestsTask])
     }
   } finally {
-    if (!(yield cancelled())) {
-      yield put({ type: SOCKET_CLOSED })
-    }
+    yield put({ type: SOCKET_CLOSED })
   }
 }
 
@@ -119,9 +115,16 @@ function* heartbeatSaga(client) {
   }
 }
 
-function* resultsSaga(client, { results, ref }) {
+function* handleInputRequests(client) {
   const userRoom = yield select(selectors.userRoom)
-  yield call(postResults, client, results, userRoom, ref)
+  yield takeEvery(REQUEST_NEW_INPUT, function* ({ tid }) {
+    yield call(requestNewInput, client, userRoom, tid)
+  })
+}
+
+function* resultSaga(client, { result, ref }) {
+  const userRoom = yield select(selectors.userRoom)
+  yield call(sendResult, client, result, userRoom, ref)
 }
 
 export function* ensureSocketReady() {

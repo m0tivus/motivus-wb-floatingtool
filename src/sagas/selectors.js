@@ -1,4 +1,10 @@
 export const inputElement = ({ processing: { inputSource } }) => inputSource
+export const slots = ({ processing: { slots } }) => slots
+export const threadCount = ({
+  processing: {
+    preferences: { threadCount },
+  },
+}) => threadCount
 export const isProcessing = ({ processing: { isProcessing } }) => isProcessing
 export const isLoadingModel = ({ processing: { isLoadingModel } }) =>
   isLoadingModel
