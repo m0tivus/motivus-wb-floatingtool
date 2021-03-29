@@ -47,7 +47,11 @@ function* handleSetToken(action) {
 
 function* refreshUser(user = null) {
   if (!user) {
-    user = yield call(api.getUser)
+    try {
+      user = yield call(api.getUser)
+    } catch {
+      //
+    }
   }
   if (!user) {
     yield call(handleLogout)
