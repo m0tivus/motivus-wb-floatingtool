@@ -6,6 +6,7 @@ import {
   SET_USER,
   UNSET_USER,
 } from 'actions/types'
+import { v4 as uuidv4 } from 'uuid'
 
 const INITIAL_STATE = {
   token: '',
@@ -41,7 +42,7 @@ export default (state = INITIAL_STATE, action) => {
     case SET_USER:
       return {
         ...state,
-        userRoom: `room:worker:${action.user.uuid}`,
+        userRoom: `room:worker:${action.user.uuid}:${uuidv4()}`,
         isUserLoaded: true,
         isUserGuest: action.user.is_guest,
       }
