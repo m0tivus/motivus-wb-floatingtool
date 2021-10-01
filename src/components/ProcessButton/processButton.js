@@ -42,10 +42,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function ProcessButton({ isProcessing, tasks, isMobile, slots, ...props }) {
+function ProcessButton({
+  isProcessing,
+  tasks,
+  isMobile,
+  slots,
+  last_result_datetime,
+  ...props
+}) {
   const classes = useStyles()
   const tasksRunningCount = _(tasks).values().value().length
-  const isWorking = tasksRunningCount > 0
+
+  const [timeElapsed, setTimeElapsed] = React.useState(0)
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      if (last_result_datetime) {
+        const secs = differenceInSeconds(new Date(), last_result_datetime)
+        !isNaN(secs) && setTimeElapsed(secs)
+      } else {
+        setTimeElapsed(0)
+      }
+    }, 1000)
+    return () => clearInterval(timer)
+  })
 
   return (
     <Box
@@ -88,9 +108,8 @@ function ProcessButton({ isProcessing, tasks, isMobile, slots, ...props }) {
                 </Box>
                 <Box display='flex'>
                   <Typography className={classes.text}>
-                    <span className={classes.textTime}>
-                      {isWorking ? 'Working...' : 'Waiting input...'}
-                    </span>
+                    <span className={classes.textTime}>{timeElapsed} s</span>{' '}
+                    Time since last result
                   </Typography>
                 </Box>
               </React.Fragment>
@@ -119,9 +138,8 @@ function ProcessButton({ isProcessing, tasks, isMobile, slots, ...props }) {
                   </Box>
                   <Box display='flex'>
                     <Typography className={classes.text}>
-                      <span className={classes.textTime}>
-                        {isWorking ? 'Working...' : 'Waiting input...'}
-                      </span>
+                      <span className={classes.textTime}>{timeElapsed} s</span>{' '}
+                      Time since last result
                     </Typography>
                   </Box>
                 </Box>
@@ -136,10 +154,11 @@ function ProcessButton({ isProcessing, tasks, isMobile, slots, ...props }) {
   )
 }
 export default connect(
-  ({ processing: { isProcessing, tasks, slots } }) => ({
+  ({ processing: { isProcessing, tasks, slots, last_result_datetime } }) => ({
     isProcessing,
     tasks,
     slots,
+    last_result_datetime,
   }),
   {
     startProcessing,

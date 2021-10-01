@@ -29,7 +29,6 @@ import {
   updateThreadCountPreference,
 } from 'utils/common'
 import { ensureSocketReady } from './socket'
-import _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
 var Motivus = window.Motivus || {}
@@ -58,14 +57,14 @@ function* handleNewInput({ payload }) {
       let loader = buffLoader.toString('ascii')
       switch (payload.body.run_type) {
         case 'wasm': {
-          const { ref, client_id, task_id, body, tid } = payload
+          const { body, tid } = payload
           // URL.createObjectURL
           window.URL = window.URL || window.webkitURL
 
           var blob
           blob = new Blob([loader], { type: 'application/javascript' })
           var worker = new Worker(URL.createObjectURL(blob), {
-            name: ref,
+            name: tid,
           })
 
           const workerMessages = yield call(setupWorker, worker)
@@ -74,13 +73,8 @@ function* handleNewInput({ payload }) {
               type: SET_RESULT,
               result: {
                 body: result,
-                type: 'response',
-                ref,
-                client_id,
-                task_id,
                 tid,
               },
-              ref,
               tid,
             })
           })
@@ -105,21 +99,6 @@ function* handleNewInput({ payload }) {
           }
           break
         }
-        //case 'js': {
-        //  eval(loader)
-        //  const response = main(payload.body.params).then((x) => {
-        //    console.log('terminó la promesa', x)
-        //    channel.push(
-        //      'new_msg',
-        //      { body: x, type: 'response', ref: msg.ref },
-        //      10000,
-        //    )
-        //  })
-        //  //response = handleNewInput().then((x) => console.log("terminó la promesa", x));
-        //  console.log('response promise', response)
-        //  //channel.push("new_msg", {body: response, type: "response", ref: msg.ref}, 10000)
-        //  break
-        //}
         default:
           break
       }

@@ -7,6 +7,7 @@ import { Box, Grid, Link } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useTheme } from '@material-ui/core/styles'
+import _ from 'lodash'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,6 +63,7 @@ function ProjectsCarousel() {
     elapsed_time,
     season,
     processing_ranking,
+    flop,
   } = useSelector((state) => state.stats)
 
   const user = useSelector(({ user }) => user)
@@ -77,8 +79,6 @@ function ProjectsCarousel() {
           <Typography variant='h2' align='center'>
             Welcome to the beta version of the{' '}
             <span className={classes.revolution}>Motivus Floating Tool.</span>{' '}
-            Here you’ll be able to share your computing power with the world.{' '}
-            <span className={classes.revolutionText}></span>
           </Typography>
         ) : (
           <Typography variant='h2' align='center'>
@@ -112,19 +112,25 @@ function ProjectsCarousel() {
           <Grid item xs={4}>
             <Box display='flex' flexDirection='column' pl={2}>
               <Typography variant='body2'>User:</Typography>
-              <Typography variant='h3'>{user.name}</Typography>
+              <Typography variant='h3'>
+                {_.truncate(user.name, { length: 20 })}
+              </Typography>
               <Typography variant='body2'>Season:</Typography>
               <Typography variant='h3'>
                 {season && season.name ? season.name : 'n/a'}
               </Typography>
               <Typography variant='body2'>Ranking:</Typography>
-              <Typography variant='h3'>
+              <Typography variant='h2'>
                 {processing_ranking || 'n/a'}
               </Typography>
             </Box>
           </Grid>
           <Grid item xs={4}>
             <Box display='flex' flexDirection='column'>
+              <Typography variant='body2'>TFLOP:</Typography>
+              <Typography variant='h3'>
+                {Number.parseFloat(flop / 1024).toFixed(2) || 'n/a'}
+              </Typography>
               <Typography variant='body2'>Total tasks:</Typography>
               <Typography variant='h3'>{task_quantity || 'n/a'}</Typography>
               <Typography variant='body2'>Elapsed Time:</Typography>

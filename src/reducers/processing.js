@@ -20,6 +20,7 @@ const INITIAL_STATE = {
   task: {},
   tasks: {},
   slots: [],
+  last_result_datetime: null,
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -44,6 +45,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isProcessing: true,
         task: INITIAL_STATE.task,
+        last_result_datetime: new Date(),
       }
     }
     case STOP_PROCESSING: {
@@ -70,6 +72,7 @@ export default (state = INITIAL_STATE, action) => {
         task: INITIAL_STATE.task,
         slots: _(state.slots).without(action.tid).value(),
         tasks: _(state.tasks).omit(action.tid).value(),
+        last_result_datetime: new Date(),
       }
     case SET_PROCESSING_PREFERENCES:
       return {

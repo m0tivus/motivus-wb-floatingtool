@@ -13,7 +13,7 @@ import {
 import {
   startWS,
   setupSagaSocket,
-  joinUserRoom,
+  joinChannel,
   socketHeartbeat,
   sendResult,
   requestNewInput,
@@ -55,16 +55,16 @@ export function* socketSaga() {
   yield call(ensureUserLoaded)
 
   try {
-    const uuid = yield select(selectors.uuid)
-    const userRoom = yield select(selectors.userRoom)
+    const channelId = yield select(selectors.channelId)
+    const token = yield select(selectors.token)
 
-    const client = yield call(startWS, uuid)
+    const client = yield call(startWS, token)
     const feed = yield call(setupSagaSocket, client)
 
     const heartbeatTask = yield fork(heartbeatSaga, client)
     const inputRequestsTask = yield fork(handleInputRequests, client)
 
-    yield call(joinUserRoom, client, userRoom)
+    yield call(joinChannel, client, channelId)
 
     yield put({ type: SOCKET_READY })
     yield takeEvery(SET_RESULT, resultSaga, client)
@@ -116,15 +116,15 @@ function* heartbeatSaga(client) {
 }
 
 function* handleInputRequests(client) {
-  const userRoom = yield select(selectors.userRoom)
+  const channelId = yield select(selectors.channelId)
   yield takeEvery(REQUEST_NEW_INPUT, function* ({ tid }) {
-    yield call(requestNewInput, client, userRoom, tid)
+    yield call(requestNewInput, client, channelId, tid)
   })
 }
 
 function* resultSaga(client, { result, ref }) {
-  const userRoom = yield select(selectors.userRoom)
-  yield call(sendResult, client, result, userRoom, ref)
+  const channelId = yield select(selectors.channelId)
+  yield call(sendResult, client, result, channelId, ref)
 }
 
 export function* ensureSocketReady() {
