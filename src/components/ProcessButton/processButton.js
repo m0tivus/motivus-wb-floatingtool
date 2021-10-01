@@ -52,7 +52,6 @@ function ProcessButton({
 }) {
   const classes = useStyles()
   const tasksRunningCount = _(tasks).values().value().length
-  const isWorking = tasksRunningCount > 0
 
   const [timeElapsed, setTimeElapsed] = React.useState(0)
 
@@ -108,11 +107,11 @@ function ProcessButton({
                   </Typography>
                 </Box>
                 <Box display='flex'>
-                    <Typography className={classes.text}>
-                      <span className={classes.textTime}>{timeElapsed} s</span>{' '}
-                      Time since last result
-                    </Typography>
-                  </Box>
+                  <Typography className={classes.text}>
+                    <span className={classes.textTime}>{timeElapsed} s</span>{' '}
+                    Time since last result
+                  </Typography>
+                </Box>
               </React.Fragment>
             ) : (
               <React.Fragment>
