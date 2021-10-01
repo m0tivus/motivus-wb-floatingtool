@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 const INITIAL_STATE = {
   token: '',
-  userRoom: '',
+  channelId: '',
   isSocketReady: false,
   isUserLoaded: false,
   isUserGuest: true,
@@ -36,13 +36,13 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isSocketReady: false,
-        userRoom: '',
+        channelId: '',
         isUserGuest: true,
       }
     case SET_USER:
       return {
         ...state,
-        userRoom: `room:worker:${action.user.uuid}:${uuidv4()}`,
+        channelId: `room:worker:${action.user.uuid}:${uuidv4()}`,
         isUserLoaded: true,
         isUserGuest: action.user.is_guest,
       }

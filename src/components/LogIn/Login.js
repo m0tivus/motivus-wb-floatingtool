@@ -1,7 +1,7 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import { Box, SvgIcon } from '@material-ui/core'
-import FacebookIcon from '@material-ui/icons/Facebook'
+// import FacebookIcon from '@material-ui/icons/Facebook'
 import GitHubIcon from '@material-ui/icons/GitHub'
 import { makeStyles } from '@material-ui/core/styles'
 import { httpBase } from 'utils/api'

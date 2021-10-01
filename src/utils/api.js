@@ -24,13 +24,13 @@ export const createGuestUser = () =>
   axios.post(`${httpBase}/auth/guest`).then(({ data }) => data.token)
 
 export const startWS = (
-  uuid = null,
+  token = null,
   url = process.env.REACT_APP_WS_URL || `${wsBase}/socket/websocket`,
 ) =>
   new Promise((resolve, reject) => {
     let urlWithParams = url
-    if (uuid) {
-      urlWithParams += `?uuid=${uuid}`
+    if (token) {
+      urlWithParams += `?token=${token}`
     }
     const socket = new W3CWebSocket(urlWithParams)
     socket.onopen = () => resolve(socket)
@@ -70,15 +70,15 @@ export const sendThroughSocket = (
 export const socketHeartbeat = (client) =>
   sendThroughSocket(client, 'phoenix', 'heartbeat')
 
-export const joinUserRoom = (client, userRoom) =>
-  sendThroughSocket(client, userRoom, 'phx_join')
+export const joinChannel = (client, channelId) =>
+  sendThroughSocket(client, channelId, 'phx_join')
 
-export const requestNewInput = (client, userRoom, tid) =>
-  sendThroughSocket(client, userRoom, 'input_request', { tid })
-export const subscribeToTopic = (client, userRoom, topic) =>
-  sendThroughSocket(client, userRoom, 'subscribe', { topic })
-export const unsubscribeOfTopics = (client, userRoom) =>
-  sendThroughSocket(client, userRoom, 'unsubscribe')
+export const requestNewInput = (client, channelId, tid) =>
+  sendThroughSocket(client, channelId, 'input_request', { tid })
+export const subscribeToTopic = (client, channelId, topic) =>
+  sendThroughSocket(client, channelId, 'subscribe', { topic })
+export const unsubscribeOfTopics = (client, channelId) =>
+  sendThroughSocket(client, channelId, 'unsubscribe')
 
 export const sendResult = (client, result, room = 'room:lobby', ref = null) =>
   sendThroughSocket(client, room, 'result', result, ref)

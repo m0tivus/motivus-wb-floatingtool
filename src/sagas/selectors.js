@@ -11,7 +11,7 @@ export const isLoadingModel = ({ processing: { isLoadingModel } }) =>
 export const token = ({ app: { token } }) => token
 export const socketClient = ({ app: { socketClient } }) => socketClient
 export const isSocketReady = ({ app: { isSocketReady } }) => isSocketReady
-export const userRoom = ({ app: { userRoom } }) => userRoom
+export const channelId = ({ app: { channelId } }) => channelId
 export const isUserLoaded = ({ app: { isUserLoaded } }) => isUserLoaded
 export const currentSaga = ({ processing: { currentSaga } }) => currentSaga
 export const currentTask = ({ processing: { currentTask } }) => currentTask
