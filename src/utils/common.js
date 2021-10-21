@@ -7,7 +7,8 @@ export const setupWorker = (worker: Worker) =>
     worker.onmessage = (event) => {
       emit(event.data)
     }
-    worker.onerror = () => {
+    worker.onerror = (e) => {
+      console.log(e)
       console.log('erorrrrrr')
     }
     const unsubscribe = () => {

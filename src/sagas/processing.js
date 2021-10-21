@@ -72,7 +72,7 @@ function* handleNewInput({ payload }) {
             yield put({
               type: SET_RESULT,
               result: {
-                body: result,
+                ...result,
                 tid,
               },
               tid,
