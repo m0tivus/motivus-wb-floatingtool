@@ -20,6 +20,7 @@ import {
   SOCKET_READY,
   SET_PROCESSING_PREFERENCES,
   SET_THREAD_COUNT,
+  ABORT_TASK,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import {
@@ -43,7 +44,7 @@ export function* main() {
   yield takeEvery(SET_INPUT, handleNewInput)
   yield fork(getProcessingPreferences)
   yield takeLeading(
-    [START_PROCESSING, SET_RESULT, SOCKET_READY, SET_THREAD_COUNT],
+    [START_PROCESSING, SET_RESULT, SOCKET_READY, SET_THREAD_COUNT, ABORT_TASK],
     askForInputs,
   )
 }
@@ -86,11 +87,22 @@ function* handleNewInput({ payload }) {
               stoppedProcessing: take(STOP_PROCESSING),
               socketClosed: take(SOCKET_CLOSED),
               result: take(SET_RESULT),
+              abort: take(ABORT_TASK),
             })
+            if (winner.abort) {
+              if (winner.abort.tid === tid) {
+                worker.terminate()
+                break
+              } else {
+                continue
+              }
+            }
             if (winner.result) {
               if (winner.result.tid === tid) {
                 worker.terminate()
                 break
+              } else {
+                continue
               }
             } else {
               worker.terminate()

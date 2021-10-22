@@ -10,6 +10,7 @@ import {
   SOCKET_READY,
   SET_THREAD_COUNT,
   SOCKET_CLOSED,
+  ABORT_TASK,
 } from 'actions/types'
 
 const INITIAL_STATE = {
@@ -73,6 +74,15 @@ export default (state = INITIAL_STATE, action) => {
         slots: _(state.slots).without(action.tid).value(),
         tasks: _(state.tasks).omit(action.tid).value(),
         last_result_datetime: new Date(),
+      }
+    case ABORT_TASK:
+      return {
+        ...state,
+        result: action.result,
+        input: INITIAL_STATE.input,
+        task: INITIAL_STATE.task,
+        slots: _(state.slots).without(action.tid).value(),
+        tasks: _(state.tasks).omit(action.tid).value(),
       }
     case SET_PROCESSING_PREFERENCES:
       return {

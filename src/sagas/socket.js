@@ -28,6 +28,7 @@ import {
   SET_STATS,
   SET_USER,
   REQUEST_NEW_INPUT,
+  ABORT_TASK,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import { ensureIsProcessing } from 'sagas/processing'
@@ -90,6 +91,9 @@ export function* socketSaga() {
             console.error('backend error: ', message)
             break
           }
+          case 'abort_task':
+            yield put({ type: ABORT_TASK, tid: payload.tid })
+            break
           default:
             yield put({ type: SET_SOCKET_MESSAGE, message })
         }
