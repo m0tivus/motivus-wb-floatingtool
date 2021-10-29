@@ -35,18 +35,18 @@ The node worker has two modes that can be switched via the`CLUSTER_MODE` env var
 - *loopback* mode
 
 #### Network mode
-For use with the application backend.
-The driver framework must point to the application backend and use a valid `APPLICATION_TOKEN` env variable.
-The worker must also point to the same application backend, using the `REACT_APP_API_HOST=localhost:4000` env variable.
+- For use with the application backend.
+- The driver framework must point to the application backend and use a valid `APPLICATION_TOKEN` env variable.
+- The worker must also point to the same application backend, using the `REACT_APP_API_HOST=localhost:4000` env variable.
 
 Start the worker in network mode by executing:
 `CLUSTER_MODE=network yarn worker`
 
 #### Loop-back mode
-For use without application backend.
-The driver framework must point to the loop-back server, that is started along the worker.
-Every task scheduled by the driver is started in the worker when it arrives.
-The driver does not requires an `APPLICATION_TOKEN` and must point to the loop-back server.
+- For use without application backend.
+- The driver framework must point to the loop-back server, that is started along the worker.
+- Every task scheduled by the driver is started in the worker when it arrives.
+- The driver does not requires an `APPLICATION_TOKEN` and must point to the loop-back server.
 
 Start the worker in loop-back mode by executing:
 `CLUSTER_MODE=loopback yarn worker`
