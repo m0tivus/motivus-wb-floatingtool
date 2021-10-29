@@ -54,4 +54,4 @@ Start the worker in loop-back mode by executing:
 ## Running in production
 - Set your account address in env (TODO: will use guest account for now)
 - Set desired threads available using `PROCESSING_THREADS` env variable
-`curl https://widget.motivus.cl/worker.js | PROCESSING_THREADS=10 node`
+`curl https://widget.motivus.cl/worker.js | REACT_APP_TLS=true PROCESSING_THREADS=10 node`
