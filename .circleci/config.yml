@@ -3,7 +3,9 @@ orbs:
   node: circleci/node@4.1.0
 jobs:
   build:
-    executor: node/default
+    executor:
+      name: node/default
+      tag: '16.13'
     steps:
       - checkout
       - run: yarn install
