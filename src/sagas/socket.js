@@ -34,6 +34,8 @@ import * as selectors from 'sagas/selectors'
 import { ensureIsProcessing } from 'sagas/processing'
 import { ensureUserLoaded } from 'sagas/user'
 
+const clusterMode = process.env.CLUSTER_MODE || 'network'
+
 export function* main() {
   while (true) {
     let socketTask = yield fork(socketSaga)
@@ -53,57 +55,61 @@ export function* main() {
 
 export function* socketSaga() {
   yield call(ensureIsProcessing)
-  yield call(ensureUserLoaded)
 
-  try {
-    const channelId = yield select(selectors.channelId)
-    const token = yield select(selectors.token)
-
-    const client = yield call(startWS, token)
-    const feed = yield call(setupSagaSocket, client)
-
-    const heartbeatTask = yield fork(heartbeatSaga, client)
-    const inputRequestsTask = yield fork(handleInputRequests, client)
-
-    yield call(joinChannel, client, channelId)
-
-    yield put({ type: SOCKET_READY })
-    yield takeEvery(SET_RESULT, resultSaga, client)
-
+  if (clusterMode === 'network') {
+    yield call(ensureUserLoaded)
     try {
-      while (true) {
-        const message = yield take(feed)
-        const { event, payload } = message
+      const channelId = yield select(selectors.channelId)
+      const token = yield select(selectors.token)
 
-        switch (event) {
-          case 'input': {
-            yield put({ type: SET_INPUT, payload })
-            break
+      const client = yield call(startWS, token)
+      const feed = yield call(setupSagaSocket, client)
+
+      const heartbeatTask = yield fork(heartbeatSaga, client)
+      const inputRequestsTask = yield fork(handleInputRequests, client)
+
+      yield call(joinChannel, client, channelId)
+
+      yield put({ type: SOCKET_READY })
+      yield takeEvery(SET_RESULT, resultSaga, client)
+
+      try {
+        while (true) {
+          const message = yield take(feed)
+          const { event, payload } = message
+
+          switch (event) {
+            case 'input': {
+              yield put({ type: SET_INPUT, payload })
+              break
+            }
+            case 'stats': {
+              yield put({ type: SET_STATS, stats: payload.body })
+              break
+            }
+            case 'phx_reply':
+            case 'presence_diff':
+              break
+            case 'phx_error': {
+              console.error('backend error: ', message)
+              break
+            }
+            case 'abort_task':
+              yield put({ type: ABORT_TASK, tid: payload.tid })
+              break
+            default:
+              yield put({ type: SET_SOCKET_MESSAGE, message })
           }
-          case 'stats': {
-            yield put({ type: SET_STATS, stats: payload.body })
-            break
-          }
-          case 'phx_reply':
-          case 'presence_diff':
-            break
-          case 'phx_error': {
-            console.error('backend error: ', message)
-            break
-          }
-          case 'abort_task':
-            yield put({ type: ABORT_TASK, tid: payload.tid })
-            break
-          default:
-            yield put({ type: SET_SOCKET_MESSAGE, message })
         }
+      } finally {
+        client.close()
+        yield cancel([heartbeatTask, inputRequestsTask])
       }
     } finally {
-      client.close()
-      yield cancel([heartbeatTask, inputRequestsTask])
+      yield put({ type: SOCKET_CLOSED })
     }
-  } finally {
-    yield put({ type: SOCKET_CLOSED })
+  } else if (clusterMode === 'loopback') {
+    yield put({ type: SOCKET_READY })
   }
 }
 

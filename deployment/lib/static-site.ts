@@ -96,7 +96,10 @@ export class StaticSite extends Construct {
         s3deploy.Source.asset('../build/static/js', {
           exclude: ['**', '!loader.js'],
         }),
-        s3deploy.Source.asset('../build/images' ),
+        s3deploy.Source.asset('../dist', {
+          exclude: ['**', '!worker.js'],
+        }),
+        s3deploy.Source.asset('../build/images'),
       ],
       destinationBucket: siteBucket,
       distribution,
