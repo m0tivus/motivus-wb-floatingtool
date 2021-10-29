@@ -144,14 +144,13 @@ function ProjectsCarousel() {
       <Box display='flex' mt={2} width='100%' justifyContent='center'>
         {!user || (user && user.is_guest) ? (
           <Typography variant='h2' align='center'>
-            Log in to enter our Contest!{' '}
+            Learn more about the{' '}
             <Link
-              href='https://motivus.cl/blog/motivus-benchmark'
+              href='https://motivus.cl/blog/motivus-update-rna-epic-pandemic'
               target='_blank'
               rel='noopener noreferrer'
             >
-              {' '}
-              Read more{' '}
+              {' '}RNA Epic{' '}
             </Link>
           </Typography>
         ) : (

@@ -20,10 +20,12 @@ import {
   SOCKET_READY,
   SET_PROCESSING_PREFERENCES,
   SET_THREAD_COUNT,
+  ABORT_TASK,
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import {
-  getProcessingPreferencesFromCookies,
+  createWorker,
+  getProcessingPreferencesFromEnv,
   setupWorker,
   updateProcessingPreferenceCookie,
   updateThreadCountPreference,
@@ -31,7 +33,7 @@ import {
 import { ensureSocketReady } from './socket'
 import { v4 as uuidv4 } from 'uuid'
 
-var Motivus = window.Motivus || {}
+var Motivus = (typeof window === 'object' && window.Motivus) || {}
 
 export function* main() {
   yield takeEvery([STOP_PROCESSING, START_PROCESSING], logProcessingEvent)
@@ -43,12 +45,12 @@ export function* main() {
   yield takeEvery(SET_INPUT, handleNewInput)
   yield fork(getProcessingPreferences)
   yield takeLeading(
-    [START_PROCESSING, SET_RESULT, SOCKET_READY, SET_THREAD_COUNT],
+    [START_PROCESSING, SET_RESULT, SOCKET_READY, SET_THREAD_COUNT, ABORT_TASK],
     askForInputs,
   )
 }
 
-function* handleNewInput({ payload }) {
+function* handleNewInput({ payload, callback = () => null }) {
   switch (payload.type) {
     case 'work': {
       let buffLoader = Buffer.from(payload.body.loader, 'base64')
@@ -58,25 +60,20 @@ function* handleNewInput({ payload }) {
       switch (payload.body.run_type) {
         case 'wasm': {
           const { body, tid } = payload
-          // URL.createObjectURL
-          window.URL = window.URL || window.webkitURL
 
-          var blob
-          blob = new Blob([loader], { type: 'application/javascript' })
-          var worker = new Worker(URL.createObjectURL(blob), {
-            name: tid,
-          })
+          var worker = createWorker(loader, tid)
 
           const workerMessages = yield call(setupWorker, worker)
           yield takeLatest(workerMessages, function* (result) {
             yield put({
               type: SET_RESULT,
               result: {
-                body: result,
+                ...result,
                 tid,
               },
               tid,
             })
+            yield call(callback, result)
           })
 
           worker.postMessage(body)
@@ -86,11 +83,22 @@ function* handleNewInput({ payload }) {
               stoppedProcessing: take(STOP_PROCESSING),
               socketClosed: take(SOCKET_CLOSED),
               result: take(SET_RESULT),
+              abort: take(ABORT_TASK),
             })
+            if (winner.abort) {
+              if (winner.abort.tid === tid) {
+                worker.terminate()
+                break
+              } else {
+                continue
+              }
+            }
             if (winner.result) {
               if (winner.result.tid === tid) {
                 worker.terminate()
                 break
+              } else {
+                continue
               }
             } else {
               worker.terminate()
@@ -112,7 +120,7 @@ function* handleNewInput({ payload }) {
 
 function* getProcessingPreferences() {
   const { startProcessing, threadCount } = yield call(
-    getProcessingPreferencesFromCookies,
+    getProcessingPreferencesFromEnv,
   )
   yield put({
     type: SET_PROCESSING_PREFERENCES,
