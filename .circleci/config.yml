@@ -8,6 +8,7 @@ jobs:
       - checkout
       - run: yarn install
       - run: CI=false yarn run build
+      - run: CI=false yarn run build-standalone-worker
       - run: sudo yarn global add aws-cdk@1.80.0
       - run: CI="" cd deployment && yarn install && yarn build
       - run: cd deployment && cdk bootstrap && cdk deploy --progress events --ci --require-approval never

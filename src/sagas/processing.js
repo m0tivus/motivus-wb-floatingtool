@@ -24,7 +24,8 @@ import {
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import {
-  getProcessingPreferencesFromCookies,
+  createWorker,
+  getProcessingPreferencesFromEnv,
   setupWorker,
   updateProcessingPreferenceCookie,
   updateThreadCountPreference,
@@ -32,7 +33,7 @@ import {
 import { ensureSocketReady } from './socket'
 import { v4 as uuidv4 } from 'uuid'
 
-var Motivus = window.Motivus || {}
+var Motivus = (typeof window === 'object' && window.Motivus) || {}
 
 export function* main() {
   yield takeEvery([STOP_PROCESSING, START_PROCESSING], logProcessingEvent)
@@ -49,7 +50,7 @@ export function* main() {
   )
 }
 
-function* handleNewInput({ payload }) {
+function* handleNewInput({ payload, callback = () => null }) {
   switch (payload.type) {
     case 'work': {
       let buffLoader = Buffer.from(payload.body.loader, 'base64')
@@ -59,14 +60,8 @@ function* handleNewInput({ payload }) {
       switch (payload.body.run_type) {
         case 'wasm': {
           const { body, tid } = payload
-          // URL.createObjectURL
-          window.URL = window.URL || window.webkitURL
 
-          var blob
-          blob = new Blob([loader], { type: 'application/javascript' })
-          var worker = new Worker(URL.createObjectURL(blob), {
-            name: tid,
-          })
+          var worker = createWorker(loader, tid)
 
           const workerMessages = yield call(setupWorker, worker)
           yield takeLatest(workerMessages, function* (result) {
@@ -78,6 +73,7 @@ function* handleNewInput({ payload }) {
               },
               tid,
             })
+            yield call(callback, result)
           })
 
           worker.postMessage(body)
@@ -124,7 +120,7 @@ function* handleNewInput({ payload }) {
 
 function* getProcessingPreferences() {
   const { startProcessing, threadCount } = yield call(
-    getProcessingPreferencesFromCookies,
+    getProcessingPreferencesFromEnv,
   )
   yield put({
     type: SET_PROCESSING_PREFERENCES,

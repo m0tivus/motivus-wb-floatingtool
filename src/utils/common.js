@@ -2,10 +2,13 @@ import { eventChannel } from 'redux-saga'
 const PROCESSING_PREFERENCE_COOKIE_ID = 'motivus_wb_pp'
 const THREADS_PREFERENCE_COOKIE_ID = 'motivus_wb_pt'
 
-export const setupWorker = (worker: Worker) =>
+export const setupWorker = (worker) =>
   eventChannel((emit) => {
-    worker.onmessage = (event) => {
-      emit(event.data)
+    worker.onmessage = (event) => emit(event.data)
+    try {
+      worker.once('message', (data) => emit(data))
+    } catch {
+      //
     }
     worker.onerror = (e) => {
       console.log(e)
@@ -17,6 +20,16 @@ export const setupWorker = (worker: Worker) =>
     }
     return unsubscribe
   })
+
+export const getProcessingPreferencesFromEnv = () => {
+  if (typeof document === 'object') {
+    return getProcessingPreferencesFromCookies()
+  }
+  return {
+    startProcessing: true,
+    threadCount: Number(process.env.PROCESSING_THREADS) || 1,
+  }
+}
 
 export const getProcessingPreferencesFromCookies = () => {
   const preferences = {}
@@ -46,12 +59,17 @@ export function setCookie(name, value, daysToLive) {
         after the specified number of days */
     cookie += '; max-age=' + daysToLive * 24 * 60 * 60
   }
-  document.cookie = cookie
+  if (typeof document === 'object') {
+    document.cookie = cookie
+  }
 }
 
 export function getCookie(name) {
   // Split cookie string and get all individual name=value pairs in an array
-  var cookieArr = document.cookie.split(';')
+  var cookieArr = []
+  if (typeof document === 'object') {
+    cookieArr = document.cookie.split(';')
+  }
 
   // Loop through the array elements
   for (var i = 0; i < cookieArr.length; i++) {
@@ -74,3 +92,21 @@ export const updateThreadCountPreference = (value) =>
 
 export const updateProcessingPreferenceCookie = (value) =>
   setCookie(PROCESSING_PREFERENCE_COOKIE_ID, value, 365)
+
+export const createObjectURL = (blob) => {
+  if (typeof window === 'object') {
+    window.URL = window.URL || window.webkitURL
+    return URL.createObjectURL(blob)
+  }
+}
+
+export const createWorker = (loader, tid) => {
+  if (typeof Worker === 'function') {
+    var blob = new Blob([loader], { type: 'application/javascript' })
+    return new Worker(createObjectURL(blob), {
+      name: tid,
+    })
+  }
+  const { Worker: NodeWorker } = require('worker_threads')
+  return new NodeWorker(loader, { eval: true, env: {}, name: tid })
+}
