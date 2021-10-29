@@ -40,7 +40,8 @@ The node worker has two modes that can be switched via the`CLUSTER_MODE` env var
 - The worker must also point to the same application backend, using the `REACT_APP_API_HOST=localhost:4000` env variable.
 
 Start the worker in network mode by executing:
-`CLUSTER_MODE=network yarn worker`
+
+`$ CLUSTER_MODE=network yarn worker`
 
 #### Loop-back mode
 - For use without application backend.
@@ -49,9 +50,16 @@ Start the worker in network mode by executing:
 - The driver does not requires an `APPLICATION_TOKEN` and must point to the loop-back server.
 
 Start the worker in loop-back mode by executing:
-`CLUSTER_MODE=loopback yarn worker`
+
+`$ CLUSTER_MODE=loopback yarn worker`
 
 ## Running in production
 - Set your account address in env (TODO: will use guest account for now)
 - Set desired threads available using `PROCESSING_THREADS` env variable
-`curl https://widget.motivus.cl/worker.js | REACT_APP_TLS=true PROCESSING_THREADS=10 node`
+- The script reads the same env variables that `yarn worker`
+
+`$ curl https://widget.motivus.cl/worker.js | REACT_APP_TLS=true PROCESSING_THREADS=10 node`
+
+You can also do the following to run a driver tasks locally:
+
+`$ curl https://widget.motivus.cl/worker.js | CLUSTER_MODE=loopback node`
