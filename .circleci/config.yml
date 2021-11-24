@@ -1,23 +1,87 @@
 version: 2.1
 orbs:
   node: circleci/node@4.1.0
+
+defaults: &defaults
+  working_directory: ~/repo
+  executor: 
+    name: node/default
+    tag: 'lts'
+      
 jobs:
-  build:
-    executor:
-      name: node/default
-      tag: 'lts'
+  test:
+    <<: *defaults
     steps:
       - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "yarn.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
       - run: yarn install
-      - run: CI=false yarn run build
-      - run: CI=false yarn run build-standalone-worker
-      - run: sudo yarn global add aws-cdk@1.80.0
+      - run:
+          name: Run tests
+          command: yarn test
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Prepare release versioning
+          command: yarn run release
+      - run:
+          name: Build widget
+          command: yarn run build
+      - run:
+          name: Build node worker
+          command: yarn run build-standalone-worker
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+  publish:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run: sudo yarn global add aws-cdk@1.84.0
       - run: CI="" cd deployment && yarn install && yarn build
-      - run: cd deployment && cdk bootstrap && cdk deploy --progress events --ci --require-approval never
+      - run:
+          name: Publish package
+          command: cd deployment && cdk bootstrap && cdk deploy --progress events --ci --require-approval never
+      - add_ssh_keys:
+          fingerprints:
+            - "ec:83:57:1a:39:e4:9d:27:1b:c6:8c:5c:ae:32:1c:83"
+      - run:
+          name: Repo Versioning
+          command: git push --follow-tags origin $CIRCLE_BRANCH
+
 workflows:
-  main:
+  test-deploy:
     jobs:
+      - test:
+          filters:
+            branches:
+              only:
+                - develop
+                - main
       - build:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - main
+      - publish:
+          requires:
+            - build
           filters:
             branches:
               only:
