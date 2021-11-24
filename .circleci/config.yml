@@ -35,6 +35,11 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - run:
+          name: Git config
+          command: |
+            git config --global user.email "circleci@motivus.cl"
+            git config --global user.name "CircleCI"
+      - run:
           name: Prepare release versioning
           command: yarn run release
       - run:
