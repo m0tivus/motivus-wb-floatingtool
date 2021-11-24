@@ -132,6 +132,8 @@ export WEBSOCKET_URI=ws://localhost:${loopbackPort}/client_socket/websocket
     })
     connection.on('close', function (reasonCode, description) {
       store.dispatch({ type: 'DRIVER_DISCONNECTED' })
+      store.dispatch({ type: 'STOP_PROCESSING' })
+      store.dispatch({ type: 'START_PROCESSING' })
     })
   })
 }
