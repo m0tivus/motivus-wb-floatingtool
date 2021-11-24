@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.1.0...v1.1.1) (2021-11-24)
+
+
+### Bug Fixes
+
+* **worker:** add compatibility for node worker setup ([d9f4f53](https://github.com/m0tivus/motivus-wb-floatingtool/commit/d9f4f53adcbff71462e51d26524aa825c49bb6a4))
+
 ## 1.1.0 (2021-11-24)
 
 
