@@ -66,7 +66,9 @@ jobs:
             - "ec:83:57:1a:39:e4:9d:27:1b:c6:8c:5c:ae:32:1c:83"
       - run:
           name: Repo Versioning
-          command: git push --follow-tags origin $CIRCLE_BRANCH
+          command: |
+            ssh-keyscan -p 443 ssh.github.com >> ~/.ssh/known_hosts
+            git push --follow-tags origin $CIRCLE_BRANCH
 
 workflows:
   test-deploy:
