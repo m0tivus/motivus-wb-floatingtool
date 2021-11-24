@@ -1,3 +1,3 @@
 test('stub', () => {
-  expect(true).toBeTrue()
+  expect(true).toBe(true)
 })
