@@ -35,14 +35,14 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - run:
-        - name: Prepare release versioning
-        - command: yarn run release
+          name: Prepare release versioning
+          command: yarn run release
       - run:
-        - name: Build widget
-        - command: yarn run build
+          name: Build widget
+          command: yarn run build
       - run:
-        - name: Build node worker
-        - command: yarn run build-standalone-worker
+          name: Build node worker
+          command: yarn run build-standalone-worker
       - persist_to_workspace:
           root: ~/repo
           paths: .
