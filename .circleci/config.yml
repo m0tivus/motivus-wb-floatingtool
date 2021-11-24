@@ -63,7 +63,7 @@ jobs:
           command: cd deployment && cdk bootstrap && cdk deploy --progress events --ci --require-approval never
       - add_ssh_keys:
           fingerprints:
-            - "ec:83:57:1a:39:e4:9d:27:1b:c6:8c:5c:ae:32:1c:83"
+            - "55:bb:f4:1f:72:da:b6:c4:35:b9:10:3c:59:00:14:87"
       - run:
           name: Repo Versioning
           command: |
