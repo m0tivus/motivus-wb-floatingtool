@@ -15,7 +15,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-{{ checksum "yarn.lock" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
       - run: yarn install
@@ -25,7 +25,7 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
       - persist_to_workspace:
           root: ~/repo
           paths: .
@@ -34,19 +34,21 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/repo
-      - run: yarn run build
-      - run: yarn run build-standalone-worker
+      - run:
+        - name: Prepare release versioning
+        - command: yarn run release
+      - run:
+        - name: Build widget
+        - command: yarn run build
+      - run:
+        - name: Build node worker
+        - command: yarn run build-standalone-worker
       - persist_to_workspace:
           root: ~/repo
-          paths:
-            - build
-            - dist
+          paths: .
   publish:
     <<: *defaults
     steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "ec:83:57:1a:39:e4:9d:27:1b:c6:8c:5c:ae:32:1c:83"
       - attach_workspace:
           at: ~/repo
       - run: sudo yarn global add aws-cdk@1.84.0
@@ -54,9 +56,12 @@ jobs:
       - run:
           name: Publish package
           command: cd deployment && cdk bootstrap && cdk deploy --progress events --ci --require-approval never
+      - add_ssh_keys:
+          fingerprints:
+            - "ec:83:57:1a:39:e4:9d:27:1b:c6:8c:5c:ae:32:1c:83"
       - run:
           name: Repo Versioning
-          command: yarn run release && git push --follow-tags origin $CIRCLE_BRANCH
+          command: git push --follow-tags origin $CIRCLE_BRANCH
 
 workflows:
   test-deploy:

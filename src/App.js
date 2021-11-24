@@ -30,6 +30,8 @@ const store = createStore(reducers, applyMiddleware(...middlewares))
 
 sagaMiddleware.run(sagas)
 
+console.log(process.env.REACT_APP_VERSION)
+
 // var Motivus = window.Motivus || {}
 // console.log('client_id', Motivus.client_id)
 
