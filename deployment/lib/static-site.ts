@@ -100,6 +100,9 @@ export class StaticSite extends Construct {
           exclude: ['**', '!worker.js'],
         }),
         s3deploy.Source.asset('../dist', {
+          exclude: ['**', '!workerLoader.js'],
+        }),
+        s3deploy.Source.asset('../dist', {
           exclude: ['**', '!VERSION'],
         }),
         s3deploy.Source.asset('../build/images'),
