@@ -1,7 +1,6 @@
 const http = require('https')
 const { Worker, SHARE_ENV } = require('worker_threads')
 const HOST = 'https://widget.motivus.cl'
-// const HOST = 'https://web.motivus.afinitat.cl'
 
 const getPublished = (file) =>
   new Promise((resolve, reject) =>
@@ -34,7 +33,10 @@ async function updateWorker(handle, version) {
     handle.terminate()
     return startWorker()
   } else {
-    setTimeout(() => updateWorker(handle, version), 180000)
+    const id = setTimeout(() => updateWorker(handle, version), 180000)
+    handle.on('exit', () => {
+      clearTimeout(id)
+    })
   }
 }
 
@@ -42,6 +44,7 @@ async function startWorker() {
   const version = await getPublished('VERSION')
   const worker = await getPublished('worker.js')
   const workerHandle = new Worker(worker, { eval: true, env: SHARE_ENV })
+  workerHandle.on('exit', startWorker)
 
   return updateWorker(workerHandle, version)
 }

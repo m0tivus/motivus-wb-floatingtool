@@ -10,7 +10,12 @@ import { setInput } from 'actions'
 const clusterMode = process.env.CLUSTER_MODE || 'network'
 const loopbackPort = process.env.LOOPBACK_PORT || '7070'
 
-const sagaMiddleware = createSagaMiddleware()
+const sagaMiddleware = createSagaMiddleware({
+  onError: (e) => {
+    console.error(e)
+    process.exit()
+  },
+})
 const middlewares = [sagaMiddleware]
 middlewares.push(
   createLogger({

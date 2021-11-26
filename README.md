@@ -1,6 +1,16 @@
 # Motivus worker
 The motivus worker handles new tasks received from the motivus cluster and handles its safe execution in web and node environments
 
+# Usage with docker
+```sh
+$ docker run \
+  -ti \
+  --rm \
+  motivus/worker:1.0.0
+```
+
+Refer to node/docker-compose.yml for docker compose usage example.
+
 # For web environment, as an HTML/JS widget
 
 ## Local development

@@ -4,8 +4,10 @@ import axios from 'axios'
 
 const apiHost = process.env.REACT_APP_API_HOST || 'waterbear.api.motivus.cl'
 const host = process.env.REACT_APP_HOST || 'motivus.cl'
-const httpScheme = process.env.REACT_APP_TLS === 'true' ? 'https' : 'http'
-const wsScheme = process.env.REACT_APP_TLS === 'true' ? 'wss' : 'ws'
+const tls =
+  process.env.REACT_APP_TLS === 'true' || apiHost === 'waterbear.api.motivus.cl'
+const httpScheme = tls ? 'https' : 'http'
+const wsScheme = tls ? 'wss' : 'ws'
 
 const wsBase = `${wsScheme}://${apiHost}`
 export const httpBase = `${httpScheme}://${apiHost}`
