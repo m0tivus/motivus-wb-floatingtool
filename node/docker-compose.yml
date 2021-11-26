@@ -1,0 +1,11 @@
+version: "3.2"
+services:
+    worker:
+        image: motivus/worker:1.0.0
+        env_file: .env
+        ports:
+            #Required for loopback mode
+            - "7070:7070"
+        restart: unless-stopped
+        tty: true
+
