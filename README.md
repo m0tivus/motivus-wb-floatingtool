@@ -58,8 +58,11 @@ Start the worker in loop-back mode by executing:
 - Set desired threads available using `PROCESSING_THREADS` env variable
 - The script reads the same env variables that `yarn worker`
 
-`$ curl https://widget.motivus.cl/worker.js | REACT_APP_TLS=true PROCESSING_THREADS=10 node`
+### Auto-update functionality
+The worker can check for new versions and update automatically by using the loader:
+
+`$ curl https://widget.motivus.cl/workerLoader.js | REACT_APP_TLS=true PROCESSING_THREADS=10 node`
 
 You can also do the following to run a driver tasks locally:
 
-`$ curl https://widget.motivus.cl/worker.js | CLUSTER_MODE=loopback node`
+`$ curl https://widget.motivus.cl/workerLoader.js | CLUSTER_MODE=loopback node`
