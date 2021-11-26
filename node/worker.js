@@ -32,7 +32,7 @@ if (clusterMode === 'loopback') {
   var WebSocketServer = require('websocket').server
   var http = require('http')
 
-  var server = http.createServer(function (request, response) {
+  var server = http.createServer(function (_request, response) {
     response.writeHead(404)
     response.end()
   })
@@ -130,7 +130,7 @@ export WEBSOCKET_URI=ws://localhost:${loopbackPort}/client_socket/websocket
         }
       }
     })
-    connection.on('close', function (reasonCode, description) {
+    connection.on('close', function (_reasonCode, _description) {
       store.dispatch({ type: 'DRIVER_DISCONNECTED' })
       store.dispatch({ type: 'STOP_PROCESSING' })
       store.dispatch({ type: 'START_PROCESSING' })
