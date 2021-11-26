@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.1.1...v1.2.0) (2021-11-26)
+
+
+### Features
+
+* **node-worker:** add worker loader script with auto-updating worker ([71ff510](https://github.com/m0tivus/motivus-wb-floatingtool/commit/71ff510d08d753134e230a652186a22af033a329))
+
+
+### Bug Fixes
+
+* **cdk:** add missing worker loader s3 deployment ([f18c7c9](https://github.com/m0tivus/motivus-wb-floatingtool/commit/f18c7c9672157aa8b542b572ec60fca01c26996e))
+
+
+### Docs
+
+* **node-worker:** add loader usage instructions ([5145447](https://github.com/m0tivus/motivus-wb-floatingtool/commit/5145447f7df41daa2405447bb5a1576c56747abd))
+
 ### [1.1.1](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.1.0...v1.1.1) (2021-11-24)
 
 
