@@ -2,10 +2,7 @@ const path = require('path')
 const VersionFile = require('webpack-version-file')
 
 module.exports = {
-  entry: './node/worker.js',
-  output: {
-    filename: 'worker.js',
-  },
+  entry: { worker: './node/worker.js', workerLoader: './node/workerLoader.js' },
   target: 'node',
   mode: 'production',
   resolve: {

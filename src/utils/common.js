@@ -14,15 +14,19 @@ export const setupWorker = (worker) =>
       console.log(e)
       console.log('erorrrrrr')
     }
-    worker.on('error', (e) => {
-      console.log(e)
-      emit({
-        body: {},
-        stderr: btoa(e.toString()),
-        stdout: null,
-        exitCode: 1,
+    try {
+      worker.on('error', (e) => {
+        console.log(e)
+        emit({
+          body: {},
+          stderr: btoa(e.toString()),
+          stdout: null,
+          exitCode: 1,
+        })
       })
-    })
+    } catch (e) {
+      //
+    }
 
     const unsubscribe = () => {
       worker.onmessage = null
