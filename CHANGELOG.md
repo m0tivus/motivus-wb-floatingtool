@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.2.0...v1.3.0) (2021-11-26)
+
+
+### Features
+
+* **node-worker:** add docker and docker-compose files ([ddb33a6](https://github.com/m0tivus/motivus-wb-floatingtool/commit/ddb33a69c47baae30a05188826c4ea005005f424))
+
+
+### Docs
+
+* **node-worker:** add usage example for docker ([8c71539](https://github.com/m0tivus/motivus-wb-floatingtool/commit/8c715396a74bd17c30e669de3498298f23cc1bd5))
+
 ## [1.2.0](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.1.1...v1.2.0) (2021-11-26)
 
 
