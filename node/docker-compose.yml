@@ -7,5 +7,7 @@ services:
             #Required for loopback mode
             - "7070:7070"
         restart: unless-stopped
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
         tty: true
 
