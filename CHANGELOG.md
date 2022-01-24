@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.3](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.3.2...v1.3.3) (2022-01-24)
+
+
+### Bug Fixes
+
+* **cdk:** force template version, aws breaking change ([54236cb](https://github.com/m0tivus/motivus-wb-floatingtool/commit/54236cb0f71fe4848ec2ee611af3773b5ee2b0aa))
+
+
+### Performance Improvements
+
+* **node-worker:** remove unused worker listeners for version update ([a3b3c1b](https://github.com/m0tivus/motivus-wb-floatingtool/commit/a3b3c1bace0c3074a747c0dee11324551a12dafe))
+
 ### [1.3.2](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.3.1...v1.3.2) (2021-12-24)
 
 ### [1.3.1](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.3.0...v1.3.1) (2021-12-24)
