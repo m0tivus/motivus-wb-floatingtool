@@ -1,6 +1,7 @@
 const http = require('https')
 const { Worker, SHARE_ENV } = require('worker_threads')
 const HOST = 'https://widget.motivus.cl'
+const CHECK_VERSION_INTERVAL_MS = 180000
 
 const getPublished = (file) =>
   new Promise((resolve, reject) =>
@@ -28,15 +29,15 @@ async function newVersionAvailable(currentVersion) {
   return currentVersion !== version
 }
 
-async function updateWorker(handle, version) {
+async function watchVersion(workerHandle, version) {
   if (await newVersionAvailable(version)) {
-    handle.terminate()
-    return startWorker()
+    clearTimeout(workerHandle.timeoutId)
+    workerHandle.terminate()
   } else {
-    const id = setTimeout(() => updateWorker(handle, version), 180000)
-    handle.on('exit', () => {
-      clearTimeout(id)
-    })
+    workerHandle.timeoutId = setTimeout(
+      () => watchVersion(workerHandle, version),
+      CHECK_VERSION_INTERVAL_MS,
+    )
   }
 }
 
@@ -46,7 +47,7 @@ async function startWorker() {
   const workerHandle = new Worker(worker, { eval: true, env: SHARE_ENV })
   workerHandle.on('exit', startWorker)
 
-  return updateWorker(workerHandle, version)
+  watchVersion(workerHandle, version)
 }
 
 startWorker()
