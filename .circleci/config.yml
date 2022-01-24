@@ -60,7 +60,7 @@ jobs:
       - run: CI="" cd deployment && yarn install && yarn build
       - run:
           name: Publish package
-          command: cd deployment && cdk bootstrap && cdk deploy --progress events --ci --require-approval never
+          command: cd deployment && cdk bootstrap --force && cdk deploy --progress events --ci --require-approval never
       - add_ssh_keys:
           fingerprints:
             - "55:bb:f4:1f:72:da:b6:c4:35:b9:10:3c:59:00:14:87"
