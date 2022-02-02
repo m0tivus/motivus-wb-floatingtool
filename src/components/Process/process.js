@@ -58,19 +58,23 @@ const useStyles = makeStyles((theme) => ({
 
 function ProjectsCarousel() {
   const classes = useStyles()
-  const {
-    task_quantity,
-    elapsed_time,
-    season,
-    processing_ranking,
-    flop,
-  } = useSelector((state) => state.stats)
+  const { task_quantity, elapsed_time, season, processing_ranking } =
+    useSelector((state) => state.stats)
 
   const user = useSelector(({ user }) => user)
   const formatHours = (number) => Number.parseFloat(number).toFixed(2)
 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.up('sm'))
+
+  const medalColor =
+    processing_ranking === 1
+      ? 'yellow'
+      : processing_ranking === 2
+      ? 'silver'
+      : processing_ranking === 3
+      ? '#f2aa8c'
+      : null
 
   return (
     <div className={classes.root}>
@@ -119,53 +123,44 @@ function ProjectsCarousel() {
               <Typography variant='h3'>
                 {season && season.name ? season.name : 'n/a'}
               </Typography>
-              <Typography variant='body2'>Ranking:</Typography>
-              <Typography variant='h2'>
-                {processing_ranking || 'n/a'}
-              </Typography>
             </Box>
           </Grid>
           <Grid item xs={4}>
             <Box display='flex' flexDirection='column'>
-              <Typography variant='body2'>TFLOP:</Typography>
-              <Typography variant='h3'>
-                {Number.parseFloat(flop / 1024).toFixed(2) || 'n/a'}
-              </Typography>
-              <Typography variant='body2'>Total tasks:</Typography>
-              <Typography variant='h3'>{task_quantity || 'n/a'}</Typography>
+              <Typography variant='body2'>Contributions:</Typography>
+              <Typography variant='h3'>{task_quantity || 0} tasks</Typography>
               <Typography variant='body2'>Elapsed Time:</Typography>
               <Typography variant='h3'>
                 {elapsed_time ? formatHours(elapsed_time / 60 / 60) : 0} h
               </Typography>
+              <Typography variant='body2'>Ranking:</Typography>
+              <Box display='flex' alignItems='center'>
+                <Typography variant='h2'>
+                  {processing_ranking || 'n/a'}
+                </Typography>
+                {processing_ranking && processing_ranking <= 3 ? (
+                  <Typography style={{ color: medalColor }}>
+                    &nbsp;
+                    <b>🏅</b>
+                  </Typography>
+                ) : null}
+              </Box>
             </Box>
           </Grid>
         </Grid>
       </Box>
       <Box display='flex' mt={2} width='100%' justifyContent='center'>
-        {!user || (user && user.is_guest) ? (
-          <Typography variant='h2' align='center'>
-            Learn more about the{' '}
-            <Link
-              href='https://motivus.cl/blog/motivus-update-rna-epic-pandemic'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              {' '}RNA Epic{' '}
-            </Link>
-          </Typography>
-        ) : (
-          <Typography variant='h2' align='center'>
-            Check for updates on our
-            <Link
-              href='https://twitter.com/MotivusHPCN'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              {' '}
-              Twitter Feed!{' '}
-            </Link>
-          </Typography>
-        )}
+        <Typography variant='h2' align='center'>
+          Learn more about the{' '}
+          <Link
+            href='https://motivus.cl/blog/welcome-rna-epic'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            {' '}
+            RNA Epic{' '}
+          </Link>
+        </Typography>
       </Box>
       <Box
         my={1}

@@ -2,11 +2,22 @@
 The motivus worker handles new tasks received from the motivus cluster and handles its safe execution in web and node environments
 
 # Usage with docker
+
+## Production (network mode)
 ```sh
 $ docker run \
   -ti \
   --rm \
   motivus/worker:1.0.0
+```
+## Local development (loopback mode)
+```sh
+$ docker run \
+  -ti \
+  --rm \
+  -p 7070:7070 \
+  -e CLUSTER_MODE=loopback \
+motivus/worker:1.0.0
 ```
 
 Refer to node/docker-compose.yml for docker compose usage example.

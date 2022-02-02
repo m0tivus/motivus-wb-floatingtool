@@ -14,14 +14,6 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
 const tutorialSteps = [
   {
-    projectType: 'Mathematical',
-    title: 'Benchmark',
-    label:
-      'Resolve matrix multiplication equations through the Motivus Framework',
-    imgPath: 'https://widget.motivus.cl/benchmark-motivus.jpg',
-    state: 'Ready to process',
-  },
-  {
     projectType: 'Scientific, biology',
     title: 'RNA folding',
     label:
@@ -30,20 +22,20 @@ const tutorialSteps = [
     state: 'Ready to process',
   },
   {
-    projectType: 'Decentralized applications',
-    title: 'Cryptocurrencies mining',
-    label:
-      'Kazakhstan is in talks to attract investments worth 300 billion tenge.',
-    imgPath: 'https://widget.motivus.cl/ethereum-calculator.jpg',
-    state: 'Coming soon',
-  },
-  {
     projectType: 'Scientific, astrophysics',
     title: 'Cosmological simulation',
     label:
       'Galaxy simulations produce surprising insights into cosmic evolution.',
     imgPath: 'https://widget.motivus.cl/cosmological-simulation.jpg',
     state: 'Coming soon',
+  },
+  {
+    projectType: 'Mathematical',
+    title: 'Alpha benchmark',
+    label:
+      'Resolve matrix multiplication equations through the Motivus Framework',
+    imgPath: 'https://widget.motivus.cl/benchmark-motivus.jpg',
+    state: 'Ready to process',
   },
 ]
 
@@ -158,8 +150,8 @@ function ProjectsCarousel() {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowLeft />
               ) : (
-                  <KeyboardArrowRight />
-                )}
+                <KeyboardArrowRight />
+              )}
             </Button>
           }
           backButton={
@@ -171,8 +163,8 @@ function ProjectsCarousel() {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowRight />
               ) : (
-                  <KeyboardArrowLeft />
-                )}
+                <KeyboardArrowLeft />
+              )}
               Back
             </Button>
           }
