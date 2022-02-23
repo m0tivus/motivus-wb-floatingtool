@@ -48,6 +48,7 @@ function ProcessButton({
   isMobile,
   slots,
   last_result_datetime,
+  tasks_available,
   ...props
 }) {
   const classes = useStyles()
@@ -106,10 +107,18 @@ function ProcessButton({
                     </span>
                   </Typography>
                 </Box>
-                <Box display='flex'>
+                <Box display='flex' justifyContent='flex-end'>
                   <Typography className={classes.text}>
                     <span className={classes.textTime}>{timeElapsed} s</span>{' '}
-                    Time since last result
+                    since last result
+                  </Typography>
+                </Box>
+                <Box display='flex' justifyContent='flex-end'>
+                  <Typography className={classes.text}>
+                    <span className={classes.textTime}>
+                      {tasks_available || 0} tasks
+                    </span>{' '}
+                    available
                   </Typography>
                 </Box>
               </React.Fragment>
@@ -139,7 +148,15 @@ function ProcessButton({
                   <Box display='flex'>
                     <Typography className={classes.text}>
                       <span className={classes.textTime}>{timeElapsed} s</span>{' '}
-                      Time since last result
+                      since last result
+                    </Typography>
+                  </Box>
+                  <Box display='flex'>
+                    <Typography className={classes.text}>
+                      <span className={classes.textTime}>
+                        {tasks_available || 0} tasks
+                      </span>{' '}
+                      available
                     </Typography>
                   </Box>
                 </Box>
@@ -154,11 +171,15 @@ function ProcessButton({
   )
 }
 export default connect(
-  ({ processing: { isProcessing, tasks, slots, last_result_datetime } }) => ({
+  ({
+    processing: { isProcessing, tasks, slots, last_result_datetime },
+    stats: { tasks_available },
+  }) => ({
     isProcessing,
     tasks,
     slots,
     last_result_datetime,
+    tasks_available,
   }),
   {
     startProcessing,

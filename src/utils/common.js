@@ -58,8 +58,10 @@ export const getProcessingPreferencesFromCookies = () => {
   if (threadCount > 0) {
     preferences.threadCount = Number(threadCount)
   } else {
-    preferences.threadCount = 1
-    setCookie(THREADS_PREFERENCE_COOKIE_ID, 1, 365)
+    const defaultThreads = Math.floor(navigator.hardwareConcurrency / 2)
+    preferences.threadCount = defaultThreads
+
+    setCookie(THREADS_PREFERENCE_COOKIE_ID, defaultThreads, 365)
   }
   return preferences
 }

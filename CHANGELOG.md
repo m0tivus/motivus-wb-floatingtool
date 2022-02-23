@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.3.3...v1.4.0) (2022-02-02)
+
+
+### Features
+
+* **widget:** update displayed information for RNA epic ([700beb4](https://github.com/m0tivus/motivus-wb-floatingtool/commit/700beb4d3b0e8262e52e5b752e1caeb135d24bab))
+* **widget:** update project carousel items ([c5d5a69](https://github.com/m0tivus/motivus-wb-floatingtool/commit/c5d5a69f389292c29c8040319069824761d289b2))
+
 ### [1.3.3](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.3.2...v1.3.3) (2022-01-24)
 
 
