@@ -58,8 +58,14 @@ const useStyles = makeStyles((theme) => ({
 
 function ProjectsCarousel() {
   const classes = useStyles()
-  const { task_quantity, elapsed_time, season, processing_ranking } =
-    useSelector((state) => state.stats)
+  const {
+    task_quantity,
+    elapsed_time,
+    season,
+    processing_ranking,
+    threads_available,
+    threads_processing,
+  } = useSelector((state) => state.stats)
 
   const user = useSelector(({ user }) => user)
   const formatHours = (number) => Number.parseFloat(number).toFixed(2)
@@ -71,10 +77,10 @@ function ProjectsCarousel() {
     processing_ranking === 1
       ? 'yellow'
       : processing_ranking === 2
-      ? 'silver'
-      : processing_ranking === 3
-      ? '#f2aa8c'
-      : null
+        ? 'silver'
+        : processing_ranking === 3
+          ? '#f2aa8c'
+          : null
 
   return (
     <div className={classes.root}>
@@ -122,6 +128,10 @@ function ProjectsCarousel() {
               <Typography variant='body2'>Season:</Typography>
               <Typography variant='h3'>
                 {season && season.name ? season.name : 'n/a'}
+              </Typography>
+              <Typography variant='body2'>Connected Threads:</Typography>
+              <Typography variant='h3'>
+                {threads_available + threads_processing || 'n/a'}
               </Typography>
             </Box>
           </Grid>
