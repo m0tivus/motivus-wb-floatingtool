@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.4.0...v1.5.0) (2022-02-23)
+
+
+### Features
+
+* **stats:** show cluster stats for threads and available tasks ([fc7e94e](https://github.com/m0tivus/motivus-wb-floatingtool/commit/fc7e94e45b578a40dde8f1a0ecbe63eae0d71040))
+* **widget:** set default thread count to half available ([f06a0d4](https://github.com/m0tivus/motivus-wb-floatingtool/commit/f06a0d40c006c6ffd7ea73f102bb47c51ba879e5))
+
 ## [1.4.0](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.3.3...v1.4.0) (2022-02-02)
 
 
