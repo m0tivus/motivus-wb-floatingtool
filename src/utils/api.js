@@ -34,7 +34,10 @@ export const startWS = (
     if (token) {
       urlWithParams += `?token=${token}`
     }
-    const socket = new W3CWebSocket(urlWithParams)
+    const socket = new W3CWebSocket(urlWithParams, null, null, null, null, {
+      maxReceivedFrameSize: 64 * 1024 * 1024,
+      maxReceivedMessageSize: 64 * 1024 * 1024,
+    })
     socket.onopen = () => resolve(socket)
     socket.onerror = (evt) => reject(evt)
   })
