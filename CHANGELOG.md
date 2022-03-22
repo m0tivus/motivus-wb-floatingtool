@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.5.0...v1.6.0) (2022-03-22)
+
+
+### Features
+
+* **websocket:** increase frame and message size ([a05e155](https://github.com/m0tivus/motivus-wb-floatingtool/commit/a05e155de01d7b06f701638ad4fe69348b8213ed))
+
 ## [1.5.0](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.4.0...v1.5.0) (2022-02-23)
 
 
