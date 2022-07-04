@@ -80,6 +80,27 @@ export function setCookie(name, value, daysToLive) {
   }
 }
 
+export function getTokenFromEnv() {
+  if (typeof document === 'object') {
+    return getCookie('motivus_wb_token')
+  }
+  return process.env.WB_WORKER_TOKEN || null
+}
+
+export function storeToken(token) {
+  if (typeof document === 'object') {
+    setCookie('motivus_wb_token', token, 365)
+  }
+}
+export function deleteToken() {
+  if (typeof document === 'object') {
+    setCookie('motivus_wb_token', '', -1)
+  } else {
+    console.error('Could not login using provided WB_WORKER_TOKEN')
+    process.exit()
+  }
+}
+
 export function getCookie(name) {
   // Split cookie string and get all individual name=value pairs in an array
   var cookieArr = []

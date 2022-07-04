@@ -9,7 +9,7 @@ import {
 } from 'actions/types'
 import * as selectors from 'sagas/selectors'
 import * as api from 'utils/api'
-import { getCookie, setCookie } from 'utils/common'
+import { deleteToken, getTokenFromEnv, storeToken } from 'utils/common'
 
 export function* main() {
   yield takeLatest(SET_TOKEN, handleSetToken)
@@ -26,7 +26,7 @@ export function* ensureUserLoaded() {
 }
 
 export function* getUserData() {
-  const token = yield call(getCookie, 'motivus_wb_token')
+  const token = yield call(getTokenFromEnv)
   if (token) {
     yield put({ type: SET_TOKEN, token, setOnly: true })
     yield* refreshUser()
@@ -40,7 +40,7 @@ function* handleSetToken(action) {
   const { token, setOnly } = action
   yield call(api.setAxiosToken, token)
   if (!setOnly) {
-    yield call(setCookie, 'motivus_wb_token', token, 365)
+    yield call(storeToken, token)
     yield* refreshUser()
   }
 }
@@ -49,8 +49,10 @@ function* refreshUser(user = null) {
   if (!user) {
     try {
       user = yield call(api.getUser)
-    } catch {
-      //
+    } catch (e) {
+      if (!e.response || (e.response && e.response.status !== 401)) {
+        throw new Error('API service not available')
+      }
     }
   }
   if (!user) {
@@ -62,7 +64,7 @@ function* refreshUser(user = null) {
 }
 
 export function* handleLogout() {
-  yield call(setCookie, 'motivus_wb_token', '', -1)
+  yield call(deleteToken)
   yield call(api.setAxiosToken, null)
 
   yield put({ type: UNSET_TOKEN })
