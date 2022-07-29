@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.6.0...v1.7.0) (2022-07-29)
+
+
+### Features
+
+* **auth:** read token from env for node ([198c71c](https://github.com/m0tivus/motivus-wb-floatingtool/commit/198c71c8b90c75302f7a5d4a475a910c3c61fe2d))
+* **docker:** improve docker image ([6838749](https://github.com/m0tivus/motivus-wb-floatingtool/commit/683874923b9737dd5ecad82cf0cf0458ed141644))
+
+
+### CI
+
+* **circleci:** use npm global instead of yarn ([bef86e7](https://github.com/m0tivus/motivus-wb-floatingtool/commit/bef86e7e347218932aacab3303930663e024a6ec))
+* **circleci:** yarn without sudo ([372c2f7](https://github.com/m0tivus/motivus-wb-floatingtool/commit/372c2f7f71482bcf383971b2e73f92df0b52c9aa))
+
 ## [1.6.0](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.5.0...v1.6.0) (2022-03-22)
 
 
