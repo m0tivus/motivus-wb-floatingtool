@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 import sagas from 'sagas'
 import reducers from 'reducers'
 import { setInput } from 'actions'
+import * as actionTypes from 'actions/types'
 
 const clusterMode = process.env.CLUSTER_MODE || 'network'
 const loopbackPort = process.env.LOOPBACK_PORT || '7070'
@@ -24,6 +25,7 @@ middlewares.push(
       nextState: false,
       error: 'error',
     },
+    predicate: (_, { type }) => type !== actionTypes.SET_STATS,
   }),
 )
 
