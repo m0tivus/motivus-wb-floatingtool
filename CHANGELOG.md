@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.7.0...v1.8.0) (2022-08-10)
+
+
+### Features
+
+* **node:** omit stats messages ([cda092e](https://github.com/m0tivus/motivus-wb-floatingtool/commit/cda092e9e64dda7bc2054413b63f785df9622280))
+* **node:** print time and action in log ([d4c40e0](https://github.com/m0tivus/motivus-wb-floatingtool/commit/d4c40e0e2513b53dfcf45ca0f7bcd3c25df56404))
+
 ## [1.7.0](https://github.com/m0tivus/motivus-wb-floatingtool/compare/v1.6.0...v1.7.0) (2022-07-29)
 
 
