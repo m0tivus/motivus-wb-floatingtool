@@ -26,6 +26,7 @@ middlewares.push(
       error: 'error',
     },
     predicate: (_, { type }) => type !== actionTypes.SET_STATS,
+    titleFormatter: (action, time) => `${time} ${action.type}`,
   }),
 )
 
