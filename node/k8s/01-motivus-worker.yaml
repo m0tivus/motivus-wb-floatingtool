@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: motivus-worker
+  namespace: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: motivus-worker
+  template:
+    metadata:
+      labels:
+        app: motivus-worker
+    spec:
+      containers:
+        - image: motivus/worker:1.1.0
+          imagePullPolicy: "IfNotPresent"
+          name: worker
+          env:
+            - name: REACT_APP_API_HOST
+              value: "wb-api.wb-api"
+            - name: REACT_APP_HOST
+              value: home.home-deployment
+            - name: PROCESSING_THREADS
+              value: "3"
+            - name: WB_WORKER_TOKEN
+              value: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJtb3RpdnVzX3diX2FwaSIsImV4cCI6MjYwNjE1NDYyOCwiaWF0IjoxNjYwMDc0NjI4LCJpc3MiOiJtb3RpdnVzX3diX2FwaSIsImp0aSI6ImMxYTJmNjI4LTY0MDEtNDQxYi04YjhiLWFjNDY2MzExNGNhNCIsIm5iZiI6MTY2MDA3NDYyNywic3ViIjoiMSIsInR5cCI6ImFjY2VzcyJ9.MOnjIQvc5djf3wALjw9pkTYqof92MpSNBFMJyTt9CDon97TrWpf08zaHFu2b07DY8kp_NGOq8VDrWGzIsKFyLQ
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 500Mi
+            requests:
+              cpu: "500m"
+              memory: 500Mi
+              #      nodeSelector:
+              #        cloud.google.com/gke-spot: "true"
+              #      terminationGracePeriodSeconds: 25
