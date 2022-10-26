@@ -71,8 +71,8 @@ function* handleNewInput({ payload, callback = () => null }) {
             //console.log(result);
             var input = Buffer.from(JSON.stringify(result.body));
             var deflated = zlib.gzipSync(input).toString('base64');
-            //console.log("tamaño sin compresión", JSON.stringify(result.body).length);
-            //console.log("tamaño comprimido", JSON.stringify(deflated).length);
+            console.log("tamaño sin compresión", JSON.stringify(result.body).length);
+            console.log("tamaño comprimido", JSON.stringify(deflated).length);
             result['body'] = deflated
             //console.log(result);
             yield put({

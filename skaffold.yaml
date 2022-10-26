@@ -1,0 +1,30 @@
+apiVersion: skaffold/v2beta27
+kind: Config
+metadata:
+  name: node
+profiles:
+  - name: develop
+    build:
+      artifacts:
+      - image: motivus/worker
+        docker:
+          dockerfile: Dockerfile
+    deploy:
+      kubectl:
+        manifests:
+        - node/k8s/00-namespace.yaml
+        - node/k8s/01-motivus-worker.yaml
+  - name: prod
+    build:
+      local:
+        useDockerCLI: false
+        useBuildkit: false
+      artifacts:
+        - image: southamerica-west1-docker.pkg.dev/motivus-257216/motivus-repo/worker
+          docker:
+            dockerfile: Dockerfile
+    deploy:
+      kubectl:
+        manifests:
+          - node/k8s/gcp/00-namespace.yaml
+          - node/k8s/gcp/01-motivus-worker.yaml
