@@ -1,8 +1,0 @@
-FROM node:16.16-alpine
-WORKDIR /usr/src/app
-COPY ../package.json ../yarn.lock ./
-ADD ../src ./src
-ADD . ./node
-RUN yarn
-RUN yarn build-standalone-worker
-ENTRYPOINT node --no-deprecation dist/worker.js
