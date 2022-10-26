@@ -32,6 +32,7 @@ import {
 } from 'utils/common'
 import { ensureSocketReady } from './socket'
 import { v4 as uuidv4 } from 'uuid'
+import zlib from 'zlib'
 
 var Motivus = (typeof window === 'object' && window.Motivus) || {}
 
@@ -51,6 +52,8 @@ export function* main() {
 }
 
 function* handleNewInput({ payload, callback = () => null }) {
+  //console.log(zlib.deflateSync(Buffer.from(JSON.stringify(payload.body), 'base64')));
+  //payload["body"] = zlib.deflateSync(Buffer.from(payload.body, 'base64')).toString('base64');
   switch (payload.type) {
     case 'work': {
       let buffLoader = Buffer.from(payload.body.loader, 'base64')
@@ -65,6 +68,13 @@ function* handleNewInput({ payload, callback = () => null }) {
 
           const workerMessages = yield call(setupWorker, worker)
           yield takeLatest(workerMessages, function* (result) {
+            //console.log(result);
+            var input = Buffer.from(JSON.stringify(result.body));
+            var deflated = zlib.gzipSync(input).toString('base64');
+            //console.log("tamaño sin compresión", JSON.stringify(result.body).length);
+            //console.log("tamaño comprimido", JSON.stringify(deflated).length);
+            result['body'] = deflated
+            //console.log(result);
             yield put({
               type: SET_RESULT,
               result: {
