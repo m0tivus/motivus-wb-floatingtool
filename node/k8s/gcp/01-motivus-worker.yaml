@@ -4,7 +4,7 @@ metadata:
   name: motivus-worker
   namespace: worker
 spec:
-  replicas: 10
+  replicas: 5
   selector:
     matchLabels:
       app: motivus-worker
