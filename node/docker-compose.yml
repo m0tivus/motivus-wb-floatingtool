@@ -4,8 +4,6 @@ services:
     image: motivus/worker:1.2.0
     network_mode: 'host'
     env_file: .env
-    ports:
-      - '7070:7070'
     restart: unless-stopped
     extra_hosts:
       - 'host.docker.internal:host-gateway'
